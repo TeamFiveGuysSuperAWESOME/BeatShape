@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class beatboardData : MonoBehaviour
 {
-    public int points;
+    public float points;
     public float size;
 }
