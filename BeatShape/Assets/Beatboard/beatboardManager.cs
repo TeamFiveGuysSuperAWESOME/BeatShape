@@ -120,7 +120,7 @@ public class beatboardManager : MonoBehaviour
         KeyCode.Alpha6,
         KeyCode.Alpha7,
         KeyCode.Alpha8,
-        KeyCode.Alpha9,
+        KeyCode.Alpha9
     };
     
     void Update()
