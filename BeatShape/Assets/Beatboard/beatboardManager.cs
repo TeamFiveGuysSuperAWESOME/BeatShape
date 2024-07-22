@@ -14,7 +14,7 @@ public class beatboardManager : MonoBehaviour
     
     public void createBeatboard(float points, float size, Vector2 position, Boolean update, int index)
     {
-        removeBeatboard("update", null, updateBbIndex.Count-1);
+        removeBeatboard("update", null, index);
         // Instantiate the beatboard object
         GameObject beatboardObject = Instantiate(beatboardPrefab, position, Quaternion.identity, transform);
 
@@ -33,7 +33,6 @@ public class beatboardManager : MonoBehaviour
         {
             if (index != -1)
             {
-                Debug.Log(index + " " + beatboards.Count);
                 beatboards.RemoveAt(index);
                 beatboards.Insert(index, beatboardObject);
                 beatboardObject.name = "Beatboard " + index;
@@ -122,15 +121,12 @@ public class beatboardManager : MonoBehaviour
         {
             try
             {
-                GameObject beatboardToRemove = updateBeatboards[index];
-                updateBeatboards.RemoveAt(index);
-                updateBbIndex.RemoveAt(index);
-                Destroy(beatboardToRemove);
+                int bbIndex = updateBbIndex.IndexOf(index);
+                updateBbIndex.Remove(index);
+                Destroy(updateBeatboards[bbIndex]);
+                updateBeatboards.RemoveAt(bbIndex);
             }
-            catch (Exception e)
-            {
-                
-            }
+            catch (Exception) {}
                 
         } else if (category == "certain")
         {
@@ -160,8 +156,7 @@ public class beatboardManager : MonoBehaviour
         try
         {
             gameObjectIndex = beatboards.IndexOf(gameObject);
-        } catch (Exception e ) {}
-        Debug.Log(gameObjectIndex);
+        } catch (Exception) {}
         if (updateBbIndex.Contains(gameObjectIndex) || gameObject != null)
         {
             Destroy(gameObject);
@@ -210,7 +205,6 @@ public class beatboardManager : MonoBehaviour
             {
                 int nextPoints = i+3;
                 manageBeatboard(beatboards[0], currentPoints[0], nextPoints, 20f, new Vector2(0, 0));
-                Debug.Log(beatboards.ToString());
                 currentPoints[0] = nextPoints;
             }
         }
