@@ -8,13 +8,13 @@ public class beatboardManager : MonoBehaviour
     public GameObject beatboardPrefab;
     public List<GameObject> beatboards;
     public List<GameObject> updateBeatboards;
+    public List<int> updateBbIndex;
     public Color beatboardColor = Color.white;
     public List<int> currentPoints;
     
     public void createBeatboard(float points, float size, Vector2 position, Boolean update, int index)
     {
-        removeBeatboard("update", null);
-
+        removeBeatboard("update", null, updateBbIndex.Count-1);
         // Instantiate the beatboard object
         GameObject beatboardObject = Instantiate(beatboardPrefab, position, Quaternion.identity, transform);
 
@@ -24,7 +24,9 @@ public class beatboardManager : MonoBehaviour
         bbdata.size = size;
         if (update == true)
         {
+            
             updateBeatboards.Add(beatboardObject);
+            updateBbIndex.Add(index);
             beatboardObject.name = "BeatboardUpdate";
         }
         else
@@ -32,8 +34,8 @@ public class beatboardManager : MonoBehaviour
             if (index != -1)
             {
                 Debug.Log(index + " " + beatboards.Count);
-                beatboards.RemoveAt(index-1);
-                beatboards.Insert(index-1, beatboardObject);
+                beatboards.RemoveAt(index);
+                beatboards.Insert(index, beatboardObject);
                 beatboardObject.name = "Beatboard " + index;
             }
             else
@@ -41,8 +43,6 @@ public class beatboardManager : MonoBehaviour
                 beatboards.Add(beatboardObject);
                 beatboardObject.name = "Beatboard " + beatboards.Count;
             }
-            
-            
         }
         
         // Add Mesh components
@@ -102,30 +102,36 @@ public class beatboardManager : MonoBehaviour
         {
             for (float i = 0; i <= diff*20; i += diff)
             {
-                createBeatboard(currentPoints-(i/20), size, position, true, -1);
+                createBeatboard(currentPoints-(i/20), size, position, true, index);
                 yield return new WaitForSeconds(0f);
             }
         } else if (currentPoints < nextPoints)
         {
             for (float i = 0; i <= diff*20; i += diff)
             {
-                createBeatboard(currentPoints+(i/20), size, position, true, -1);
+                createBeatboard(currentPoints+(i/20), size, position, true, index);
                 yield return new WaitForSeconds(0f);
             }
         }
         createBeatboard(nextPoints, size, position, false, index);
     }
 
-    public void removeBeatboard(String category, GameObject thing)
+    public void removeBeatboard(String category, GameObject thing, int index)
     {
         if (category == "update")
         {
-            while (updateBeatboards.Count > 0)
+            try
             {
-                GameObject beatboardToRemove = updateBeatboards[0];
-                updateBeatboards.RemoveAt(0);
+                GameObject beatboardToRemove = updateBeatboards[index];
+                updateBeatboards.RemoveAt(index);
+                updateBbIndex.RemoveAt(index);
                 Destroy(beatboardToRemove);
             }
+            catch (Exception e)
+            {
+                
+            }
+                
         } else if (category == "certain")
         {
             beatboards.Remove(thing);
@@ -150,16 +156,22 @@ public class beatboardManager : MonoBehaviour
 
     public void manageBeatboard(GameObject gameObject, int currentPoints, int nextPoints, float size, Vector2 position)
     {
-        if (gameObject == null)
+        int gameObjectIndex = -1;
+        try
         {
-            createBeatboard(nextPoints, size, position, false, -1);
-        }
-        else
+            gameObjectIndex = beatboards.IndexOf(gameObject);
+        } catch (Exception e ) {}
+        Debug.Log(gameObjectIndex);
+        if (updateBbIndex.Contains(gameObjectIndex) || gameObject != null)
         {
-            int gameObjectIndex = beatboards.IndexOf(gameObject) + 1;
             Destroy(gameObject);
             StartCoroutine(updateBeatboard(currentPoints, nextPoints, size, position, gameObjectIndex));
+        } else if (gameObject == null)
+        {
+            createBeatboard(nextPoints, size, position, false, -1);
+            Debug.Log("create");
         }
+
     }
 
     void Start()
@@ -213,7 +225,7 @@ public class beatboardManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            removeBeatboard("all", null);
+            removeBeatboard("all", null, -1);
         }
 
         if (Input.GetKeyDown(KeyCode.W))
