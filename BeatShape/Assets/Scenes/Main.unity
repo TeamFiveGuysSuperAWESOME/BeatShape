@@ -373,6 +373,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beatboardPrefab: {fileID: 8362318195454506328, guid: 4e3eff702acff8d43a1ba91726790e87, type: 3}
+  beatboards: []
+  updateBeatboards: []
+  updateBbIndex: 
+  beatboardColor: {r: 1, g: 1, b: 1, a: 1}
+  currentPoints: 
 --- !u!114 &1057696828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,9 +387,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1057696825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86f82ea7b2ff3514b8b70bed848a5a43, type: 3}
+  m_Script: {fileID: 11500000, guid: 848d5e2817af1454c8ac6fbf482305c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  points: 0
+  size: 0
 --- !u!1 &1423785120
 GameObject:
   m_ObjectHideFlags: 0
