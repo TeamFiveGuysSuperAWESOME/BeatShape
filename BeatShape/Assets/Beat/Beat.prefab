@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8287873555420377865}
   - component: {fileID: 8287873555420377864}
   - component: {fileID: 7873585929113201009}
+  - component: {fileID: 6403606798083292149}
   m_Layer: 0
   m_Name: Beat
   m_TagString: Untagged
@@ -97,5 +98,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2db56fc2562d0604c9d169e7c4db0a5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  angle_offset: 0
+  angle: 0
+  speed: 0
   bpm: 0
+--- !u!114 &6403606798083292149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8287873555420377871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bfd5473dd4745c98f57deda0db97cac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

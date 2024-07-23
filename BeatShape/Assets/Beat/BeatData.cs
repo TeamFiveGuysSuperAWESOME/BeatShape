@@ -4,20 +4,22 @@ using UnityEngine;
 
 public class BeatData : MonoBehaviour
 {
-    public float angle_offset;
+    public double angle;
+    public float speed;
+    
     public float bpm = 120f;
-    float timer = 0f;
+    private float timer;
 
     void Awake()
     {
         
     }
 
-    void Refresh()
+    /*void Refresh()
     {
         GameObject targetBoard = transform.parent.gameObject;
         Vector2 targetPos = targetBoard.transform.position;
-        beatboardData targetData = targetBoard.GetComponent<beatboardData>();
+        BeatboardData targetData = targetBoard.GetComponent<BeatboardData>();
         float targetSize = targetData.size;
         Debug.Log(timer);
         Debug.Log(timer >= bpm / 60); // BPM = 120
@@ -33,5 +35,5 @@ public class BeatData : MonoBehaviour
         {
             //Destroy(gameObject);
         }
-    }
+    }*/
 }
