@@ -1,21 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class BeatData : MonoBehaviour
+namespace Beat
 {
-    public double angle;
-    public float speed;
-    
-    public float bpm = 120f;
-    private float timer;
-
-    void Awake()
+    public class BeatData : MonoBehaviour
     {
-        
-    }
+        public double angle;
+        public float speed;
+    
+        public float bpm = 120f;
+        private float _timer;
 
-    /*void Refresh()
+        void Awake()
+        {
+        
+        }
+
+        /*void Refresh()
     {
         GameObject targetBoard = transform.parent.gameObject;
         Vector2 targetPos = targetBoard.transform.position;
@@ -36,4 +36,5 @@ public class BeatData : MonoBehaviour
             //Destroy(gameObject);
         }
     }*/
+    }
 }

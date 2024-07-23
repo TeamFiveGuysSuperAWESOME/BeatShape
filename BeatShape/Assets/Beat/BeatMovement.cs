@@ -1,38 +1,47 @@
-﻿using UnityEngine;
+﻿using Beatboard;
+using UnityEngine;
 
-public class BeatMovement : MonoBehaviour
+namespace Beat
 {
-    private Vector2 direction;
-    private float speed;
-    private float maxDistance = 50f; // Adjust this value to set the desired altitude
-    private float amplitude = 1f; // Adjust this value to control the amplitude of the sine wave
-    private float frequency = 1f; // Adjust this value to control the frequency of the sine wave
-    private float offset = 0f; // Adjust this value to shift the sine wave horizontally
-    private float personalTimeOffset; // Time offset for each object
-
-    public void SetMovement(Vector2 dir, float spd)
+    public class BeatMovement : MonoBehaviour
     {
-        direction = dir;
-        speed = spd;
-        personalTimeOffset = Time.time; // Set the personal time offset when the object is created
-    }
+        private Vector2 _direction;
+        private float _speed;
+        private float _size;
+        private readonly float _amplitude = 1f; // Adjust this value to control the amplitude of the sine wave
+        private readonly float _frequency = 1f; // Adjust this value to control the frequency of the sine wave
+        private readonly float _offset = 0f; // Adjust this value to shift the sine wave horizontally
+        private float _personalTimeOffset; // Time offset for each object
+        private readonly float _rotationSpeed = -BeatboardManager.RotationSpeed;
 
-    private void Update()
-    {
-        // Calculate the sine wave value using the personal time offset
-        float sineValue = Mathf.Sin(((Time.time - personalTimeOffset) * frequency) + offset) * amplitude;
-
-        // Apply the sine wave value to the speed
-        float adjustedSpeed = speed * sineValue * 2;
-
-        // Move the object in the specified direction with the adjusted speed
-        transform.Translate(direction * adjustedSpeed * Time.deltaTime);
-
-        // Check if the object has reached the BeatBoardObject
-        if (Vector2.Distance(transform.position, Vector2.zero) <= 1f)
+        public void SetMovement(Vector2 dir, float spd, float sze)
         {
-            // Deactivate or destroy the beat object
-            Destroy(gameObject); // Deactivate the game object
+            _direction = dir;
+            _speed = spd;
+            _size = sze;
+            _personalTimeOffset = Time.time;
+        }
+
+
+        private void Update()
+        {
+            // Calculate the sine wave value using the personal time offset
+            float sineValue = Mathf.Sin(((Time.time - _personalTimeOffset) * _frequency) + _offset) * _amplitude;
+
+            // Apply the sine wave value to the speed
+            float adjustedSpeed = _speed * sineValue * 3;
+
+            // Move the object in the specified direction with the adjusted speed
+            transform.Translate(_direction * (adjustedSpeed * Time.deltaTime));
+        
+            transform.RotateAround(Vector3.zero, Vector3.forward, _rotationSpeed * Time.deltaTime);
+
+            // Check if the object has reached the BeatBoardObject
+            if (Vector2.Distance(transform.position, Vector2.zero) <= _size + 0.01f && sineValue <= 0)
+            {
+                // Deactivate or destroy the beat object
+                Destroy(gameObject); // Deactivate the game object
+            }
         }
     }
 }
