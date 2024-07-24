@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Beatboard
 {
     public class BeatboardManager : MonoBehaviour
     {
         public GameObject beatboardPrefab;
-        public List<GameObject> beatboards;
+        public static List<GameObject> Beatboards = new List<GameObject>();
         public List<GameObject> updateBeatboards;
         public List<int> updateBbIndex;
         public Color beatboardColor = Color.white;
@@ -27,6 +29,7 @@ namespace Beatboard
             BeatboardData bbdata = beatboardObject.GetComponent<BeatboardData>();
             bbdata.points = points;
             bbdata.size = size;
+            bbdata.position = position;
             if (update == true)
             {
             
@@ -41,14 +44,14 @@ namespace Beatboard
             {
                 if (index != -1)
                 {
-                    beatboards.RemoveAt(index);
-                    beatboards.Insert(index, beatboardObject);
+                    Beatboards.RemoveAt(index);
+                    Beatboards.Insert(index, beatboardObject);
                     beatboardObject.name = "Beatboard " + index;
                 }
                 else
                 {
-                    beatboards.Add(beatboardObject);
-                    beatboardObject.name = "Beatboard " + beatboards.Count;
+                    Beatboards.Add(beatboardObject);
+                    beatboardObject.name = "Beatboard " + Beatboards.Count;
                 }
             }
         
@@ -101,6 +104,21 @@ namespace Beatboard
             mesh.RecalculateBounds();  // Recalculate bounds for correct rendering
         }
 
+        public static float GetBeatboardPoints(int index)
+        {
+            return Beatboards[index].GetComponent<BeatboardData>().points;
+        }
+        
+        public static float GetBeatboardSize(int index)
+        {
+            return Beatboards[index].GetComponent<BeatboardData>().size;
+        }
+        
+        public static Vector2 GetBeatboardPosition(int index)
+        {
+            return Beatboards[index].GetComponent<BeatboardData>().position;
+        }
+
 
         public IEnumerator UpdateBeatboard(int currentPoints, int nextPoints, float size, Vector2 position, int index)
         {
@@ -138,7 +156,7 @@ namespace Beatboard
                 
             } else if (category == "certain")
             {
-                beatboards.Remove(thing);
+                Beatboards.Remove(thing);
                 Destroy(thing);
             } else if (category == "all")
             {
@@ -148,10 +166,10 @@ namespace Beatboard
                     updateBeatboards.RemoveAt(0);
                     Destroy(beatboardToRemove);
                 }
-                while (beatboards.Count > 0)
+                while (Beatboards.Count > 0)
                 {
-                    GameObject beatboardToRemove = beatboards[0];
-                    beatboards.RemoveAt(0);
+                    GameObject beatboardToRemove = Beatboards[0];
+                    Beatboards.RemoveAt(0);
                     Destroy(beatboardToRemove);
                 }
             }
@@ -164,7 +182,7 @@ namespace Beatboard
             int gameObjectIndex = -1;
             try
             {
-                gameObjectIndex = beatboards.IndexOf(gameObject);
+                gameObjectIndex = Beatboards.IndexOf(gameObject);
             }
             catch (Exception)
             {
@@ -213,7 +231,7 @@ namespace Beatboard
     
         void Update()
         {
-            foreach (GameObject beatboardObject in beatboards)
+            foreach (GameObject beatboardObject in Beatboards)
             {
                 beatboardObject.transform.Rotate(Vector3.back * RotationSpeed * Time.deltaTime, Space.Self);
                 Rotation = beatboardObject.transform.rotation;
@@ -223,7 +241,7 @@ namespace Beatboard
                 if (Input.GetKeyDown(_keyCodes[i]))
                 {
                     int nextPoints = i+3;
-                    ManageBeatboard(beatboards[0], currentPoints[0], nextPoints, 20f, new Vector2(0, 0));
+                    ManageBeatboard(Beatboards[0], currentPoints[0], nextPoints, 20f, new Vector2(0, 0));
                 
                 }
             }
@@ -232,7 +250,7 @@ namespace Beatboard
                 if (Input.GetKeyDown(_keyCodes[i+9]))
                 {
                     int nextPoints = i+3;
-                    ManageBeatboard(beatboards[1], currentPoints[1], nextPoints, 20f, new Vector2(60, 0));
+                    ManageBeatboard(Beatboards[1], currentPoints[1], nextPoints, 20f, new Vector2(120, 0));
                 }
             }
             if (Input.GetKeyDown(KeyCode.R))
@@ -242,7 +260,7 @@ namespace Beatboard
 
             if (Input.GetKeyDown(KeyCode.W))
             {
-                ManageBeatboard(null, 0, 12, 20f, new Vector2(60, 0));
+                ManageBeatboard(null, 0, 12, 20f, new Vector2(120, 0));
                 currentPoints.Add(12);
             }
         }

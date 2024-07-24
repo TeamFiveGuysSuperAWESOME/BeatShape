@@ -373,13 +373,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beatboardPrefab: {fileID: 8362318195454506328, guid: 4e3eff702acff8d43a1ba91726790e87, type: 3}
-  beatboards: []
   updateBeatboards: []
   updateBbIndex: 
   beatboardColor: {r: 1, g: 1, b: 1, a: 1}
   currentPoints: 
-  rotationSpeed: 50
-  rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &1057696828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,6 +391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   points: 0
   size: 0
+  position: {x: 0, y: 0}
 --- !u!1 &1423785120
 GameObject:
   m_ObjectHideFlags: 0

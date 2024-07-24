@@ -8,17 +8,19 @@ namespace Beat
         private Vector2 _direction;
         private float _speed;
         private float _size;
+        private Vector2 _pos;
         private readonly float _amplitude = 1f; // Adjust this value to control the amplitude of the sine wave
         private readonly float _frequency = 1f; // Adjust this value to control the frequency of the sine wave
         private readonly float _offset = 0f; // Adjust this value to shift the sine wave horizontally
         private float _personalTimeOffset; // Time offset for each object
         private readonly float _rotationSpeed = -BeatboardManager.RotationSpeed;
 
-        public void SetMovement(Vector2 dir, float spd, float sze)
+        public void SetMovement(Vector2 dir, float spd, Vector2 pos, float sze)
         {
             _direction = dir;
             _speed = spd;
             _size = sze;
+            _pos = pos;
             _personalTimeOffset = Time.time;
         }
 
@@ -34,10 +36,10 @@ namespace Beat
             // Move the object in the specified direction with the adjusted speed
             transform.Translate(_direction * (adjustedSpeed * Time.deltaTime));
         
-            transform.RotateAround(Vector3.zero, Vector3.forward, _rotationSpeed * Time.deltaTime);
+            transform.RotateAround(_pos, Vector3.forward, _rotationSpeed * Time.deltaTime);
 
             // Check if the object has reached the BeatBoardObject
-            if (Vector2.Distance(transform.position, Vector2.zero) <= _size + 0.01f && sineValue <= 0)
+            if (Vector2.Distance(transform.position, _pos) <= _size + 0.01f && sineValue <= 0)
             {
                 // Deactivate or destroy the beat object
                 Destroy(gameObject); // Deactivate the game object

@@ -1,3 +1,4 @@
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace Beatboard
@@ -6,5 +7,6 @@ namespace Beatboard
     {
         public float points;
         public float size;
+        public Vector2 position;
     }
 }
