@@ -12,110 +12,182 @@ namespace Beatboard
         public GameObject beatboardPrefab;
         public static List<GameObject> Beatboards = new List<GameObject>();
         public List<GameObject> updateBeatboards;
-        public List<int> updateBbIndex;
+        public static List<int> updateBbIndex;
         public Color beatboardColor = Color.white;
         public List<int> currentPoints;
         public const float RotationSpeed = 25f;
         public static Quaternion Rotation;
-    
+        private static readonly int SrcBlend = Shader.PropertyToID("_SrcBlend");
+        private static readonly int DstBlend = Shader.PropertyToID("_DstBlend");
+        private static readonly int ZWrite = Shader.PropertyToID("_ZWrite");
+
         public void CreateBeatboard(float points, float size, Vector2 position, Boolean update, int index)
         {
             RemoveBeatboard("update", null, index);
-            // Instantiate the beatboard object
-            GameObject beatboardObject = Instantiate(beatboardPrefab, position, Quaternion.identity, transform);
-            beatboardObject.transform.rotation = Rotation;
+             {
+                 if (points < 3)
+                 {
+                     points = 360f;
+                 }
+                // Instantiate the beatboard object
+                GameObject beatboardObject = Instantiate(beatboardPrefab, position, Quaternion.identity, transform);
+                beatboardObject.transform.rotation = Rotation;
 
-            // Set beatboard data
-            BeatboardData bbdata = beatboardObject.GetComponent<BeatboardData>();
-            bbdata.points = points;
-            bbdata.size = size;
-            bbdata.position = position;
-            if (update == true)
-            {
+                // Set beatboard data
+                BeatboardData bbdata = beatboardObject.GetComponent<BeatboardData>();
+                bbdata.points = points;
+                bbdata.size = size;
+                bbdata.position = position;
+                if (update == true)
+                {
             
-                updateBeatboards.Add(beatboardObject);
-                if (!(updateBbIndex.Contains(index)))
-                {
-                    updateBbIndex.Add(index);
-                }
-                beatboardObject.name = "BeatboardUpdate" + index;
-            }
-            else
-            {
-                if (index != -1)
-                {
-                    Beatboards.RemoveAt(index);
-                    Beatboards.Insert(index, beatboardObject);
-                    beatboardObject.name = "Beatboard " + index;
+                    updateBeatboards.Add(beatboardObject);
+                    if (!updateBbIndex.Contains(index))
+                    {
+                        updateBbIndex.Add(index);
+                    }
+                    beatboardObject.name = "BeatboardUpdate" + index;
                 }
                 else
                 {
-                    Beatboards.Add(beatboardObject);
-                    beatboardObject.name = "Beatboard " + Beatboards.Count;
+                    if (index != -1)
+                    {
+                        Beatboards.RemoveAt(index);
+                        Beatboards.Insert(index, beatboardObject);
+                        beatboardObject.name = "Beatboard " + index;
+                    }
+                    else
+                    {
+                        Beatboards.Add(beatboardObject);
+                        beatboardObject.name = "Beatboard " + Beatboards.Count;
+                    }
                 }
-            }
         
-            // Add Mesh components
-            MeshFilter meshFilter = beatboardObject.AddComponent<MeshFilter>();
-            MeshRenderer meshRenderer = beatboardObject.AddComponent<MeshRenderer>();
-            Mesh mesh = new Mesh();
-            meshFilter.mesh = mesh;
+                // Add Mesh components
+                MeshFilter meshFilter = beatboardObject.AddComponent<MeshFilter>();
+                MeshRenderer meshRenderer = beatboardObject.AddComponent<MeshRenderer>();
+                Mesh mesh = new Mesh();
+                meshFilter.mesh = mesh;
 
-            // Create a new material with the Standard shader and set its color
-            Material beatboardMaterial = new Material(Shader.Find("Unlit/Color"));
-            beatboardMaterial.color = beatboardColor; // Set color
-            meshRenderer.material = beatboardMaterial;
+                // Create a new material with the Standard shader and set its color
+                Material beatboardMaterial = new Material(Shader.Find("Unlit/Color"));
+                beatboardMaterial.color = beatboardColor; // Set color
+                meshRenderer.material = beatboardMaterial;
 
-            // Calculate number of vertices and triangles
-            int numVertices = Mathf.CeilToInt(points) + 1;
-            Vector3[] vertices = new Vector3[numVertices + 1]; // +1 for the center point
-            List<int> triangles = new List<int>();
+                // Calculate number of vertices and triangles
+                int numVertices = Mathf.CeilToInt(points) + 1;
+                Vector3[] vertices = new Vector3[numVertices + 1]; // +1 for the center point
+                List<int> triangles = new List<int>();
 
-            float angleStep = 360f / points;
-            vertices[0] = Vector3.zero; // Center point
+                float angleStep = 360f / points;
+                vertices[0] = Vector3.zero; // Center point
 
-            // Calculate vertices
-            for (int i = 0; i < numVertices - 1; i++)
-            {
-                float angle = (90f - i * angleStep) * Mathf.Deg2Rad;
-                vertices[i + 1] = new Vector3(size * Mathf.Cos(angle), size * Mathf.Sin(angle), 0f);
+                // Calculate vertices
+                for (int i = 0; i < numVertices - 1; i++)
+                {
+                    float angle = (90f - i * angleStep) * Mathf.Deg2Rad;
+                    vertices[i + 1] = new Vector3(size * Mathf.Cos(angle), size * Mathf.Sin(angle), 0f);
+                }
+
+                // Handle fractional part
+                if (points % 1 > 0)
+                {
+                    float fractionalAngle = (90f - (numVertices - 1) * angleStep) * Mathf.Deg2Rad;
+                    Vector3 lastVertex = new Vector3(size * Mathf.Cos(fractionalAngle), size * Mathf.Sin(fractionalAngle), 0f);
+                    vertices[numVertices] = Vector3.Lerp(vertices[numVertices - 1], lastVertex, points % 1);
+                }
+
+                // Generate triangles
+                for (int i = 1; i < numVertices; i++)
+                {
+                    triangles.Add(0);
+                    triangles.Add(i);
+                    triangles.Add((i % (numVertices - 1)) + 1);
+                }
+
+                // Set mesh data
+                mesh.vertices = vertices;
+                mesh.triangles = triangles.ToArray();
+                mesh.RecalculateNormals();
+                mesh.RecalculateBounds();  // Recalculate bounds for correct rendering
+            
+                GameObject transparentOverlay = new GameObject("TransparentOverlay");
+                transparentOverlay.transform.rotation = Rotation;
+                transparentOverlay.transform.position = position;
+                transparentOverlay.transform.parent = beatboardObject.transform;
+
+                // Add MeshFilter and MeshRenderer components to the second shape
+                MeshFilter secondMeshFilter = transparentOverlay.AddComponent<MeshFilter>();
+                MeshRenderer secondMeshRenderer = transparentOverlay.AddComponent<MeshRenderer>();
+
+                // Create a new material with alpha 0.5 for the second shape
+                Material secondMaterial = new Material(Shader.Find("Standard"));
+                secondMaterial.color = new Color(beatboardColor.r, beatboardColor.g, beatboardColor.b, 0.35f);
+                secondMaterial.renderQueue = 3000; // Set the render queue to a value higher than the opaque objects
+                secondMeshRenderer.material = secondMaterial;
+
+                // Enable blending for the second shape's material
+                secondMaterial.SetInt(SrcBlend, (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                secondMaterial.SetInt(DstBlend, (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                secondMaterial.SetInt(ZWrite, 0); // Disable writing to the depth buffer
+                secondMaterial.DisableKeyword("_ALPHATEST_ON"); // Disable alpha testing
+                secondMaterial.EnableKeyword("_ALPHABLEND_ON"); // Enable alpha blending
+                secondMaterial.renderQueue = 0; // Set the render queue to a value higher than the opaque objects
+
+                // Create a new mesh for the second shape with increased size
+                Mesh secondMesh = new Mesh();
+                secondMeshFilter.mesh = secondMesh;
+
+                // Calculate vertices for the second shape with increased size
+                Vector3[] secondVertices = new Vector3[numVertices + 1];
+                secondVertices[0] = Vector3.zero; // Center point
+
+                for (int i = 0; i < numVertices - 1; i++)
+                {
+                    float angle = (90f - i * angleStep) * Mathf.Deg2Rad;
+                    secondVertices[i + 1] = new Vector3((size + size / 2) * Mathf.Cos(angle), (size + size / 2) * Mathf.Sin(angle), 0f);
+                }
+
+                // Handle fractional part for the second shape
+                if (points % 1 > 0)
+                {
+                    float fractionalAngle = (90f - (numVertices - 1) * angleStep) * Mathf.Deg2Rad;
+                    Vector3 lastVertex = new Vector3((size + size / 2) * Mathf.Cos(fractionalAngle), (size + size / 2) * Mathf.Sin(fractionalAngle), 0f);
+                    secondVertices[numVertices] = Vector3.Lerp(secondVertices[numVertices - 1], lastVertex, points % 1);
+                }
+
+                // Set mesh data for the second shape
+                secondMesh.vertices = secondVertices;
+                secondMesh.triangles = triangles.ToArray();
+                secondMesh.RecalculateNormals(); 
             }
-
-            // Handle fractional part
-            if (points % 1 > 0)
-            {
-                float fractionalAngle = (90f - (numVertices - 1) * angleStep) * Mathf.Deg2Rad;
-                Vector3 lastVertex = new Vector3(size * Mathf.Cos(fractionalAngle), size * Mathf.Sin(fractionalAngle), 0f);
-                vertices[numVertices] = Vector3.Lerp(vertices[numVertices - 1], lastVertex, points % 1);
-            }
-
-            // Generate triangles
-            for (int i = 1; i < numVertices; i++)
-            {
-                triangles.Add(0);
-                triangles.Add(i);
-                triangles.Add((i % (numVertices - 1)) + 1);
-            }
-
-            // Set mesh data
-            mesh.vertices = vertices;
-            mesh.triangles = triangles.ToArray();
-            mesh.RecalculateNormals();
-            mesh.RecalculateBounds();  // Recalculate bounds for correct rendering
         }
 
         public static float GetBeatboardPoints(int index)
         {
-            return Beatboards[index].GetComponent<BeatboardData>().points;
+            Debug.Log(Beatboards.Count);
+            if (index < 0 || index >= Beatboards.Count)
+            {
+                return 0f;
+            }
+            return Beatboards[index].GetComponent<BeatboardData>().points == 0f ? 360f : Beatboards[index].GetComponent<BeatboardData>().points;
         }
         
         public static float GetBeatboardSize(int index)
         {
+            if (index < 0 || index >= Beatboards.Count)
+            {
+                return 0f;
+            }
             return Beatboards[index].GetComponent<BeatboardData>().size;
         }
         
         public static Vector2 GetBeatboardPosition(int index)
         {
+            if (index < 0 || index >= Beatboards.Count)
+            {
+                return Vector2.zero;
+            }
             return Beatboards[index].GetComponent<BeatboardData>().position;
         }
 
@@ -190,6 +262,10 @@ namespace Beatboard
 
             if (!updateBbIndex.Contains(gameObjectIndex) && gameObject != null)
             {
+                if (_nextPoints < 3)
+                {
+                    _nextPoints = 360;
+                }
                 Destroy(gameObject);
                 StartCoroutine(UpdateBeatboard(_currentPoints, _nextPoints, size, position, gameObjectIndex));
                 currentPoints[gameObjectIndex] = _nextPoints;
@@ -198,13 +274,47 @@ namespace Beatboard
             else if (!updateBbIndex.Contains(gameObjectIndex) && gameObject == null)
             {
                 CreateBeatboard(_nextPoints, size, position, false, -1);
+                currentPoints.Add(_nextPoints);
+            }
+        }
+
+        public static void ManageBeatboardStatic(GameObject gameObject, int _currentPoints, int _nextPoints, float size,
+            Vector2 position)
+        {
+            int gameObjectIndex = -1;
+            try
+            {
+                gameObjectIndex = Beatboards.IndexOf(gameObject);
+            }
+            catch (Exception)
+            {
+            }
+
+            if (!updateBbIndex.Contains(gameObjectIndex) && gameObject != null)
+            {
+                if (_nextPoints < 3)
+                {
+                    _nextPoints = 360;
+                }
+                Destroy(gameObject);
+                BeatboardManager beatboardManager = new BeatboardManager();
+                beatboardManager.StartCoroutine(beatboardManager.UpdateBeatboard(_currentPoints, _nextPoints, size, position, gameObjectIndex));
+                beatboardManager.currentPoints[gameObjectIndex] = _nextPoints;
+
+            }
+            else if (!updateBbIndex.Contains(gameObjectIndex) && gameObject == null)
+            {
+                BeatboardManager beatboardManager = new BeatboardManager();
+                beatboardManager.CreateBeatboard(_nextPoints, size, position, false, -1);
+                beatboardManager.currentPoints.Add(_nextPoints);
             }
         }
 
         void Start()
         {
-            CreateBeatboard(4f, 20f, new Vector2(0, 0), false, -1);
-            currentPoints.Add(4);
+            //old way to create beatboard
+            //CreateBeatboard(0f, 20f, new Vector2(0, 0), false, -1);
+            //currentPoints.Add(0);
         }
     
         private KeyCode[] _keyCodes = {
@@ -240,7 +350,7 @@ namespace Beatboard
             {
                 if (Input.GetKeyDown(_keyCodes[i]))
                 {
-                    int nextPoints = i+3;
+                    int nextPoints = i + 1;
                     ManageBeatboard(Beatboards[0], currentPoints[0], nextPoints, 20f, new Vector2(0, 0));
                 
                 }
@@ -249,7 +359,7 @@ namespace Beatboard
             {
                 if (Input.GetKeyDown(_keyCodes[i+9]))
                 {
-                    int nextPoints = i+3;
+                    int nextPoints = i + 1;
                     ManageBeatboard(Beatboards[1], currentPoints[1], nextPoints, 20f, new Vector2(120, 0));
                 }
             }
@@ -261,7 +371,7 @@ namespace Beatboard
             if (Input.GetKeyDown(KeyCode.W))
             {
                 ManageBeatboard(null, 0, 12, 20f, new Vector2(120, 0));
-                currentPoints.Add(12);
+                
             }
         }
     }
