@@ -12,7 +12,7 @@ namespace Beatboard
         public GameObject beatboardPrefab;
         public static List<GameObject> Beatboards = new List<GameObject>();
         public List<GameObject> updateBeatboards;
-        public static List<int> updateBbIndex;
+        public List<int> updateBbIndex;
         public Color beatboardColor = Color.white;
         public List<int> currentPoints;
         public const float RotationSpeed = 25f;
@@ -21,7 +21,7 @@ namespace Beatboard
         private static readonly int DstBlend = Shader.PropertyToID("_DstBlend");
         private static readonly int ZWrite = Shader.PropertyToID("_ZWrite");
 
-        public void CreateBeatboard(float points, float size, Vector2 position, Boolean update, int index)
+        private void CreateBeatboard(float points, float size, Vector2 position, Boolean update, int index)
         {
             RemoveBeatboard("update", null, index);
              {
@@ -192,7 +192,7 @@ namespace Beatboard
         }
 
 
-        public IEnumerator UpdateBeatboard(int currentPoints, int nextPoints, float size, Vector2 position, int index)
+        private IEnumerator UpdateBeatboard(int currentPoints, int nextPoints, float size, Vector2 position, int index)
         {
             int diff = Math.Abs(currentPoints - nextPoints);
             if (currentPoints > nextPoints)
@@ -214,7 +214,7 @@ namespace Beatboard
             updateBbIndex.Remove(index);
         }
 
-        public void RemoveBeatboard(String category, GameObject thing, int index)
+        private void RemoveBeatboard(String category, GameObject thing, int index)
         {
             if (category == "update")
             {
@@ -258,6 +258,7 @@ namespace Beatboard
             }
             catch (Exception)
             {
+                // ignored
             }
 
             if (!updateBbIndex.Contains(gameObjectIndex) && gameObject != null)
@@ -275,38 +276,6 @@ namespace Beatboard
             {
                 CreateBeatboard(_nextPoints, size, position, false, -1);
                 currentPoints.Add(_nextPoints);
-            }
-        }
-
-        public static void ManageBeatboardStatic(GameObject gameObject, int _currentPoints, int _nextPoints, float size,
-            Vector2 position)
-        {
-            int gameObjectIndex = -1;
-            try
-            {
-                gameObjectIndex = Beatboards.IndexOf(gameObject);
-            }
-            catch (Exception)
-            {
-            }
-
-            if (!updateBbIndex.Contains(gameObjectIndex) && gameObject != null)
-            {
-                if (_nextPoints < 3)
-                {
-                    _nextPoints = 360;
-                }
-                Destroy(gameObject);
-                BeatboardManager beatboardManager = new BeatboardManager();
-                beatboardManager.StartCoroutine(beatboardManager.UpdateBeatboard(_currentPoints, _nextPoints, size, position, gameObjectIndex));
-                beatboardManager.currentPoints[gameObjectIndex] = _nextPoints;
-
-            }
-            else if (!updateBbIndex.Contains(gameObjectIndex) && gameObject == null)
-            {
-                BeatboardManager beatboardManager = new BeatboardManager();
-                beatboardManager.CreateBeatboard(_nextPoints, size, position, false, -1);
-                beatboardManager.currentPoints.Add(_nextPoints);
             }
         }
 
@@ -351,7 +320,7 @@ namespace Beatboard
                 if (Input.GetKeyDown(_keyCodes[i]))
                 {
                     int nextPoints = i + 1;
-                    ManageBeatboard(Beatboards[0], currentPoints[0], nextPoints, 20f, new Vector2(0, 0));
+                    ManageBeatboard(Beatboards[0], currentPoints[0], nextPoints, 20f, GetBeatboardPosition(0));
                 
                 }
             }
@@ -360,18 +329,12 @@ namespace Beatboard
                 if (Input.GetKeyDown(_keyCodes[i+9]))
                 {
                     int nextPoints = i + 1;
-                    ManageBeatboard(Beatboards[1], currentPoints[1], nextPoints, 20f, new Vector2(120, 0));
+                    ManageBeatboard(Beatboards[1], currentPoints[1], nextPoints, 20f, GetBeatboardPosition(1));
                 }
             }
             if (Input.GetKeyDown(KeyCode.R))
             {
                 RemoveBeatboard("all", null, -1);
-            }
-
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                ManageBeatboard(null, 0, 12, 20f, new Vector2(120, 0));
-                
             }
         }
     }

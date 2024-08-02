@@ -12,6 +12,8 @@ namespace GameManager
 {
     public class GameManager : MonoBehaviour
     {
+        public BeatboardManager beatboardManager;
+
         public void CreateBeatboardAtStart(List<JSONNode> boards)
         {
             foreach (var board in boards)
@@ -19,12 +21,15 @@ namespace GameManager
                 int points = board["points"];
                 Vector2 position = new Vector2(board["position"][0], board["position"][1]);
                 float size = board["size"];
-                BeatboardManager.ManageBeatboardStatic(null, -1, points, size, position);
+                
+                beatboardManager.ManageBeatboard(null, -1, points, size, position);
             }
         }
         // Start is called before the first frame update
         void Start()
         {
+            beatboardManager = FindObjectOfType<BeatboardManager>();
+
             var jsonFile = File.ReadAllText(Application.dataPath + "/Levels/1/1.json");
             var levelDataJsonNode = JSON.Parse(jsonFile)["Data"];
             
