@@ -13,6 +13,13 @@ namespace GameManager
     public class GameManager : MonoBehaviour
     {
         public BeatboardManager beatboardManager;
+        private string _levelName;
+        private string _levelDescription;
+        private string _levelAuthor;
+        private int _bpm;
+        private List<JSONNode> _boards = new List<JSONNode>();
+        private List<JSONNode> _boardsData = new List<JSONNode>();
+        
 
         public void CreateBeatboardAtStart(List<JSONNode> boards)
         {
@@ -29,28 +36,34 @@ namespace GameManager
         void Start()
         {
             beatboardManager = FindObjectOfType<BeatboardManager>();
-
             var jsonFile = File.ReadAllText(Application.dataPath + "/Levels/1/1.json");
             var levelDataJsonNode = JSON.Parse(jsonFile)["Data"];
+            var boardsDataJsonNode = JSON.Parse(jsonFile)["Boards"];
             
-            string levelName = levelDataJsonNode["LevelName"];
-            string levelDescription = levelDataJsonNode["LevelDescription"];
-            string levelAuthor = levelDataJsonNode["LevelAuthor"];
-            int bpm = levelDataJsonNode["Bpm"];
+            _levelName = levelDataJsonNode["LevelName"];
+            _levelDescription = levelDataJsonNode["LevelDescription"];
+            _levelAuthor = levelDataJsonNode["LevelAuthor"];
+            _bpm = levelDataJsonNode["Bpm"];
+            
             var boardsJson = levelDataJsonNode["Boards"];
-            List<JSONNode> boards = new List<JSONNode>();
-            
-            for (int i = 1; i <= boardsJson.Count; i++)
+            _boards = new List<JSONNode>();
+            foreach (var board in boardsJson)
             {
-                boards.Add(boardsJson["board" + i]);
+                _boards.Add(board);
             }
-            CreateBeatboardAtStart(boards);
+            CreateBeatboardAtStart(_boards);
+            
+            foreach (var boardData in boardsDataJsonNode)
+            {
+                _boardsData.Add(boardData);
+                Debug.Log(boardData);
+            }
         }
 
         // Update is called once per frame
         void Update()
         {
-        
+            
         }
         
     }

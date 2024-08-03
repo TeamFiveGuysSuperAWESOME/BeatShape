@@ -1,3 +1,4 @@
+using System.Globalization;
 using Beatboard;
 using UnityEngine;
 using Random = System.Random;
@@ -40,13 +41,13 @@ namespace Beat
             Vector3 updatedDirection = rotation * new Vector3(direction.x, direction.y, 0f);
 
             // Calculate the position at the edge of the beatBoardObject
-            Vector2 edgePosition = pos + (Vector2)updatedDirection * (20f / 2f);
+            Vector2 edgePosition = pos + (Vector2)updatedDirection * (BeatboardManager.GetBeatboardSize(index) - (BeatboardManager.GetBeatboardSize(index) / 3f));
 
             // Position the beatObject at the edge
             beatObject.transform.position = edgePosition;
 
             // Move the beatObject in the Update method
-            beatObject.GetComponent<BeatMovement>().SetMovement(updatedDirection, speed, pos,  20f);
+            beatObject.GetComponent<BeatMovement>().SetMovement(updatedDirection, speed, pos,  (BeatboardManager.GetBeatboardSize(index) - (BeatboardManager.GetBeatboardSize(index) / 3f)));
         }
         
 
@@ -59,12 +60,12 @@ namespace Beat
 
         private void CreateBeatWrapper()
         {
-            var points1 = (int)BeatboardManager.GetBeatboardPoints(0);
-            var points2 = (int)BeatboardManager.GetBeatboardPoints(1);
-            var side1 = _random.Next(points1);
-            var side2 = _random.Next(points2);
-            CreateBeat(0, side1, 10f);
-            CreateBeat(1, side2, 10f);
+            for (int i = 0; i <= BeatboardManager.Beatboards.Count; i++)
+            {
+                var points = (int)BeatboardManager.GetBeatboardPoints(i);
+                var side = _random.Next(points);
+                CreateBeat(i, side, 10f);
+            }
         }
         void Update()
         {

@@ -373,6 +373,7 @@
 "Assets/Beat/BeatMovement.cs"
 "Assets/Beatboard/BeatboardData.cs"
 "Assets/Beatboard/BeatboardManager.cs"
+"Assets/GameManager/BeatTimerManager.cs"
 "Assets/GameManager/GameManager.cs"
 "Assets/System/Easing.cs"
 "Assets/System/Settings.cs"
