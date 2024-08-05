@@ -1,0 +1,41 @@
+name: Automated Build ⭐
+
+on:
+  push: # Master 브랜치에 Push가 되면 빌드가 되도록 동작시킵니다.
+    branches: [ main ]
+    
+jobs:
+  buildWindows:
+    name: 💻 Windows-64 Bit
+    runs-on: windows-latest # 윈도우를 사용합니다.
+    
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # Cache (캐시파일을 생성하여 다음 빌드시 더 빠르게 빌드를 할 수 있도록 해줍니다.)
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+
+      # Output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Windows Build
+          path: build
