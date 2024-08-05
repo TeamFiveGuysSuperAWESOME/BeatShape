@@ -165,7 +165,6 @@ namespace Beatboard
 
         public static float GetBeatboardPoints(int index)
         {
-            Debug.Log(Beatboards.Count);
             if (index < 0 || index >= Beatboards.Count)
             {
                 return 0f;
@@ -320,7 +319,7 @@ namespace Beatboard
                 if (Input.GetKeyDown(_keyCodes[i]))
                 {
                     int nextPoints = i + 1;
-                    ManageBeatboard(Beatboards[0], currentPoints[0], nextPoints, 20f, GetBeatboardPosition(0));
+                    ManageBeatboard(Beatboards[0], currentPoints[0], nextPoints, GetBeatboardSize(1), GetBeatboardPosition(0));
                 
                 }
             }
@@ -329,7 +328,7 @@ namespace Beatboard
                 if (Input.GetKeyDown(_keyCodes[i+9]))
                 {
                     int nextPoints = i + 1;
-                    ManageBeatboard(Beatboards[1], currentPoints[1], nextPoints, 20f, GetBeatboardPosition(1));
+                    ManageBeatboard(Beatboards[1], currentPoints[1], nextPoints, GetBeatboardSize(1), GetBeatboardPosition(1));
                 }
             }
             if (Input.GetKeyDown(KeyCode.R))

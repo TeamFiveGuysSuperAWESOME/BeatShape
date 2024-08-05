@@ -12,8 +12,9 @@ namespace Beat
 
         public void CreateBeat(int index, int side, float speed)
         {
-            GameObject beatObject = Instantiate(beatPrefab, Vector2.zero, Quaternion.identity, transform);
             var pos = BeatboardManager.GetBeatboardPosition(index);
+            GameObject beatObject = Instantiate(beatPrefab, pos, Quaternion.identity, transform);
+            beatObject.name = "Beat of board" + index;
             var sides = (int)BeatboardManager.GetBeatboardPoints(index);
             int angle;
             if (sides % 2 == 0)
@@ -60,11 +61,11 @@ namespace Beat
 
         private void CreateBeatWrapper()
         {
-            for (int i = 0; i <= BeatboardManager.Beatboards.Count; i++)
+            for (int i = 0; i <= BeatboardManager.Beatboards.Count-1; i++)
             {
                 var points = (int)BeatboardManager.GetBeatboardPoints(i);
                 var side = _random.Next(points);
-                CreateBeat(i, side, 20f);
+                CreateBeat(i, side, 10f);
             }
         }
         void Update()
