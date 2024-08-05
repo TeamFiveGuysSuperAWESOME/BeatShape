@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false
 
       # Cache (캐시파일을 생성하여 다음 빌드시 더 빠르게 빌드를 할 수 있도록 해줍니다.)
       - uses: actions/cache@v4
@@ -41,14 +41,14 @@ jobs:
           path: build
   buildWebGL:
     name: 💻 WebGL
-    runs-on: macos-latest # MacOS를 사용합니다.
+    runs-on: ubuntu-latest # MacOS를 사용합니다.
     
     steps:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          lfs: true
+          lfs: false
 
       # Cache (캐시파일을 생성하여 다음 빌드시 더 빠르게 빌드를 할 수 있도록 해줍니다.)
       - uses: actions/cache@v4
