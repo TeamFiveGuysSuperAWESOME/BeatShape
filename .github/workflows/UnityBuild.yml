@@ -33,6 +33,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
+          projectPath: /
 
       # Output
       - uses: actions/upload-artifact@v4
@@ -67,6 +68,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
+          projectPath: /
 
       # Output
       - uses: actions/upload-artifact@v4
@@ -103,6 +105,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: Android
+          projectPath: /
 
       # Output
       - uses: actions/upload-artifact@v4
