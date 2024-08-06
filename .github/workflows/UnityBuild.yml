@@ -77,7 +77,7 @@ jobs:
 
   buildAndroid:
     name: 💻Android
-    runs-on: ubuntu-latest # MacOS를 사용합니다.
+    runs-on: windows-latest # MacOS를 사용합니다.
     
     steps:
       # Checkout
