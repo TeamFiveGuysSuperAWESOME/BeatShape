@@ -1,0 +1,91 @@
+name: WebGL Auto Build & Deploy ⭐
+
+on:
+  push:
+     branches:
+       - 'main'
+    
+jobs:
+  buildWebGL:
+    name: 💻 WebGL Deploy
+    runs-on: ubuntu-latest # MacOS를 사용합니다.
+    
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      # Cache (캐시파일을 생성하여 다음 빌드시 더 빠르게 빌드를 할 수 있도록 해줍니다.)
+      - uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+          projectPath: "/"
+
+      # Output
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WebGL Build
+          path: build
+
+      # Deployment
+      - name: Stash build result and reset local changes
+        run: |
+          sudo chown -R $USER:$USER build
+          git config --global user.email "${{ secrets.GH_EMAIL }}"
+          git config --global user.name "${{ secrets.GH_USERNAME }}"
+          echo "Stash and reset"
+          git add build/WebGL
+          git stash push build/WebGL
+          git stash list
+          git reset --hard
+          sudo git clean -d -x -f
+
+    # Deployment
+      - name: Cleaning gh-pages branch
+        run: |
+          git switch -f gh-pages
+          git reset --hard
+          sudo git clean -d -x -f
+          rm -r *
+          git add *
+          git commit -m "cleaning branch"
+          git push
+
+      - name: Applying stashed files to gh-pages
+        run: |
+          git stash apply stash@{0}
+
+      - name: Copying files to root directory
+        run: |
+          cd build/WebGL/WebGL
+          ls
+          cp -r * ../../../
+          cd ../../../
+          rm -r ${{ vars.BUILD_PATH }}
+          ls
+          pwd
+
+      - name: Pushing deployment to gh-pages branch
+        run: |
+          pwd
+          git status
+          git add *
+          git commit -m "Deployment"
+          git push
+          git reset --hard
+          sudo git clean -d -x -f
