@@ -76,7 +76,7 @@ jobs:
           ls
           cp -r * ../../../
           cd ../../../
-          rm -r ${{ vars.BUILD_PATH }}
+          rm -r build
           ls
           pwd
 
