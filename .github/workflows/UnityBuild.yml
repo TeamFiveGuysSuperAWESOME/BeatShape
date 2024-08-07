@@ -1,8 +1,6 @@
 name: Automated Build ⭐
 
-on:
-  push: # Master 브랜치에 Push가 되면 빌드가 되도록 동작시킵니다.
-    branches: [ main ]
+on: workflow_dispatch
     
 jobs:
   buildWindows:
