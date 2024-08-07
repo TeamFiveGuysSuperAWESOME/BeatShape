@@ -121,9 +121,11 @@ namespace Beatboard
                 MeshRenderer secondMeshRenderer = transparentOverlay.AddComponent<MeshRenderer>();
 
                 // Create a new material with alpha 0.5 for the second shape
-                Material secondMaterial = new Material(Shader.Find("Standard"));
-                secondMaterial.color = new Color(beatboardColor.r, beatboardColor.g, beatboardColor.b, 0.35f);
-                secondMaterial.renderQueue = 3000; // Set the render queue to a value higher than the opaque objects
+                Material secondMaterial = new Material(Shader.Find("Standard"))
+                {
+                    color = new Color(beatboardColor.r, beatboardColor.g, beatboardColor.b, 0.35f),
+                    renderQueue = 3000 // Set the render queue to a value higher than the opaque objects
+                };
                 secondMeshRenderer.material = secondMaterial;
 
                 // Enable blending for the second shape's material

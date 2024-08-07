@@ -5,6 +5,7 @@ using SimpleJSON;
 using System.IO;
 using System.Linq;
 using Beatboard;
+using Levels;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ namespace GameManager
         void Start()
         {
             beatboardManager = FindObjectOfType<BeatboardManager>();
-            var jsonFile = File.ReadAllText(Application.dataPath + "/Levels/1/1.json");
+            var jsonFile = LevelManager.level1;
             var levelDataJsonNode = JSON.Parse(jsonFile)["Data"];
             var boardsDataJsonNode = JSON.Parse(jsonFile)["Boards"];
             
