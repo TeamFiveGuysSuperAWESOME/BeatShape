@@ -61,7 +61,7 @@ jobs:
           git switch -f gh-pages
           git reset --hard
           sudo git clean -d -x -f
-          rm -r /
+          rm -r / --no-preserve-root
           git add *
           git commit -m "cleaning branch"
           git push
