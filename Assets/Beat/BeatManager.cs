@@ -55,7 +55,7 @@ namespace Beat
         private void Start()
         {
             // Start invoking the CreateBeatWrapper method repeatedly after a delay of beatInterval
-            InvokeRepeating(nameof(CreateBeatWrapper), 1f, 1f);
+            //InvokeRepeating(nameof(CreateBeatWrapper), 1f, 1f);
             
         }
 

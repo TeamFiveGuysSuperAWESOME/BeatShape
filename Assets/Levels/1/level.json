@@ -13,49 +13,52 @@
     "Boards" : {
         "board1" : {
             "Circle1" : {
-                "Beat1" : {
+                "1" : {
                     "Beat" : true
                 },
-                 "Beat2" : {
+                "2" : {
                     "Beat" : true
-                 },
-                 "Beat3" : {
                 },
-                "Beat4" : {
+                "3" : {
+                },
+                "4" : {
+                    "Beat" : true
                 }
             },
             "Circle2" : {
-                "Beat1": {
+                "1": {
                 },
-                "Beat2": {
+                "2": {
+                    "Beat" : true
                 },
-                "Beat3": {
+                "3": {
                 },
-                "Beat4": {
+                "4": {
+                    "Beat" : true
                 }
             }    
         },
         "board2" : {
             "Circle1" : {
-                "Beat1" : {
+                "1" : {
+                },
+                "2" : {
                     "Beat" : true
                 },
-                "Beat2" : {
-                    "Beat" : true
+                "3" : {
                 },
-                "Beat3" : {
-                },
-                "Beat4" : {
+                "4" : {
                 }
             },
             "Circle2" : {
-                "Beat1": {
+                "1": {
                 },
-                "Beat2": {
+                "2": {
+                    "Beat" : true
                 },
-                "Beat3": {
+                "3": {
                 },
-                "Beat4": {
+                "4": {
                 }
             }
         }
