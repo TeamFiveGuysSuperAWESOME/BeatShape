@@ -10,9 +10,9 @@ namespace Beatboard
     public class BeatboardManager : MonoBehaviour
     {
         public GameObject beatboardPrefab;
-        public static List<GameObject> Beatboards = new List<GameObject>();
+        public static List<GameObject> Beatboards = new();
         public List<GameObject> updateBeatboards;
-        public List<int> updateBbIndex;
+        public static List<int> updateBbIndex = new();
         public Color beatboardColor = Color.white;
         public List<int> currentPoints;
         public const float RotationSpeed = 25f;
@@ -148,7 +148,7 @@ namespace Beatboard
 
         public static float GetBeatboardPoints(int index)
         {
-            if (index < 0 || index >= Beatboards.Count)
+            if (index < 0)
             {
                 return 0f;
             }
@@ -250,6 +250,7 @@ namespace Beatboard
                 {
                     _nextPoints = 360;
                 }
+                Destroy(gameObject);
                 StartCoroutine(UpdateBeatboard(_currentPoints, _nextPoints, size, position, gameObjectIndex));
                 currentPoints[gameObjectIndex] = _nextPoints;
             }
@@ -273,7 +274,6 @@ namespace Beatboard
             {
                 if (Beatboards[i] == null)
                 {
-                    Beatboards.RemoveAt(i);
                     continue;
                 }
                 Beatboards[i].transform.Rotate(Vector3.back * (RotationSpeed * Time.deltaTime), Space.Self);

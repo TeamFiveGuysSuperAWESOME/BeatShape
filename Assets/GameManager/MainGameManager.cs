@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Beat;
 using Beatboard;
-using Levels;
 using SimpleJSON;
 using UnityEngine;
+using System.IO;
 
 namespace GameManager
 {
@@ -15,17 +15,21 @@ namespace GameManager
         private static string _levelDescription;
         private static string _levelAuthor;
         private static int _bpm;
-        private static List<JSONNode> _boards = new List<JSONNode>();
+        public static List<JSONNode> _boards = new List<JSONNode>();
         private static List<JSONNode> _boardsData = new List<JSONNode>();
         private static float _beatInterval;
         private static float _nextBeatTime;
+        public static string jsonFilePath;
 
         public static void StartGame()
         {
-            Debug.Log("StartGame method called");
             beatboardManager = FindObjectOfType<BeatboardManager>();
             beatManager = FindObjectOfType<BeatManager>();
-            var jsonFile = LevelManager.level1;
+            
+            jsonFilePath = Path.Combine(Application.streamingAssetsPath, "Levels/1/level.json");
+
+            // Load the JSON file
+            var jsonFile = File.ReadAllText(jsonFilePath);
             var levelDataJsonNode = JSON.Parse(jsonFile)["Data"];
             var boardsDataJsonNode = JSON.Parse(jsonFile)["Boards"];
 
@@ -45,7 +49,6 @@ namespace GameManager
             foreach (var boardData in boardsDataJsonNode)
             {
                 _boardsData.Add(boardData);
-                Debug.Log(boardData);
             }
         }
 
@@ -61,7 +64,6 @@ namespace GameManager
 
         public static void CreateBeatboardAtStart(List<JSONNode> boards)
         {
-            Debug.Log("Creating beatboards");
             foreach (var board in boards)
             {
                 int points = board["points"];
@@ -76,13 +78,41 @@ namespace GameManager
             if (!(Time.time >= _nextBeatTime)) return;
             _nextBeatTime += _beatInterval;
             var time = Time.time;
+
+            if (_boards == null || _boardsData == null) return;
+
             for (var i = 0; i < _boardsData.Count; i++)
             {
-                var currentCircle = _boardsData[i][Mathf.FloorToInt((time / _beatInterval - 1) / _boards[i]["points"])];
-                var currentSide = Mathf.FloorToInt((time / _beatInterval - 1) % _boards[i]["points"]);
-                if (currentCircle[currentSide][0])
+                var points = (int)BeatboardManager.GetBeatboardPoints(i);
+                if (points == 0) continue;
+
+                var currentCircle = _boardsData[i][Mathf.FloorToInt((time / _beatInterval - 1) / points)];
+                var currentSide = Mathf.FloorToInt((time / _beatInterval - 1) % points) + 1;
+
+                if (currentCircle == null || currentCircle[currentSide] == null) continue;
+                
+                int nextPoints = currentCircle["Points"]?.AsInt ?? points;
+                if (currentSide == 1 && nextPoints != points)
                 {
-                    beatManager.CreateBeat(i, currentSide, 10f);
+                    beatboardManager.ManageBeatboard(BeatboardManager.Beatboards[i], points, nextPoints,
+                        _boards[i]["size"],
+                        new Vector2(_boards[i]["position"][0], _boards[i]["position"][1]));
+                    points = (int)BeatboardManager.Beatboards[i].GetComponent<BeatboardData>().points;
+                    currentCircle = _boardsData[i][Mathf.FloorToInt((time / _beatInterval - 1) / points)];
+                    currentSide = Mathf.FloorToInt((time / _beatInterval - 1) % points) + 1;
+                }
+                
+                if (currentCircle[currentSide]["Beat"])
+                {
+                    float size = currentCircle[currentSide]["Size"] != null ? currentCircle[currentSide]["Size"].AsFloat : 1;
+                    Color color = new Color(
+                        currentCircle[currentSide]["Color"]?[0]?.AsFloat ?? 1,
+                        currentCircle[currentSide]["Color"]?[1]?.AsFloat ?? 1,
+                        currentCircle[currentSide]["Color"]?[2]?.AsFloat ?? 1
+                    );
+                    if (color.r == 0 && color.g == 0 && color.b == 0) color = Color.white;
+                    float speed = currentCircle[currentSide]["Speed"] != null ? currentCircle[currentSide]["Speed"].AsFloat : 1;
+                    beatManager.CreateBeat(i, currentSide, speed, _bpm, size, color);
                 }
             }
         }

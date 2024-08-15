@@ -10,67 +10,38 @@ namespace Beat
         public GameObject beatPrefab;
         private readonly Random _random = new();
 
-        public void CreateBeat(int index, int side, float speed)
+        public void CreateBeat(int index, int side, float speed, float bpm, float size, Color color)
         {
             var pos = BeatboardManager.GetBeatboardPosition(index);
             GameObject beatObject = Instantiate(beatPrefab, pos, Quaternion.identity, transform);
             beatObject.name = "Beat of board" + index;
+            beatObject.GetComponent<SpriteRenderer>().material.color = color;
+            beatObject.transform.localScale = new Vector3(size * 10f, size * 10f, 1f);
             var sides = (int)BeatboardManager.GetBeatboardPoints(index);
-            int angle;
-            if (sides % 2 == 0)
-            {
-                angle = (360 / sides) * (side) + 180 / sides - 90;
-            }
-            else
-            {
-                angle = (360 / sides) * (side) - 90;
-            }
-           
+            int angle = (sides % 2 == 0) ? (360 / sides) * side + 180 / sides - 90 : (360 / sides) * side - 90;
 
-            // Set beatData
             BeatData beatData = beatObject.GetComponent<BeatData>();
             beatData.angle = angle;
             beatData.speed = speed;
 
             var angleRadians = angle * Mathf.Deg2Rad;
-
-            // Calculate direction vector
             Vector3 direction = new Vector2(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians));
-        
             Quaternion rotation = BeatboardManager.Rotation;
-
             Vector3 updatedDirection = rotation * new Vector3(direction.x, direction.y, 0f);
-
-            // Calculate the position at the edge of the beatBoardObject
-            Vector2 edgePosition = pos + (Vector2)updatedDirection * (BeatboardManager.GetBeatboardSize(index) - (BeatboardManager.GetBeatboardSize(index) / 2.8f));
-
-            // Position the beatObject at the edge
+            Vector2 edgePosition = pos + (Vector2)updatedDirection * (BeatboardManager.GetBeatboardSize(index) - BeatboardManager.GetBeatboardSize(index) / 2.4f);
             beatObject.transform.position = edgePosition;
 
-            // Move the beatObject in the Update method
-            beatObject.GetComponent<BeatMovement>().SetMovement(updatedDirection, speed, pos,  (BeatboardManager.GetBeatboardSize(index) - (BeatboardManager.GetBeatboardSize(index) / 3.2f)));
+            beatObject.GetComponent<BeatMovement>().SetMovement(
+                updatedDirection, speed, bpm, pos,
+                BeatboardManager.GetBeatboardSize(index) - BeatboardManager.GetBeatboardSize(index) / 2.5f);
         }
-        
 
         private void Start()
         {
-            // Start invoking the CreateBeatWrapper method repeatedly after a delay of beatInterval
-            //InvokeRepeating(nameof(CreateBeatWrapper), 1f, 1f);
-            
         }
 
-        private void CreateBeatWrapper()
-        {
-            for (int i = 0; i <= BeatboardManager.Beatboards.Count-1; i++)
-            {
-                var points = (int)BeatboardManager.GetBeatboardPoints(i);
-                var side = _random.Next(points);
-                CreateBeat(i, side, 10f);
-            }
-        }
         void Update()
         {
-        
         }
     }
 }
