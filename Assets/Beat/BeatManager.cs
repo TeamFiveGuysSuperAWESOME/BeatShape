@@ -8,8 +8,7 @@ namespace Beat
     public class BeatManager : MonoBehaviour
     {
         public GameObject beatPrefab;
-        private readonly Random _random = new();
-
+        
         public void CreateBeat(int index, int side, float speed, float bpm, float size, Color color)
         {
             var pos = BeatboardManager.GetBeatboardPosition(index);

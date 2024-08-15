@@ -30,7 +30,7 @@ namespace Beat
             float secondsPerBeat = 60f / _bpm;
             float elapsedTime = Time.time - _personalTimeOffset;
             float sineValue = Mathf.Sin(((elapsedTime / secondsPerBeat) * 0.5f * Mathf.PI * _spd) + _offset) * _amplitude;
-            float adjustedSpeed = _spd * sineValue;
+            float adjustedSpeed = 50f * sineValue;
 
             transform.Translate(_direction * (adjustedSpeed * Time.deltaTime));
             transform.RotateAround(_pos, Vector3.forward, _rotationSpeed * Time.deltaTime);
