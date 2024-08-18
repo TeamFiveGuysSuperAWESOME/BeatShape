@@ -17,6 +17,7 @@ namespace GameManager
         public static List<JSONNode> _boards = new();
         private static JSONNode _boardsData;
         private static List<int> _currentBoardPoints = new();
+        private static List<float> _currentBoardSizes = new();
         private static List<float> _beatIntervals = new(), _nextBeatTimes = new();
         private float _startTime;
         public static string JsonFilePath;
@@ -51,26 +52,33 @@ namespace GameManager
             }
 
             foreach (var t in _boards) _currentBoardPoints.Add(t["points"]);
+            foreach (var t in _boards) _currentBoardSizes.Add(t["size"]);
+            
             _gameStarted = true;
+        }
+
+        private void Start()
+        {
+            StartGame();
         }
 
         void Update()
         {
-            if (_gameStarted) HandleBeatCreation();
+            if (_gameStarted) HandleBeatandBeatboard();
         }
 
-        public static void CreateBeatboardAtStart(List<JSONNode> boards)
+        private static void CreateBeatboardAtStart(List<JSONNode> boards)
         {
             foreach (var board in boards)
             {
                 int points = board["points"];
                 Vector2 position = new Vector2(board["position"][0], board["position"][1]);
                 float size = board["size"];
-                beatboardManager.ManageBeatboard(null, -1, points, size, position);
+                beatboardManager.ManageBeatboard(null, -1, points, 0, size, position);
             }
         }
 
-        private void HandleBeatCreation()
+        private void HandleBeatandBeatboard()
         {
             var time = Time.time - _startTime;
             if (_boards == null || _boardsData == null || _beatIntervals == null) return;
@@ -87,19 +95,33 @@ namespace GameManager
                 if (currentCycle == null || currentCycle[currentSide] == null) continue;
 
                 var currentPoint = currentCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
-                if (int.Parse(currentSide) == 1 && currentPoint != _currentBoardPoints[i] && currentPoint != 0)
+                var currentSize = currentCycle["Size"]?.AsFloat ?? _currentBoardSizes[i];
+                if (currentSize == 0) currentSize = _currentBoardSizes[i];
+                if (int.Parse(currentSide) == 1)
                 {
-                    _currentBoardPoints[i] = currentPoint;
-                    currentCycle = _boardsData[i][Mathf.FloorToInt((time / _beatIntervals[i] - 1) / currentPoint)];
-                    currentSide = (Mathf.FloorToInt((time / _beatIntervals[i] - 1) % currentPoint) + 1).ToString();
-                    _beatIntervals[i] = 60f / _bpm / currentPoint;
+                    if (!Mathf.Approximately(currentSize, _currentBoardSizes[i]) && currentSize != 0)
+                    {
+                        beatboardManager.ManageBeatboard(BeatboardManager.Beatboards[i], _currentBoardPoints[i], _currentBoardPoints[i],
+                            _currentBoardSizes[i], currentSize, new Vector2(_boards[i]["position"][0],
+                                _boards[i]["position"][1]));
+                        _currentBoardSizes[i] = currentSize;
+                    }
+                    if (currentPoint != _currentBoardPoints[i] && currentPoint != 0)
+                    {
+                        _currentBoardPoints[i] = currentPoint;
+                        currentCycle = _boardsData[i][Mathf.FloorToInt((time / _beatIntervals[i] - 1) / currentPoint)];
+                        currentSide = (Mathf.FloorToInt((time / _beatIntervals[i] - 1) % currentPoint) + 1).ToString();
+                        _beatIntervals[i] = 60f / _bpm / currentPoint;
+                    }
                 }
-
+                
                 var prevPoint = prevCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
+                
                 if (int.Parse(currentSide) == currentCycle.Count - 2 && prevPoint != _currentBoardPoints[i] && prevPoint != 0)
                 {
                     beatboardManager.ManageBeatboard(BeatboardManager.Beatboards[i], prevPoint, _currentBoardPoints[i],
-                        _boards[i]["size"], new Vector2(_boards[i]["position"][0], _boards[i]["position"][1]));
+                        _currentBoardSizes[i], currentSize, new Vector2(_boards[i]["position"][0],
+                            _boards[i]["position"][1]));
                 }
 
                 _nextBeatTimes[i] += _beatIntervals[i];

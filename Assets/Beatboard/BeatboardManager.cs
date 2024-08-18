@@ -175,25 +175,35 @@ namespace Beatboard
         }
 
 
-        private IEnumerator UpdateBeatboard(int _currentPoints, int nextPoints, float size, Vector2 position, int index)
+        private IEnumerator UpdateBeatboard(int _currentPoints, int nextPoints, float currentSize, float nextSize, Vector2 position, int index)
         {
-            int diff = Math.Abs(_currentPoints - nextPoints);
+            int pointDiff = Math.Abs(_currentPoints - nextPoints);
+            float sizeDiff = Math.Abs(currentSize - nextSize);
             if (_currentPoints > nextPoints)
             {
-                for (float i = 0; i <= diff*20; i += diff)
+                for (float i = 0; i <= pointDiff*20; i += pointDiff)
                 {
+                    float size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / 20 * i;
                     CreateBeatboard(_currentPoints-(i/20), size, position, true, index);
                     yield return new WaitForSeconds(0f);
                 }
             } else if (_currentPoints < nextPoints)
             {
-                for (float i = 0; i <= diff*20; i += diff)
+                for (float i = 0; i <= pointDiff*20; i += pointDiff)
                 {
+                    float size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / 20 * i;
                     CreateBeatboard(_currentPoints+(i/20), size, position, true, index);
                     yield return new WaitForSeconds(0f);
                 }
+            } else
+            {
+                for (float i = 0; i <= 20; i ++)
+                {
+                    CreateBeatboard(_currentPoints, currentSize + sizeDiff / 20 * i, position, true, index);
+                    yield return new WaitForSeconds(0f);
+                }
             }
-            CreateBeatboard(nextPoints, size, position, false, index);
+            CreateBeatboard(nextPoints, nextSize, position, false, index);
             UpdateBbIndex.Remove(index);
         }
 
@@ -231,7 +241,7 @@ namespace Beatboard
 
         }
 
-        public void ManageBeatboard(GameObject _gameObject, int _currentPoints, int _nextPoints, float size,
+        public void ManageBeatboard(GameObject _gameObject, int _currentPoints, int _nextPoints, float currentSize, float nextSize,
             Vector2 position)
         {
             int gameObjectIndex = -1;
@@ -251,12 +261,12 @@ namespace Beatboard
                     _nextPoints = 360;
                 }
                 Destroy(_gameObject);
-                StartCoroutine(UpdateBeatboard(_currentPoints, _nextPoints, size, position, gameObjectIndex));
+                StartCoroutine(UpdateBeatboard(_currentPoints, _nextPoints, currentSize, nextSize, position, gameObjectIndex));
                 currentPoints[gameObjectIndex] = _nextPoints;
             }
             else if (!UpdateBbIndex.Contains(gameObjectIndex) && _gameObject == null)
             {
-                CreateBeatboard(_nextPoints, size, position, false, -1);
+                CreateBeatboard(_nextPoints, nextSize, position, false, -1);
                 currentPoints.Add(_nextPoints);
             }
         }
