@@ -440,7 +440,6 @@ GameObject:
   - component: {fileID: 1057696827}
   - component: {fileID: 1057696828}
   - component: {fileID: 1057696830}
-  - component: {fileID: 1057696829}
   m_Layer: 0
   m_Name: BoardManager
   m_TagString: Untagged
@@ -494,18 +493,6 @@ MonoBehaviour:
   points: 0
   size: 0
   position: {x: 0, y: 0}
---- !u!114 &1057696829
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1057696825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8f6d3c6e4250e84192f5b34ce9e71bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &1057696830
 SpriteRenderer:
   m_ObjectHideFlags: 0

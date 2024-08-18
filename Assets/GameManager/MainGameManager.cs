@@ -5,6 +5,7 @@ using UnityEngine;
 using System.IO;
 using Beat;
 using Beatboard;
+using StreamingAssets.Levels;
 
 namespace GameManager
 {
@@ -29,9 +30,10 @@ namespace GameManager
 
             beatboardManager = FindObjectOfType<BeatboardManager>();
             beatManager = FindObjectOfType<BeatManager>();
-            JsonFilePath = Path.Combine(Application.streamingAssetsPath, "Levels/1/level.json");
+            //JsonFilePath = Path.Combine(Application.streamingAssetsPath, "Levels/1/level.json");
 
-            var jsonFile = File.ReadAllText(JsonFilePath);
+            //var jsonFile = File.ReadAllText(JsonFilePath);
+            var jsonFile = LevelManager.Level1;
             var levelDataJsonNode = JSON.Parse(jsonFile)["Data"];
             _boardsData = JSON.Parse(jsonFile)["Boards"];
 

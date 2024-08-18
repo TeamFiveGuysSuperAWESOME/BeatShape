@@ -64,8 +64,8 @@ namespace Beatboard
             meshFilter.mesh = mesh;
 
             Material beatboardMaterial = new Material(Shader.Find("Unlit/Color")) { color = beatboardColor };
-            beatboardMaterial.EnableKeyword("_EMISSION");
-            beatboardMaterial.SetColor(EmissionColor, beatboardColor * Mathf.LinearToGammaSpace(1.0f));
+            //beatboardMaterial.EnableKeyword("_EMISSION");
+            //beatboardMaterial.SetColor(EmissionColor, beatboardColor * Mathf.LinearToGammaSpace(1.0f));
             meshRenderer.material = beatboardMaterial;
 
 
@@ -109,16 +109,13 @@ namespace Beatboard
             {
                 color = new Color(beatboardColor.r, beatboardColor.g, beatboardColor.b, 0.35f),
                 
-                renderQueue = 3000
+                renderQueue = -1
             };
             secondMaterial.SetInt(SrcBlend, (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             secondMaterial.SetInt(DstBlend, (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             secondMaterial.SetInt(ZWrite, 0);
             secondMaterial.DisableKeyword("_ALPHATEST_ON");
             secondMaterial.EnableKeyword("_ALPHABLEND_ON");
-            secondMaterial.EnableKeyword("_EMISSION");
-            secondMaterial.SetColor(EmissionColor, new Color(beatboardColor.r, beatboardColor.g, beatboardColor.b, 0.35f) * Mathf.LinearToGammaSpace(1.0f));
-
 
             MeshFilter secondMeshFilter = transparentOverlay.GetComponent<MeshFilter>();
             MeshRenderer secondMeshRenderer = transparentOverlay.GetComponent<MeshRenderer>();
