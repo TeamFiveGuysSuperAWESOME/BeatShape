@@ -3,34 +3,33 @@
         "LevelName" : "Test1",
         "LevelDescription" : "Test Level",
         "LevelAuthor" : "Test Author",
-        "Bpm" : 10,
+        "Bpm" : 100,
+        "Offset" : 0,
         "Boards" : {
-            "board1" : {"points" : 4, "position" : [-100,0], "size" : 20},
-            "board2" : {"points" : 4, "position" : [50,0], "size" : 20}
+            "board1" : {"points" : 4, "position" : [0,0], "size" : 20},
+            "board2" : {"points" : 4, "position" : [100,0], "size" : 20},
+            "board3" : {"points" : 10, "position" : [-100, 0], "size" : 20}
         }
     },
     
     "Boards" : {
-        "board1" : {
-            "Circle1" : {
+        "Board1" : {
+            "Cycle1" : {
                 "Points" : 4,
                 "1" : {
                     "Beat" : true,
-                    "Size" : 1,
-                    "Color" : [1, 1, 0]
+                    "Color" : [1, 0, 0]
                 },
                 "2" : {
                 },
                 "3" : {
-                    "Beat" : true
                 },
                 "4" : {
                 }
             },
-            "Circle2" : {
+            "Cycle2": {
                 "Points" : 4,
                 "1": {
-                    "Beat" : true
                 },
                 "2": {
                     
@@ -40,7 +39,7 @@
                 "4": {
                 }
             },
-            "Circle3" : {
+            "Cycle3": {
                 "Points" : 10,
                 "1": {
                     "Beat" : true,
@@ -86,11 +85,12 @@
                 }
             }
         },
-        "board2" : {
-            "Circle1" : {
+        "Board2" : {
+            "Cycle1": {
                 "Points" : 4,
                 "1" : {
-                    "Beat" : true
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
                 },
                 "2" : {
                 },
@@ -100,7 +100,7 @@
                     "Beat" : true
                 }
             },
-            "Circle2" : {
+            "Cycle2": {
                 "Points" : 10,
                 "1": {
                     "Beat" : true
@@ -116,19 +116,15 @@
                 "6" : {
                 },
                 "7" : {
-                    "Beat" : true
                 },
                 "8" : {
-                    "Beat" : true
                 },
                 "9" : {
-                    "Beat" : true
                 },
                 "10" : {
-                    "Beat" : true
                 }
             },
-            "Circle3" : {
+            "Cycle3": {
                 "Points" : 10,
                 "1": {
                     "Beat" : true,
@@ -167,6 +163,73 @@
                     "Color" : [0.2, 1, 1]
                 },
                 "10" : {
+                    "Beat" : true,
+                    "Size" : 2,
+                    "Color" : [1, 1, 0],
+                    "Speed" : 0.5
+                }
+            }
+        },
+        "Board3" : {
+            "Cycle1": {
+                "Points" : 10,
+                "1": {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
+                },
+                "2": {
+                },
+                "3": {
+                },
+                "4" : {
+                },
+                "5" : {
+                },
+                "6" : {
+                },
+                "7" : {
+                },
+                "8" : {
+                },
+                "9" : {
+                },
+                "10" : {
+                }
+            },
+            "Cycle2": {
+                "Points" : 3,
+                "1": {
+                    "Beat" : true
+                },
+                "2": {
+                },
+                "3": {
+                    "Beat" : true
+                }
+            },
+            "Cycle3": {
+                "Points" : 6,
+                "1": {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                },
+                "2": {
+                    "Beat" : true,
+                    "Color" : [0.9, 1, 1]
+                },
+                "3": {
+                    "Beat" : true,
+                    "Color" : [0.8, 1, 1]
+                },
+                "4" : {
+                    "Beat" : true,
+                    "Color" : [0.7, 1, 1]
+                },
+                "5" : {
+                    "Beat" : true,
+                    "Color" : [0.6, 1, 1]
+                },
+                "6" : {
                     "Beat" : true,
                     "Size" : 2,
                     "Color" : [1, 1, 0],

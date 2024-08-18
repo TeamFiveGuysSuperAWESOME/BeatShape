@@ -30,12 +30,12 @@ namespace Beat
             float secondsPerBeat = 60f / _bpm;
             float elapsedTime = Time.time - _personalTimeOffset;
             float sineValue = Mathf.Sin(((elapsedTime / secondsPerBeat) * 0.5f * Mathf.PI * _spd) + _offset) * _amplitude;
-            float adjustedSpeed = _bpm * 0.75f * sineValue;
+            float adjustedSpeed = 50f * sineValue;
 
             transform.Translate(_direction * (adjustedSpeed * Time.deltaTime));
             transform.RotateAround(_pos, Vector3.forward, _rotationSpeed * Time.deltaTime);
 
-            if (Vector2.Distance(transform.position, _pos) <= _size + 1f && sineValue <= 0)
+            if (Vector2.Distance(transform.position, _pos) <= _size + 5f && sineValue <= 0)
             {
                 Destroy(gameObject);
             }

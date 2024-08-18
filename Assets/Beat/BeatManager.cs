@@ -9,14 +9,13 @@ namespace Beat
     {
         public GameObject beatPrefab;
         
-        public void CreateBeat(int index, int side, float speed, float bpm, float size, Color color)
+        public void CreateBeat(int index, int sides, int side, float speed, float bpm, float size, Color color)
         {
             var pos = BeatboardManager.GetBeatboardPosition(index);
             GameObject beatObject = Instantiate(beatPrefab, pos, Quaternion.identity, transform);
             beatObject.name = "Beat of board" + index;
             beatObject.GetComponent<SpriteRenderer>().material.color = color;
             beatObject.transform.localScale = new Vector3(size * 10f, size * 10f, 1f);
-            var sides = (int)BeatboardManager.GetBeatboardPoints(index);
             int angle = (sides % 2 == 0) ? (360 / sides) * side + 180 / sides - 90 : (360 / sides) * side - 90;
 
             BeatData beatData = beatObject.GetComponent<BeatData>();

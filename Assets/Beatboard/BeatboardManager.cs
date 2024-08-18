@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using GameManager;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,7 +13,7 @@ namespace Beatboard
         public GameObject beatboardPrefab;
         public static List<GameObject> Beatboards = new();
         public List<GameObject> updateBeatboards;
-        public static List<int> updateBbIndex = new();
+        public static List<int> UpdateBbIndex = new();
         public Color beatboardColor = Color.white;
         public List<int> currentPoints;
         public const float RotationSpeed = 25f;
@@ -40,7 +41,7 @@ namespace Beatboard
             if (update)
             {
                 updateBeatboards.Add(beatboardObject);
-                if (!updateBbIndex.Contains(index)) updateBbIndex.Add(index);
+                if (!UpdateBbIndex.Contains(index)) UpdateBbIndex.Add(index);
                 beatboardObject.name = "BeatboardUpdate" + index;
             }
             else
@@ -64,7 +65,7 @@ namespace Beatboard
 
             Material beatboardMaterial = new Material(Shader.Find("Unlit/Color")) { color = beatboardColor };
             beatboardMaterial.EnableKeyword("_EMISSION");
-            beatboardMaterial.SetColor("_EmissionColor", beatboardColor * Mathf.LinearToGammaSpace(1.0f));
+            beatboardMaterial.SetColor(EmissionColor, beatboardColor * Mathf.LinearToGammaSpace(1.0f));
             meshRenderer.material = beatboardMaterial;
 
 
@@ -145,7 +146,7 @@ namespace Beatboard
             secondMesh.triangles = triangles.ToArray();
             secondMesh.RecalculateNormals();
         }
-
+        
         public static float GetBeatboardPoints(int index)
         {
             if (index < 0)
@@ -174,26 +175,26 @@ namespace Beatboard
         }
 
 
-        private IEnumerator UpdateBeatboard(int currentPoints, int nextPoints, float size, Vector2 position, int index)
+        private IEnumerator UpdateBeatboard(int _currentPoints, int nextPoints, float size, Vector2 position, int index)
         {
-            int diff = Math.Abs(currentPoints - nextPoints);
-            if (currentPoints > nextPoints)
+            int diff = Math.Abs(_currentPoints - nextPoints);
+            if (_currentPoints > nextPoints)
             {
                 for (float i = 0; i <= diff*20; i += diff)
                 {
-                    CreateBeatboard(currentPoints-(i/20), size, position, true, index);
+                    CreateBeatboard(_currentPoints-(i/20), size, position, true, index);
                     yield return new WaitForSeconds(0f);
                 }
-            } else if (currentPoints < nextPoints)
+            } else if (_currentPoints < nextPoints)
             {
                 for (float i = 0; i <= diff*20; i += diff)
                 {
-                    CreateBeatboard(currentPoints+(i/20), size, position, true, index);
+                    CreateBeatboard(_currentPoints+(i/20), size, position, true, index);
                     yield return new WaitForSeconds(0f);
                 }
             }
             CreateBeatboard(nextPoints, size, position, false, index);
-            updateBbIndex.Remove(index);
+            UpdateBbIndex.Remove(index);
         }
 
         private void RemoveBeatboard(String category, GameObject thing, int index)
@@ -202,7 +203,7 @@ namespace Beatboard
             {
                 try
                 {
-                    int bbIndex = updateBbIndex.IndexOf(index);
+                    int bbIndex = UpdateBbIndex.IndexOf(index);
                     Destroy(updateBeatboards[bbIndex]);
                     updateBeatboards.RemoveAt(bbIndex);
                 }
@@ -230,31 +231,30 @@ namespace Beatboard
 
         }
 
-        public void ManageBeatboard(GameObject gameObject, int _currentPoints, int _nextPoints, float size,
+        public void ManageBeatboard(GameObject _gameObject, int _currentPoints, int _nextPoints, float size,
             Vector2 position)
         {
-            Debug.Log("ManageBeatboard" + _currentPoints + " " + _nextPoints + " " + size + " " + position);
             int gameObjectIndex = -1;
             try
             {
-                gameObjectIndex = Beatboards.IndexOf(gameObject);
+                gameObjectIndex = Beatboards.IndexOf(_gameObject);
             }
             catch (Exception)
             {
                 // ignored
             }
 
-            if (!updateBbIndex.Contains(gameObjectIndex) && gameObject != null)
+            if (!UpdateBbIndex.Contains(gameObjectIndex) && _gameObject != null)
             {
                 if (_nextPoints < 3)
                 {
                     _nextPoints = 360;
                 }
-                Destroy(gameObject);
+                Destroy(_gameObject);
                 StartCoroutine(UpdateBeatboard(_currentPoints, _nextPoints, size, position, gameObjectIndex));
                 currentPoints[gameObjectIndex] = _nextPoints;
             }
-            else if (!updateBbIndex.Contains(gameObjectIndex) && gameObject == null)
+            else if (!UpdateBbIndex.Contains(gameObjectIndex) && _gameObject == null)
             {
                 CreateBeatboard(_nextPoints, size, position, false, -1);
                 currentPoints.Add(_nextPoints);
@@ -270,14 +270,18 @@ namespace Beatboard
 
         void Update()
         {
-            for (int i = Beatboards.Count - 1; i >= 0; i--)
+            if (MainGameManager._gameStarted)
             {
-                if (Beatboards[i] == null)
+                for (int i = Beatboards.Count - 1; i >= 0; i--)
                 {
-                    continue;
+                    if (Beatboards[i] == null)
+                    {
+                        continue;
+                    }
+
+                    Beatboards[i].transform.Rotate(Vector3.back * (RotationSpeed * Time.deltaTime), Space.Self);
+                    Rotation = Beatboards[i].transform.rotation;
                 }
-                Beatboards[i].transform.Rotate(Vector3.back * (RotationSpeed * Time.deltaTime), Space.Self);
-                Rotation = Beatboards[i].transform.rotation;
             }
         }
     }

@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
-using Beat;
-using Beatboard;
 using SimpleJSON;
 using UnityEngine;
 using System.IO;
+using Beat;
+using Beatboard;
 
 namespace GameManager
 {
@@ -11,60 +12,51 @@ namespace GameManager
     {
         public static BeatboardManager beatboardManager;
         public static BeatManager beatManager;
-        private static string _levelName;
-        private static string _levelDescription;
-        private static string _levelAuthor;
-        private static int _bpm;
+        private static string _levelName, _levelDescription, _levelAuthor;
+        private static int _bpm, _offset;
         public static List<JSONNode> _boards = new();
-        private static List<JSONNode> _boardsData = new();
-        private static List<float> _beatIntervals = new();
-        private static List<float> _nextBeatTimes = new();
-        public static string jsonFilePath;
+        private static JSONNode _boardsData;
+        private static List<int> _currentBoardPoints = new();
+        private static List<float> _beatIntervals = new(), _nextBeatTimes = new();
+        private float _startTime;
+        public static string JsonFilePath;
+        public static bool _gameStarted = false;
 
-        public static void StartGame()
+        public void StartGame()
         {
+            if (_gameStarted) return;
+
             beatboardManager = FindObjectOfType<BeatboardManager>();
             beatManager = FindObjectOfType<BeatManager>();
-            
-            jsonFilePath = Path.Combine(Application.streamingAssetsPath, "Levels/1/level.json");
+            JsonFilePath = Path.Combine(Application.streamingAssetsPath, "Levels/1/level.json");
 
-            // Load the JSON file
-            var jsonFile = File.ReadAllText(jsonFilePath);
+            var jsonFile = File.ReadAllText(JsonFilePath);
             var levelDataJsonNode = JSON.Parse(jsonFile)["Data"];
-            var boardsDataJsonNode = JSON.Parse(jsonFile)["Boards"];
+            _boardsData = JSON.Parse(jsonFile)["Boards"];
 
             _levelName = levelDataJsonNode["LevelName"];
             _levelDescription = levelDataJsonNode["LevelDescription"];
             _levelAuthor = levelDataJsonNode["LevelAuthor"];
-            _bpm = levelDataJsonNode["Bpm"];
-            
-            foreach (var board in levelDataJsonNode["Boards"])
-            {
-                _boards.Add(board);
-            }
+            _bpm = levelDataJsonNode["Bpm"] / 4;
+            _offset = (levelDataJsonNode["Offset"]?.AsInt ?? 0) / 1000;
+
+            foreach (var board in levelDataJsonNode["Boards"]) _boards.Add(board);
             CreateBeatboardAtStart(_boards);
 
-            foreach (var boardData in boardsDataJsonNode)
-            {
-                _boardsData.Add(boardData);
-            }
+            _startTime = Time.time + 0.6f + _offset;
             for (var i = 0; i < _boards.Count; i++)
             {
                 _beatIntervals.Insert(i, 60f / _bpm / _boards[i]["points"]);
-                _nextBeatTimes.Insert(i, Time.time + _beatIntervals[i]);
+                _nextBeatTimes.Insert(i, _beatIntervals[i]);
             }
-        }
 
-        void Start()
-        {
-            StartGame();
-            
+            foreach (var t in _boards) _currentBoardPoints.Add(t["points"]);
+            _gameStarted = true;
         }
 
         void Update()
         {
-            Debug.Log(_beatIntervals[0] + " " + _beatIntervals[1] + " " + _nextBeatTimes[0] + " " + _nextBeatTimes[1]);
-            HandleBeatCreation();
+            if (_gameStarted) HandleBeatCreation();
         }
 
         public static void CreateBeatboardAtStart(List<JSONNode> boards)
@@ -79,47 +71,51 @@ namespace GameManager
         }
 
         private void HandleBeatCreation()
-{
-    var time = Time.time;
-    if (_boards == null || _boardsData == null || _beatIntervals == null) return;
-
-    for (var i = 0; i < _boardsData.Count; i++)
-    {
-        if (!(time >= _nextBeatTimes[i])) continue;
-        _nextBeatTimes[i] += _beatIntervals[i];
-
-        var points = (int)BeatboardManager.GetBeatboardPoints(i);
-        if (points == 0) continue;
-        var currentCircle = _boardsData[i][Mathf.FloorToInt((time / _beatIntervals[i] - 1) / points)];
-        var nextCircle = _boardsData[i][Mathf.FloorToInt((time / _beatIntervals[i] - 1) / points) + 1];
-        var currentSide = Mathf.FloorToInt((time / _beatIntervals[i] - 1) % points) + 1;
-        if (currentCircle == null || currentCircle[currentSide] == null) continue;
-        
-        int nextPoints = currentCircle["Points"]?.AsInt ?? points;
-        if (currentSide == 1 && nextPoints != points)
         {
-            beatboardManager.ManageBeatboard(BeatboardManager.Beatboards[i], points, nextPoints,
-                _boards[i]["size"],
-                new Vector2(_boards[i]["position"][0], _boards[i]["position"][1]));
-            points = (int)BeatboardManager.GetBeatboardPoints(i);
-            currentCircle = _boardsData[i][Mathf.FloorToInt((time / _beatIntervals[i] - 1) / points)];
-            currentSide = Mathf.FloorToInt((time / _beatIntervals[i] - 1) % points) + 1;
-            _beatIntervals[i] = 60f / _bpm / nextPoints;
+            var time = Time.time - _startTime;
+            if (_boards == null || _boardsData == null || _beatIntervals == null) return;
+
+            for (var i = 0; i < _boardsData.Count; i++)
+            {
+                if (time < _nextBeatTimes[i]) continue;
+
+                var currentCycle = _boardsData["Board" + (i + 1)]
+                    ["Cycle" + (Mathf.FloorToInt((time / _beatIntervals[i] - 1) / _currentBoardPoints[i]) + 1)];
+                var prevCycle = _boardsData["Board" + (i + 1)]
+                    ["Cycle" + (Mathf.FloorToInt((time / _beatIntervals[i] - 1) / _currentBoardPoints[i]))];
+                var currentSide = (Mathf.FloorToInt((time / _beatIntervals[i] - 1) % _currentBoardPoints[i]) + 1).ToString();
+                if (currentCycle == null || currentCycle[currentSide] == null) continue;
+
+                var currentPoint = currentCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
+                if (int.Parse(currentSide) == 1 && currentPoint != _currentBoardPoints[i] && currentPoint != 0)
+                {
+                    _currentBoardPoints[i] = currentPoint;
+                    currentCycle = _boardsData[i][Mathf.FloorToInt((time / _beatIntervals[i] - 1) / currentPoint)];
+                    currentSide = (Mathf.FloorToInt((time / _beatIntervals[i] - 1) % currentPoint) + 1).ToString();
+                    _beatIntervals[i] = 60f / _bpm / currentPoint;
+                }
+
+                var prevPoint = prevCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
+                if (int.Parse(currentSide) == currentCycle.Count - 2 && prevPoint != _currentBoardPoints[i] && prevPoint != 0)
+                {
+                    beatboardManager.ManageBeatboard(BeatboardManager.Beatboards[i], prevPoint, _currentBoardPoints[i],
+                        _boards[i]["size"], new Vector2(_boards[i]["position"][0], _boards[i]["position"][1]));
+                }
+
+                _nextBeatTimes[i] += _beatIntervals[i];
+
+                if (!currentCycle[currentSide]["Beat"]) continue;
+
+                float size = (currentCycle[currentSide]["Size"] != null ? currentCycle[currentSide]["Size"].AsFloat : 1) * BeatboardManager.GetBeatboardSize(i) / 20f;
+                Color color = new Color(
+                    currentCycle[currentSide]["Color"]?[0]?.AsFloat ?? 1,
+                    currentCycle[currentSide]["Color"]?[1]?.AsFloat ?? 1,
+                    currentCycle[currentSide]["Color"]?[2]?.AsFloat ?? 1
+                );
+                if (color == Color.black) color = Color.white;
+                float speed = currentCycle[currentSide]["Speed"] != null ? currentCycle[currentSide]["Speed"].AsFloat : 1;
+                beatManager.CreateBeat(i, _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color);
+            }
         }
-        
-        if (currentCircle[currentSide]["Beat"])
-        {
-            float size = currentCircle[currentSide]["Size"] != null ? currentCircle[currentSide]["Size"].AsFloat : 1;
-            Color color = new Color(
-                currentCircle[currentSide]["Color"]?[0]?.AsFloat ?? 1,
-                currentCircle[currentSide]["Color"]?[1]?.AsFloat ?? 1,
-                currentCircle[currentSide]["Color"]?[2]?.AsFloat ?? 1
-            );
-            if (color.r == 0 && color.g == 0 && color.b == 0) color = Color.white;
-            float speed = currentCircle[currentSide]["Speed"] != null ? currentCircle[currentSide]["Speed"].AsFloat : 1;
-            beatManager.CreateBeat(i, currentSide, speed, 60f / _beatIntervals[i], size, color);
-        }
-    }
-}
     }
 }
