@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameManager
@@ -7,18 +8,19 @@ namespace GameManager
     {
 
         public float timeLeft = 3.0f;
-        public Text startText; // used for showing countdown from 3, 2, 1 
+        public TextMeshProUGUI startText; // used for showing countdown from 3, 2, 1 
 
 
         void Update()
         {
-            if (!MainGameManager._gameStarted) return;
+            if (!MainGameManager.GameStarted) return;
             timeLeft -= Time.deltaTime;
-            startText.text = (timeLeft).ToString("0");
             if (timeLeft < 0)
             {
                 startText.text = "";
+                return;
             }
+            startText.text = (timeLeft).ToString("0");
         }
     }
 }

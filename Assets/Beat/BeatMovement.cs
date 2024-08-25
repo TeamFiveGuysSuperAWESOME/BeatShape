@@ -1,4 +1,6 @@
-﻿using Beatboard;
+﻿using System;
+using Beatboard;
+using GameManager;
 using UnityEngine;
 
 namespace Beat
@@ -35,9 +37,16 @@ namespace Beat
             transform.Translate(_direction * (adjustedSpeed * Time.deltaTime));
             transform.RotateAround(_pos, Vector3.forward, _rotationSpeed * Time.deltaTime);
 
-            if (Vector2.Distance(transform.position, _pos) <= _size + 5f && sineValue <= 0)
+            if (Vector2.Distance(transform.position, _pos) <= Math.Pow(_size, 1.1f) && sineValue <= 0)
             {
                 Destroy(gameObject);
+            }
+
+            if (Vector2.Distance(transform.position, _pos) <= Math.Pow(_size, 1.3f) && sineValue <= 0 && Input.anyKeyDown)
+            {
+                Destroy(gameObject);
+                Debug.Log(Vector2.Distance(transform.position, _pos));
+                MainGameManager.Score += (int)Math.Pow(_size, 1.3f) / (int)Vector2.Distance(transform.position, _pos);
             }
         }
     }

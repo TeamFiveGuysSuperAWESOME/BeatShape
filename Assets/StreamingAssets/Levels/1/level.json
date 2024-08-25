@@ -27,7 +27,7 @@
                 }
             },
             "Cycle2": {
-                "Points" : 10,
+                "Points" : 4,
                 "Size" : 40,
                 "1": {
                     "Beat" : true,
@@ -44,32 +44,6 @@
                 "4" : {
                     "Beat" : true,
                     "Color" : [0.7, 1, 1]
-                },
-                "5" : {
-                    "Beat" : true,
-                    "Color" : [0.6, 1, 1]
-                },
-                "6" : {
-                    "Beat" : true,
-                    "Color" : [0.5, 1, 1]
-                },
-                "7" : {
-                    "Beat" : true,
-                    "Color" : [0.4, 1, 1]
-                },
-                "8" : {
-                    "Beat" : true,
-                    "Color" : [0.3, 1, 1]
-                },
-                "9" : {
-                    "Beat" : true,
-                    "Color" : [0.2, 1, 1]
-                },
-                "10" : {
-                    "Beat" : true,
-                    "Size" : 2,
-                    "Color" : [0, 1, 1],
-                    "Speed" : 0.5
                 }
             }
         }

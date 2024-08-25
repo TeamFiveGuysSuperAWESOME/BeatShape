@@ -64,10 +64,7 @@ namespace Beatboard
             meshFilter.mesh = mesh;
 
             Material beatboardMaterial = new Material(Shader.Find("Unlit/Color")) { color = beatboardColor };
-            //beatboardMaterial.EnableKeyword("_EMISSION");
-            //beatboardMaterial.SetColor(EmissionColor, beatboardColor * Mathf.LinearToGammaSpace(1.0f));
             meshRenderer.material = beatboardMaterial;
-
 
             int numVertices = Mathf.CeilToInt(points) + 1;
             Vector3[] vertices = new Vector3[numVertices + 1];
@@ -108,7 +105,6 @@ namespace Beatboard
             Material secondMaterial = new Material(Shader.Find("Standard"))
             {
                 color = new Color(beatboardColor.r, beatboardColor.g, beatboardColor.b, 0.35f),
-                
                 renderQueue = -1
             };
             secondMaterial.SetInt(SrcBlend, (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -130,13 +126,13 @@ namespace Beatboard
             for (int i = 0; i < numVertices - 1; i++)
             {
                 float angle = (90f - i * angleStep) * Mathf.Deg2Rad;
-                secondVertices[i + 1] = new Vector3((size + size / 2) * Mathf.Cos(angle), (size + size / 2) * Mathf.Sin(angle), 0f);
+                secondVertices[i + 1] = new Vector3(1.5f * size * Mathf.Cos(angle), 1.5f * size * Mathf.Sin(angle), 0f);
             }
 
             if (points % 1 > 0)
             {
                 float fractionalAngle = (90f - (numVertices - 1) * angleStep) * Mathf.Deg2Rad;
-                secondVertices[numVertices] = Vector3.Lerp(secondVertices[numVertices - 1], new Vector3((size + size / 2) * Mathf.Cos(fractionalAngle), (size + size / 2) * Mathf.Sin(fractionalAngle), 0f), points % 1);
+                secondVertices[numVertices] = Vector3.Lerp(secondVertices[numVertices - 1], new Vector3(1.5f * size * Mathf.Cos(fractionalAngle), 1.5f * size * Mathf.Sin(fractionalAngle), 0f), points % 1);
             }
 
             secondMesh.vertices = secondVertices;
@@ -277,7 +273,7 @@ namespace Beatboard
 
         void Update()
         {
-            if (MainGameManager._gameStarted)
+            if (MainGameManager.GameStarted)
             {
                 for (int i = Beatboards.Count - 1; i >= 0; i--)
                 {
