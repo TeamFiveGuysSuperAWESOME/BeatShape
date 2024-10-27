@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - flat
+  - beatboard
+  - beatboard_inner
+  - title_text
+  - start_text
+  - manager
   layers:
   - Default
   - TransparentFX
