@@ -13,14 +13,15 @@ namespace GameManager
 
         void Update()
         {
-            if (!MainGameManager.GameStarted) return;
+            if (!MainGameManager.GameStarted || !startText) return;
             timeLeft -= Time.deltaTime;
             if (timeLeft < 0)
             {
                 startText.text = "";
+                enabled = false;
                 return;
             }
-            startText.text = (timeLeft).ToString("0");
+            startText.text = timeLeft.ToString("0");
         }
     }
 }
