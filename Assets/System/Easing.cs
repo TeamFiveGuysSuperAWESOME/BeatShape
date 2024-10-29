@@ -9,6 +9,16 @@ public static class Easing
         return 1 - Mathf.Cos((t * Mathf.PI) / 2);
     }
 
+    public static float InCubic(float t)
+    {
+        return t * t * t;
+    }
+
+    public static float OutCubic(float t)
+    {
+        return 1 - Mathf.Pow(1 - t, 3);
+    }
+
     public static float InOutCubic(float t)
     {
         if (t < 0.5f)

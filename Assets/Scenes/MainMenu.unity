@@ -469,7 +469,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1026323477}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.285411, y: -10.89776, z: -4.45173}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -555,7 +555,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045707786}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.285411, y: 10.89776, z: 4.45173}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 150, y: 150, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -639,7 +639,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127406808}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4.45173}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 500, y: 300, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -691,6 +691,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuColor: {r: 0, g: 0, b: 0, a: 1}
+  menuColor_light: {r: 0, g: 0, b: 0, a: 0}
+  menuColor_dark: {r: 0, g: 0, b: 0, a: 0}
   menuState: menu
 --- !u!1 &1604616220
 GameObject:
@@ -976,6 +978,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a77033e13aeb66a48acba07c526805dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beat_prefab: {fileID: 3948439995444842961, guid: c6431dd153a006d4884abe0d41e26785, type: 3}
+  clack_prefab: {fileID: 5943283161759622282, guid: 8aef22608d80268419c8b951c5df92a9, type: 3}
 --- !u!1 &2013938729
 GameObject:
   m_ObjectHideFlags: 0

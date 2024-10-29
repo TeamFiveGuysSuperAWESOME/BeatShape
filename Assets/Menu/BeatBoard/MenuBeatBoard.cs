@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeatBoard : MonoBehaviour
+public class MenuBeatBoard : MonoBehaviour
 {
     MenuManager manager;
+
+    public GameObject beat_prefab;
+    public GameObject clack_prefab;
 
     float rot_z;
     float timer;
@@ -12,6 +15,18 @@ public class BeatBoard : MonoBehaviour
     void Awake()
     {
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
+    }
+
+    public void NewBeat()
+    {
+        GameObject beat_obj = Instantiate(beat_prefab, transform);
+        MenuBeat beat_scr = beat_obj.GetComponent<MenuBeat>();
+        beat_scr.BeatSetting(0,1f,0.5f,0.8f);
+    }
+
+    public void NewClack()
+    {
+        GameObject clack_obj = Instantiate(clack_prefab, transform);
     }
 
     void Update()

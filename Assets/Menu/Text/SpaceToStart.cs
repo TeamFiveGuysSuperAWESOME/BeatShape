@@ -9,7 +9,7 @@ public class SpaceToStart : MonoBehaviour
     TextMeshProUGUI title_tmp;
     RectTransform rt;
     MenuManager manager;
-
+    MenuBeatBoard beatboard;
     
     float timer;
     bool isHolding;
@@ -20,6 +20,7 @@ public class SpaceToStart : MonoBehaviour
         title_tmp = GameObject.FindWithTag("title_text").GetComponent<TextMeshProUGUI>();
         rt = GetComponent<RectTransform>();
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
+        beatboard = GameObject.FindWithTag("beatboard").GetComponent<MenuBeatBoard>();
     }
 
     void Update()
@@ -37,14 +38,15 @@ public class SpaceToStart : MonoBehaviour
                 isHolding = false;
                 manager.menuState = "menuToStageSelect";
                 rt.localScale = new Vector2(1f, 1f);
+                beatboard.NewBeat();
             }
         }
 
         if(manager.menuState == "menuToStageSelect") {
-            if(timer < 0.75f) {
+            if(timer < 1f) {
                 timer += Time.deltaTime;
-                tmp.color = new Color(tmp.color.r, tmp.color.g, tmp.color.b, 1f-timer*(1/0.75f));
-                title_tmp.color = new Color(title_tmp.color.r, title_tmp.color.g, title_tmp.color.b, 1f-timer*(1/0.75f));
+                tmp.color = new Color(tmp.color.r, tmp.color.g, tmp.color.b, 1f-timer*(1/1f));
+                title_tmp.color = new Color(title_tmp.color.r, title_tmp.color.g, title_tmp.color.b, 1f-timer*(1/1f));
             }
         }
 
