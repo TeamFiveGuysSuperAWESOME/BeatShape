@@ -19,7 +19,7 @@ public class FadeInScreen : MonoBehaviour
         color.a = opacity;
         sr.color = color;
         if(opacity > 0f) {
-            opacity -= 0.7f*Time.deltaTime;
+            opacity -= 1.5f*Time.deltaTime;
         }
         else {
             opacity = 0f;

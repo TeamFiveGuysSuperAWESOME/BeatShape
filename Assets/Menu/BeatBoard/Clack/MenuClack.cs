@@ -31,7 +31,7 @@ public class MenuClack : MonoBehaviour
         if(timer > 0.75f) {Destroy(gameObject);}
         
         transform.localPosition = new Vector2(transform.localPosition.x, startPos + 0.1f*Easing.OutCubic(timer/0.75f));
-        transform.localScale = new Vector2(startScale.x + 0.1f*Easing.OutCubic(timer/0.75f), startScale.y*(1-Easing.OutCubic(timer/0.75f)));
+        transform.localScale = new Vector2(startScale.x + 0.1f*Easing.OutCubic(timer/0.75f), startScale.y*(1-Easing.InCubic(timer/0.75f)));
         sr.color = new Color(startColor.r+deltaColor.r*(timer/0.75f),startColor.g+deltaColor.g*(timer/0.75f),startColor.b+deltaColor.b*(timer/0.75f),1f);
     }
 }

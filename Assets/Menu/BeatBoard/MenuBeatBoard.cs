@@ -46,7 +46,7 @@ public class MenuBeatBoard : MonoBehaviour
             }
             else if(timer < 2.25f) {
                 float inoutCubic = Easing.InOutCubic((timer-0.75f)/1.5f);
-                transform.position = new Vector2(-240*inoutCubic, -110+111*inoutCubic);
+                transform.position = new Vector2(-230*inoutCubic, -110+111*inoutCubic);
                 rot_z = -180f*inoutCubic;
                 transform.rotation = Quaternion.Euler(0, 0, rot_z);
             }
