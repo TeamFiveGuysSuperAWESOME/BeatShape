@@ -40,7 +40,9 @@ public class MenuBeat : MonoBehaviour
         if(isPlaying)
         {
             if(time <= 0) {
-                GetComponentInParent<MenuBeatBoard>().NewClack();
+                MenuBeatBoard bb = GetComponentInParent<MenuBeatBoard>();
+                bb.NewClack();
+                bb.transform.localScale *= 1.075f;
                 Destroy(gameObject);
             }
 

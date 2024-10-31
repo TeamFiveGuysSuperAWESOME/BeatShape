@@ -8,6 +8,8 @@ public class MenuBeatBoard : MonoBehaviour
 
     public GameObject beat_prefab;
     public GameObject clack_prefab;
+    MenuScenes menuScenes;
+    RectTransform menuScenes_rt;
 
     float rot_z;
     float timer;
@@ -15,6 +17,8 @@ public class MenuBeatBoard : MonoBehaviour
     void Awake()
     {
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
+        menuScenes = GameObject.FindWithTag("scene").GetComponent<MenuScenes>();
+        menuScenes_rt = GameObject.FindWithTag("scene").GetComponent<RectTransform>();
     }
 
     public void NewBeat()
@@ -31,6 +35,11 @@ public class MenuBeatBoard : MonoBehaviour
 
     void Update()
     {
+        if(transform.localScale.x > 150) {
+            transform.localScale = new Vector2(transform.localScale.x-20*Time.deltaTime, transform.localScale.y-20*Time.deltaTime);
+        }
+        else {transform.localScale = new Vector2(150, 150);}
+
         if(manager.menuState == "menu") {
             transform.rotation = Quaternion.Euler(0, 0, rot_z);
             rot_z += 10*Time.deltaTime;
@@ -49,8 +58,16 @@ public class MenuBeatBoard : MonoBehaviour
                 transform.position = new Vector2(-230*inoutCubic, -110+111*inoutCubic);
                 rot_z = -180f*inoutCubic;
                 transform.rotation = Quaternion.Euler(0, 0, rot_z);
+
+                if(timer > 1.25f) {
+                    menuScenes.Alpha((timer-1.25f)/1f);
+                    menuScenes_rt.position = new Vector2(0, -150+150*Easing.InOutCubic((timer-1.25f)/1f));
+                    menuScenes.targetPos = menuScenes_rt.position;
+                }
             }
             else {
+                menuScenes.Alpha(1f);
+                manager.sceneState = 0;
                 manager.menuState = "stageSelect";
             }
         }
@@ -58,8 +75,20 @@ public class MenuBeatBoard : MonoBehaviour
         if(manager.menuState == "stageSelect") {
             Quaternion targetRotation = Quaternion.Euler(0, 0, rot_z);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 6f);
-            if(Input.GetKeyDown(KeyCode.UpArrow)) {rot_z += 90f;}
-            if(Input.GetKeyDown(KeyCode.DownArrow)) {rot_z -= 90f;}
+            if(Input.GetKeyDown(KeyCode.UpArrow)) {
+                if(manager.sceneState > 0) {
+                    rot_z -= 90f;
+                    manager.sceneState -= 1;
+                    menuScenes.targetPos.y -= 150;
+                }
+            }
+            if(Input.GetKeyDown(KeyCode.DownArrow)) {
+                if(manager.sceneState < 1) {
+                    rot_z += 90f;
+                    manager.sceneState += 1;
+                    menuScenes.targetPos.y += 150;
+                }
+            }
         }
     }
 }

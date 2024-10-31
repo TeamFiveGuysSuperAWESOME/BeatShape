@@ -5,12 +5,15 @@ using UnityEngine;
 public class MenuClack : MonoBehaviour
 {
     SpriteRenderer sr;
+    public GameObject mask1;
+    public GameObject mask2;
 
     Color startColor;
     Color deltaColor;
     Color endColor;
     float startPos;
     Vector3 startScale;
+    float time = 0.5f;
     float timer;
 
     void Awake()
@@ -28,10 +31,11 @@ public class MenuClack : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if(timer > 0.75f) {Destroy(gameObject);}
+        if(timer > time) {Destroy(gameObject);}
         
-        transform.localPosition = new Vector2(transform.localPosition.x, startPos + 0.1f*Easing.OutCubic(timer/0.75f));
-        transform.localScale = new Vector2(startScale.x + 0.1f*Easing.OutCubic(timer/0.75f), startScale.y*(1-Easing.InCubic(timer/0.75f)));
-        sr.color = new Color(startColor.r+deltaColor.r*(timer/0.75f),startColor.g+deltaColor.g*(timer/0.75f),startColor.b+deltaColor.b*(timer/0.75f),1f);
+        mask1.transform.localPosition = new Vector2(0, Easing.OutQuint(timer/time));
+        mask2.transform.localPosition = new Vector2(0, -1+Easing.OutSine(timer/time));
+        
+        sr.color = new Color(startColor.r+deltaColor.r*(timer/time),startColor.g+deltaColor.g*(timer/time),startColor.b+deltaColor.b*(timer/time),1f);
     }
 }

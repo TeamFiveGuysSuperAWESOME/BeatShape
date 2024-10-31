@@ -10,6 +10,7 @@ TagManager:
   - title_text
   - start_text
   - manager
+  - scene
   layers:
   - Default
   - TransparentFX
