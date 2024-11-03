@@ -6,5 +6,6 @@ namespace Beat
     {
         public double angle;
         public float speed;
+        public float distance;
     }
 }
