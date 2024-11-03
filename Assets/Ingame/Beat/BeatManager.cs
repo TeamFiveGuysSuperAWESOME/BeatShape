@@ -8,6 +8,7 @@ namespace Beat
     public class BeatManager : MonoBehaviour
     {
         public GameObject beatPrefab;
+        public int beatIndex;
         
         public void CreateBeat(int index, int sides, int side, float speed, float bpm, float size, Color color)
         {

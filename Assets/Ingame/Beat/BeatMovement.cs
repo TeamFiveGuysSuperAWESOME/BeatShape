@@ -26,6 +26,13 @@ namespace Beat
             _pos = pos;
             _personalTimeOffset = Time.time;
         }
+        
+        public void RemoveBeatScored()
+        {
+            Destroy(gameObject);
+            Debug.Log("Beat removed");
+            MainGameManager.Score += (int)Math.Pow(_size, 1.3f) / (int)Vector2.Distance(transform.position, _pos);
+        }
 
         private void Update()
         {
@@ -36,18 +43,14 @@ namespace Beat
 
             transform.Translate(_direction * (adjustedSpeed * Time.deltaTime));
             transform.RotateAround(_pos, Vector3.forward, _rotationSpeed * Time.deltaTime);
+            GetComponent<BeatData>().distance = Vector2.Distance(transform.position, _pos);
 
             if (Vector2.Distance(transform.position, _pos) <= Math.Pow(_size, 1.1f) && sineValue <= 0)
             {
                 Destroy(gameObject);
             }
 
-            if (Vector2.Distance(transform.position, _pos) <= Math.Pow(_size, 1.3f) && sineValue <= 0 && Input.anyKeyDown)
-            {
-                Destroy(gameObject);
-                Debug.Log(Vector2.Distance(transform.position, _pos));
-                MainGameManager.Score += (int)Math.Pow(_size, 1.3f) / (int)Vector2.Distance(transform.position, _pos);
-            }
+            
         }
     }
 }

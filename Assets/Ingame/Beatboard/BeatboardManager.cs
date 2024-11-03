@@ -149,6 +149,7 @@ namespace Beatboard
             return Beatboards[index].GetComponent<BeatboardData>().points == 0f ? 360f : Beatboards[index].GetComponent<BeatboardData>().points;
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public static float GetBeatboardSize(int index)
         {
             if (index < 0 || index >= Beatboards.Count)

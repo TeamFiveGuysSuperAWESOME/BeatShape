@@ -907,6 +907,7 @@ GameObject:
   - component: {fileID: 1586483479}
   - component: {fileID: 1586483478}
   - component: {fileID: 1586483480}
+  - component: {fileID: 1586483481}
   m_Layer: 0
   m_Name: BeatManager
   m_TagString: Untagged
@@ -927,6 +928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beatPrefab: {fileID: 8287873555420377871, guid: 83a8014c722093a4eb84bf25bfc7f662, type: 3}
+  beatIndex: 0
 --- !u!4 &1586483479
 Transform:
   m_ObjectHideFlags: 0
@@ -956,6 +958,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   angle: 0
   speed: 0
+  distance: 0
+--- !u!114 &1586483481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586483477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b8693e411254f96b32cd0a0c0aaafec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  beatList: []
 --- !u!1 &2006165231
 GameObject:
   m_ObjectHideFlags: 0
