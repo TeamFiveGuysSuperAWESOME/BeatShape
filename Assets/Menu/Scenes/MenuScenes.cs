@@ -6,15 +6,17 @@ public class MenuScenes : MonoBehaviour
 {
     MenuManager manager;
     CanvasGroup canvasGroup;
-    public GameObject levelSelect;
+    LevelSelectScene levelSelect;
 
     public Vector3 targetPos;
-    public Vector3 levelSelect_targetPos;
-    public int mapNumber = 1;
+    public int levelNumber = 1;
+
+    float timer;
 
     void Awake()
     {
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
+        levelSelect = GetComponentInChildren<LevelSelectScene>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
@@ -26,26 +28,31 @@ public class MenuScenes : MonoBehaviour
     void Update()
     {
         transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * 6f);
-        levelSelect.transform.localPosition = Vector3.Lerp(levelSelect.transform.localPosition, levelSelect_targetPos, Time.deltaTime * 6f);
         
         if(manager.menuState == "stageSelect")
         {
+            timer += Time.deltaTime;
+            Vector3 liveLevelScale = new Vector3(0.5f*Mathf.Sin(timer)+10f, 0.5f*Mathf.Sin(timer)+10f, 1);
+
             if(Input.GetKeyDown(KeyCode.RightArrow)) {
                 if(manager.sceneState == 0) { // LevelSelect
-                    if(mapNumber < manager.maxLevelIndex) {
-                        mapNumber += 1;
-                        levelSelect_targetPos -= new Vector3(200, 0, 0);
+                    if(levelNumber < manager.levelIndex) {
+                        levelSelect.levels[levelNumber-1].GetComponent<MenuLevel>().targetScale = new Vector3(5, 5, 1);
+                        levelNumber += 1;
+                        levelSelect.targetPos -= new Vector3(10, 0, 0);
                     }
                 }
             }
             if(Input.GetKeyDown(KeyCode.LeftArrow)) {
                 if(manager.sceneState == 0) { // LevelSelect
-                    if(mapNumber > 1) {
-                        mapNumber -= 1;
-                        levelSelect_targetPos += new Vector3(200, 0, 0);
+                    if(levelNumber > 1) {
+                        levelSelect.levels[levelNumber-1].GetComponent<MenuLevel>().targetScale = new Vector3(5, 5, 1);
+                        levelNumber -= 1;
+                        levelSelect.targetPos += new Vector3(10, 0, 0);
                     }
                 }
             }
+            levelSelect.levels[levelNumber-1].GetComponent<MenuLevel>().targetScale = liveLevelScale;
         }
         
     }
