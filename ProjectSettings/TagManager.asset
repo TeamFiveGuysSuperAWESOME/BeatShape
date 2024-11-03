@@ -49,6 +49,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: FadeScreen
+    uniqueID: 2219674859
+    locked: 0
   - name: Clack
     uniqueID: 2062652977
     locked: 0

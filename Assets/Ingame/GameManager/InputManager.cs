@@ -22,7 +22,7 @@ namespace Ingame.GameManager
                 {
                     minDistance = beatData.distance;
                     closestBeat = beatData;
-                }s
+                }
             }
             Debug.Log(string.Join(", ", beatList));
             
