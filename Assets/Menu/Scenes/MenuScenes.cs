@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MenuScenes : MonoBehaviour
 {
     MenuManager manager;
     CanvasGroup canvasGroup;
     LevelSelectScene levelSelect;
+    TextMeshProUGUI stage_tmp;
 
     public Vector3 targetPos;
     public int levelNumber = 1;
@@ -18,6 +20,7 @@ public class MenuScenes : MonoBehaviour
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
         levelSelect = GetComponentInChildren<LevelSelectScene>();
         canvasGroup = GetComponent<CanvasGroup>();
+        stage_tmp = GameObject.FindWithTag("stage_text").GetComponent<TextMeshProUGUI>();
     }
 
     public void Alpha(float a)
@@ -40,6 +43,7 @@ public class MenuScenes : MonoBehaviour
                         levelSelect.levels[levelNumber-1].GetComponent<MenuLevel>().targetScale = new Vector3(5, 5, 1);
                         levelNumber += 1;
                         levelSelect.targetPos -= new Vector3(10, 0, 0);
+                        stage_tmp.text = "STAGE " + levelNumber;
                     }
                 }
             }
@@ -49,6 +53,7 @@ public class MenuScenes : MonoBehaviour
                         levelSelect.levels[levelNumber-1].GetComponent<MenuLevel>().targetScale = new Vector3(5, 5, 1);
                         levelNumber -= 1;
                         levelSelect.targetPos += new Vector3(10, 0, 0);
+                        stage_tmp.text = "STAGE " + levelNumber;
                     }
                 }
             }

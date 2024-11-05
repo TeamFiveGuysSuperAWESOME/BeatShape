@@ -79,14 +79,14 @@ public class MenuBeatBoard : MonoBehaviour
                 if(manager.sceneState > 0) {
                     rot_z -= 90f;
                     manager.sceneState -= 1;
-                    menuScenes.targetPos.y -= 150;
+                    menuScenes.targetPos.y -= 200;
                 }
             }
             if(Input.GetKeyDown(KeyCode.DownArrow)) {
                 if(manager.sceneState < 1) {
                     rot_z += 90f;
                     manager.sceneState += 1;
-                    menuScenes.targetPos.y += 150;
+                    menuScenes.targetPos.y += 200;
                 }
             }
         }

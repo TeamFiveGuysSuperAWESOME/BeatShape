@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - flat
   - beatboard
@@ -12,6 +12,7 @@ TagManager:
   - manager
   - scene
   - levels
+  - stage_text
   layers:
   - Default
   - TransparentFX
@@ -58,3 +59,5 @@ TagManager:
   - name: LevelSelect
     uniqueID: 1745106327
     locked: 0
+  m_RenderingLayers:
+  - Default
