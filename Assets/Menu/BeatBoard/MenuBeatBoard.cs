@@ -10,6 +10,7 @@ public class MenuBeatBoard : MonoBehaviour
     public GameObject clack_prefab;
     MenuScenes menuScenes;
     RectTransform menuScenes_rt;
+    public GameObject arrows;
 
     float rot_z;
     float timer;
@@ -19,6 +20,13 @@ public class MenuBeatBoard : MonoBehaviour
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
         menuScenes = GameObject.FindWithTag("scene").GetComponent<MenuScenes>();
         menuScenes_rt = GameObject.FindWithTag("scene").GetComponent<RectTransform>();
+    }
+
+    void Start()
+    {
+        menuScenes_rt.position = new Vector2(0, -150);
+        menuScenes.targetPos = menuScenes_rt.position;
+        arrows.transform.position = new Vector2(0, -150);
     }
 
     public void NewBeat()
@@ -60,9 +68,9 @@ public class MenuBeatBoard : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, 0, rot_z);
 
                 if(timer > 1.25f) {
-                    menuScenes.Alpha((timer-1.25f)/1f);
                     menuScenes_rt.position = new Vector2(0, -150+150*Easing.InOutCubic((timer-1.25f)/1f));
                     menuScenes.targetPos = menuScenes_rt.position;
+                    arrows.transform.position = new Vector2(0, -150+150*Easing.InOutCubic((timer-1.25f)/1f));
                 }
             }
             else {

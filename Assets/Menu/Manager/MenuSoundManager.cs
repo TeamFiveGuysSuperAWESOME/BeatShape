@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MenuMusicManager : MonoBehaviour
+public class MenuSoundManager : MonoBehaviour
 {
     AudioSource audioSource;
+
+    public float musicVolume = 0.2f;
+    public float sfxVolume = 0.2f;
 
     public AudioClip[] backgroundMusics;
     AudioClip backgroundMusic;
@@ -23,6 +26,6 @@ public class MenuMusicManager : MonoBehaviour
 
     void Update()
     {
-        
+        audioSource.volume = musicVolume;
     }
 }

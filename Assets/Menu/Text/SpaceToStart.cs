@@ -30,11 +30,11 @@ public class SpaceToStart : MonoBehaviour
             tmp.color = new Color(tmp.color.r, tmp.color.g, tmp.color.b, 1f);
             title_tmp.color = new Color(title_tmp.color.r, title_tmp.color.g, title_tmp.color.b, 1f);
 
-            if(Input.GetKeyDown(KeyCode.Space)) {
+            if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
                 isHolding = true;
                 rt.localScale = new Vector2(0.85f, 0.85f);
             }
-            if(isHolding && Input.GetKeyUp(KeyCode.Space)) {
+            if(isHolding && (Input.GetKeyUp(KeyCode.Space) || Input.GetMouseButtonUp(0))) {
                 isHolding = false;
                 manager.menuState = "menuToStageSelect";
                 rt.localScale = new Vector2(1f, 1f);

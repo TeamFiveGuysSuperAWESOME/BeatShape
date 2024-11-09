@@ -43,7 +43,6 @@ public class MenuManager : MonoBehaviour
         title_tmp.outlineColor = menuColor_dark;
         start_tmp.color = menuColor_dark;
         stage_tmp.color = menuColor_dark;
-
     }
 
     void Update()
