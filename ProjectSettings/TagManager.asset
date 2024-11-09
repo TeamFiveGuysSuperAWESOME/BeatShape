@@ -14,6 +14,7 @@ TagManager:
   - scene
   - levels
   - stage_text
+  - screen
   layers:
   - Default
   - TransparentFX

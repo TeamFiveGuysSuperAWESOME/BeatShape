@@ -952,7 +952,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPos: {x: 0, y: 0, z: 0}
-  levelNumber: 1
 --- !u!223 &707253559
 Canvas:
   m_ObjectHideFlags: 0
@@ -2061,6 +2060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level_prefab: {fileID: 5277294535580890066, guid: e4cc1554f359ba74084407d7b8023c8c, type: 3}
   levels: []
+  stage_text_obj: {fileID: 1787739609}
   targetPos: {x: 0, y: 0, z: 0}
 --- !u!114 &1036905976
 MonoBehaviour:
@@ -2484,6 +2484,7 @@ MonoBehaviour:
   menuState: menu
   sceneState: 0
   levelIndex: 5
+  levelNumber: 1
 --- !u!1 &1330930000
 GameObject:
   m_ObjectHideFlags: 0
@@ -3119,7 +3120,7 @@ GameObject:
   - component: {fileID: 1691850821}
   m_Layer: 5
   m_Name: Screen
-  m_TagString: Untagged
+  m_TagString: screen
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3329,7 +3330,7 @@ GameObject:
   - component: {fileID: 1787739612}
   - component: {fileID: 1787739611}
   m_Layer: 0
-  m_Name: Stage
+  m_Name: Stage_text
   m_TagString: stage_text
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

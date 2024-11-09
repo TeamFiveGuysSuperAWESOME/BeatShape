@@ -12,11 +12,6 @@ public class FadeInScreen : MonoBehaviour
     float speed = 0.75f;
     float timer;
 
-    void Awake()
-    {
-        
-    }
-
     void FadeIn()
     {
         timer += Time.deltaTime;

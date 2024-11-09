@@ -6,18 +6,24 @@ public class LevelSelectScene : MonoBehaviour
 {
     MenuManager manager;
     MenuScenes menuScenes;
+    FadeInScreen screen;
 
     public GameObject level_prefab;
     public GameObject[] levels;
     GameObject levelsGroup;
+    public GameObject stage_text_obj;
+    RectTransform stage_text_rt;
 
     public Vector3 targetPos;
+    float timer = 0f;
 
     void Awake()
     {
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
         menuScenes = GetComponentInParent<MenuScenes>();
+        screen = GameObject.FindWithTag("screen").GetComponent<FadeInScreen>();
         levelsGroup = GameObject.FindWithTag("levels");
+        stage_text_rt = stage_text_obj.GetComponent<RectTransform>();
     }
 
     void Start()
@@ -26,13 +32,33 @@ public class LevelSelectScene : MonoBehaviour
         for(int i=0; i<manager.levelIndex; i++) {
             levels[i] = Instantiate(level_prefab, GameObject.FindWithTag("levels").transform);
             levels[i].transform.localPosition += new Vector3(10*i, 0, 0);
-            if(i == menuScenes.levelNumber-1) {levels[i].GetComponent<MenuLevel>().targetScale = new Vector3(10, 10, 1);}
-            else {levels[i].GetComponent<MenuLevel>().targetScale = new Vector3(5, 5, 1);}
+
+            MenuLevel level_scr = levels[i].GetComponent<MenuLevel>();
+            if(i == manager.levelNumber-1) {level_scr.targetScale = new Vector3(10, 10, 1);}
+            else {level_scr.targetScale = new Vector3(5, 5, 1);}
+            level_scr.stageNum = i;
         }
     }
 
     void Update()
     {
         levelsGroup.transform.localPosition = Vector3.Lerp(levelsGroup.transform.localPosition, targetPos, Time.deltaTime * 6f);
+        
+        if(manager.menuState == "stageSelect" && manager.sceneState == 0) {
+            if(Input.GetKeyDown(KeyCode.Space)) {
+                stage_text_rt.localScale = new Vector3(0.9f,0.9f,1);
+            }
+            if(Input.GetKeyUp(KeyCode.Space)) {
+                stage_text_rt.localScale = new Vector3(1,1,1);
+                manager.menuState = "stageEntry";
+            }
+        }
+        if(manager.menuState == "stageEntry") {
+            if(timer >= 0f) timer += Time.deltaTime;
+            if(timer > 0.75f) {
+                screen.screenState = "FadeIn";
+                timer = -1f;
+            }
+        }
     }
 }

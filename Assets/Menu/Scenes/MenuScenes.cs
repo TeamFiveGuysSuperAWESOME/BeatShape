@@ -11,7 +11,6 @@ public class MenuScenes : MonoBehaviour
     TextMeshProUGUI stage_tmp;
 
     public Vector3 targetPos;
-    public int levelNumber = 1;
 
     float timer;
 
@@ -39,25 +38,25 @@ public class MenuScenes : MonoBehaviour
 
             if(Input.GetKeyDown(KeyCode.RightArrow)) {
                 if(manager.sceneState == 0) { // LevelSelect
-                    if(levelNumber < manager.levelIndex) {
-                        levelSelect.levels[levelNumber-1].GetComponent<MenuLevel>().targetScale = new Vector3(5, 5, 1);
-                        levelNumber += 1;
+                    if(manager.levelNumber < manager.levelIndex) {
+                        levelSelect.levels[manager.levelNumber-1].GetComponent<MenuLevel>().targetScale = new Vector3(5, 5, 1);
+                        manager.levelNumber += 1;
                         levelSelect.targetPos -= new Vector3(10, 0, 0);
-                        stage_tmp.text = "STAGE " + levelNumber;
+                        stage_tmp.text = "STAGE " + manager.levelNumber;
                     }
                 }
             }
             if(Input.GetKeyDown(KeyCode.LeftArrow)) {
                 if(manager.sceneState == 0) { // LevelSelect
-                    if(levelNumber > 1) {
-                        levelSelect.levels[levelNumber-1].GetComponent<MenuLevel>().targetScale = new Vector3(5, 5, 1);
-                        levelNumber -= 1;
+                    if(manager.levelNumber > 1) {
+                        levelSelect.levels[manager.levelNumber-1].GetComponent<MenuLevel>().targetScale = new Vector3(5, 5, 1);
+                        manager.levelNumber -= 1;
                         levelSelect.targetPos += new Vector3(10, 0, 0);
-                        stage_tmp.text = "STAGE " + levelNumber;
+                        stage_tmp.text = "STAGE " + manager.levelNumber;
                     }
                 }
             }
-            levelSelect.levels[levelNumber-1].GetComponent<MenuLevel>().targetScale = liveLevelScale;
+            levelSelect.levels[manager.levelNumber-1].GetComponent<MenuLevel>().targetScale = liveLevelScale;
         }
         
     }

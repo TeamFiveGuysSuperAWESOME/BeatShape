@@ -21,6 +21,7 @@ public class MenuManager : MonoBehaviour
     public string menuState = "menu";
     public int sceneState = 0;
     public int levelIndex = 5;
+    public int levelNumber = 1;
     
 
     void Awake()
