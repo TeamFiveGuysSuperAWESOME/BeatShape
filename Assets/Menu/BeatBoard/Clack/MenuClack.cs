@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MenuClack : MonoBehaviour
 {
+    MenuManager manager;
     SpriteRenderer sr;
     public GameObject mask1;
     public GameObject mask2;
@@ -18,7 +19,7 @@ public class MenuClack : MonoBehaviour
 
     void Awake()
     {
-        MenuManager manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
+        manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
         sr = GetComponent<SpriteRenderer>();
 
         endColor = manager.menuColor_dark;
@@ -31,7 +32,9 @@ public class MenuClack : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        if(timer > time) {Destroy(gameObject);}
+        if(timer > time) {
+            Destroy(gameObject);
+        }
         
         mask1.transform.localPosition = new Vector2(0, Easing.OutQuint(timer/time));
         mask2.transform.localPosition = new Vector2(0, -1+Easing.OutSine(timer/time));

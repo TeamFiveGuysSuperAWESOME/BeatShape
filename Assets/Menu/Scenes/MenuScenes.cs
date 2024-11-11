@@ -11,15 +11,21 @@ public class MenuScenes : MonoBehaviour
     TextMeshProUGUI stage_tmp;
 
     public Vector3 targetPos;
+    public Vector3 liveLevelScale;
 
-    float timer;
+    public GameObject arrows_LR;
+    GameObject stage_tmp_obj;
+
+    float timer = 0f;
+    float timer_stageEntry = 0f;
 
     void Awake()
     {
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
         levelSelect = GetComponentInChildren<LevelSelectScene>();
         canvasGroup = GetComponent<CanvasGroup>();
-        stage_tmp = GameObject.FindWithTag("stage_text").GetComponent<TextMeshProUGUI>();
+        stage_tmp_obj = GameObject.FindWithTag("stage_text");
+        stage_tmp = stage_tmp_obj.GetComponent<TextMeshProUGUI>();
     }
 
     public void Alpha(float a)
@@ -34,7 +40,7 @@ public class MenuScenes : MonoBehaviour
         if(manager.menuState == "stageSelect")
         {
             timer += Time.deltaTime;
-            Vector3 liveLevelScale = new Vector3(0.5f*Mathf.Sin(timer)+10f, 0.5f*Mathf.Sin(timer)+10f, 1);
+            liveLevelScale = new Vector3(0.5f*Mathf.Sin(timer)+10f, 0.5f*Mathf.Sin(timer)+10f, 1);
 
             if(Input.GetKeyDown(KeyCode.RightArrow)) {
                 if(manager.sceneState == 0) { // LevelSelect
@@ -59,5 +65,19 @@ public class MenuScenes : MonoBehaviour
             levelSelect.levels[manager.levelNumber-1].GetComponent<MenuLevel>().targetScale = liveLevelScale;
         }
         
+        if(manager.menuState == "stageEntry") {
+            if(timer_stageEntry < 1f) {
+                timer_stageEntry += Time.deltaTime;
+
+                levelSelect.levels[manager.levelNumber-1].GetComponent<MenuLevel>().targetScale = new Vector3(13, 13, 1);
+                if(manager.levelNumber-2 >= 0) levelSelect.levels[manager.levelNumber-2].transform.localPosition = new Vector3(10*(manager.levelNumber-2) - 5.1f*Easing.OutQuint(timer_stageEntry/1f),0,0);
+                if(manager.levelNumber <= manager.levelIndex-1) levelSelect.levels[manager.levelNumber].transform.localPosition = new Vector3(10*(manager.levelNumber) + 5.1f*Easing.OutQuint(timer_stageEntry/1f),0,0);
+
+                arrows_LR.transform.localPosition = new Vector3(arrows_LR.transform.localPosition.x, -15f*Easing.OutQuint(timer_stageEntry/1f), 0);
+                stage_tmp_obj.transform.localPosition = new Vector3(stage_tmp_obj.transform.localPosition.x, -7 - 1.5f*Easing.OutQuint(timer_stageEntry/1f), 0);
+            }
+            else {timer_stageEntry = 1f;}
+            
+        }
     }
 }

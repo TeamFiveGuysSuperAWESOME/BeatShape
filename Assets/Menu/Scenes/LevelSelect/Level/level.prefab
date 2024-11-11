@@ -90,6 +90,10 @@ MonoBehaviour:
   targetScale: {x: 0, y: 0, z: 0}
   thumbnails:
   - {fileID: 2800000, guid: 923ed2f0cb342ea40aa98f27318caaff, type: 3}
+  - {fileID: 2800000, guid: 1d2dcef04af7ce14488d70f28690c9d9, type: 3}
+  - {fileID: 2800000, guid: 401242b1d4d791244b25dd6a2d544b9b, type: 3}
+  - {fileID: 2800000, guid: 5da3d060bffb07341856d35809de34de, type: 3}
+  - {fileID: 2800000, guid: 0a3cfb36cb0be11458f3e6edb39e5856, type: 3}
   obj: {fileID: 7420278055542628444}
 --- !u!1 &7420278055542628444
 GameObject:

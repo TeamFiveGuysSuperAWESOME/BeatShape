@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelSelectScene : MonoBehaviour
 {
     MenuManager manager;
+    MenuEffects effects;
     MenuScenes menuScenes;
     FadeInScreen screen;
 
@@ -20,8 +21,10 @@ public class LevelSelectScene : MonoBehaviour
     void Awake()
     {
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
+        effects = GameObject.FindWithTag("effectmanager").GetComponent<MenuEffects>();
         menuScenes = GetComponentInParent<MenuScenes>();
         screen = GameObject.FindWithTag("screen").GetComponent<FadeInScreen>();
+
         levelsGroup = GameObject.FindWithTag("levels");
         stage_text_rt = stage_text_obj.GetComponent<RectTransform>();
     }
@@ -50,12 +53,16 @@ public class LevelSelectScene : MonoBehaviour
             }
             if(Input.GetKeyUp(KeyCode.Space)) {
                 stage_text_rt.localScale = new Vector3(1,1,1);
+                effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*10,menuScenes.liveLevelScale.y*10), new Vector2(150,150), 0.75f, manager.menuColor_dark);
                 manager.menuState = "stageEntry";
             }
         }
+        else {stage_text_rt.localScale = new Vector3(1,1,1);}
+
         if(manager.menuState == "stageEntry") {
             if(timer >= 0f) timer += Time.deltaTime;
-            if(timer > 0.75f) {
+            
+            if(timer > 1f) {
                 screen.screenState = "FadeIn";
                 timer = -1f;
             }

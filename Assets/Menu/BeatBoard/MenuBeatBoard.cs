@@ -10,7 +10,7 @@ public class MenuBeatBoard : MonoBehaviour
     public GameObject clack_prefab;
     MenuScenes menuScenes;
     RectTransform menuScenes_rt;
-    public GameObject arrows;
+    public GameObject arrows_UD;
 
     float rot_z;
     float timer;
@@ -26,7 +26,7 @@ public class MenuBeatBoard : MonoBehaviour
     {
         menuScenes_rt.position = new Vector2(0, -150);
         menuScenes.targetPos = menuScenes_rt.position;
-        arrows.transform.position = new Vector2(0, -150);
+        arrows_UD.transform.position = new Vector2(180, -150);
     }
 
     public void NewBeat()
@@ -63,17 +63,18 @@ public class MenuBeatBoard : MonoBehaviour
             }
             else if(timer < 2.25f) {
                 float inoutCubic = Easing.InOutCubic((timer-0.75f)/1.5f);
-                transform.position = new Vector2(-230*inoutCubic, -110+111*inoutCubic);
+                transform.position = new Vector2(-230*inoutCubic, -110+110*inoutCubic);
                 rot_z = -180f*inoutCubic;
                 transform.rotation = Quaternion.Euler(0, 0, rot_z);
 
                 if(timer > 1.25f) {
                     menuScenes_rt.position = new Vector2(0, -150+150*Easing.InOutCubic((timer-1.25f)/1f));
                     menuScenes.targetPos = menuScenes_rt.position;
-                    arrows.transform.position = new Vector2(0, -150+150*Easing.InOutCubic((timer-1.25f)/1f));
+                    arrows_UD.transform.position = new Vector2(180, -150+150*Easing.InOutCubic((timer-1.25f)/1f));
                 }
             }
             else {
+                timer = 0;
                 menuScenes.Alpha(1f);
                 manager.sceneState = 0;
                 manager.menuState = "stageSelect";
@@ -96,6 +97,18 @@ public class MenuBeatBoard : MonoBehaviour
                     manager.sceneState += 1;
                     menuScenes.targetPos.y += 200;
                 }
+            }
+        }
+
+        if(manager.menuState == "stageEntry") {
+            if(timer < 0.5f) {
+                timer += Time.deltaTime;
+                transform.position = new Vector3(-230 - 50*Easing.InCubic(timer/0.5f), 0, 0);
+                arrows_UD.transform.position = new Vector3(180 + 50*Easing.InCubic(timer/0.5f), 0, 0);
+            }
+
+            else {
+                timer = 0.5f;
             }
         }
     }

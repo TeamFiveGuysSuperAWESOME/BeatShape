@@ -5,6 +5,7 @@ using UnityEngine;
 public class MenuBeat : MonoBehaviour
 {
     MenuManager manager;
+    public MenuEffects em;
 
     bool isPlaying = false;
     float height;
@@ -18,7 +19,8 @@ public class MenuBeat : MonoBehaviour
     void Start()
     {
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
-        
+        em = GameObject.FindWithTag("effectmanager").GetComponent<MenuEffects>();
+
         GetComponentsInChildren<SpriteRenderer>()[0].color = manager.menuColor_dark;
         GetComponentsInChildren<SpriteRenderer>()[1].color = manager.menuColor_light;
     }
@@ -43,6 +45,10 @@ public class MenuBeat : MonoBehaviour
                 MenuBeatBoard bb = GetComponentInParent<MenuBeatBoard>();
                 bb.NewClack();
                 bb.transform.localScale *= 1.075f;
+
+                
+                em.NewSquare(new Vector2(0,-110), new Vector2(150,150), new Vector2(300,300), 1, manager.menuColor_dark);
+
                 Destroy(gameObject);
             }
 
