@@ -330,6 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1340163341}
+  textFile: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,6 +649,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   beatboardPrefab: {fileID: 8362318195454506328, guid: 4e3eff702acff8d43a1ba91726790e87, type: 3}
+  beatboards: []
   updateBeatboards: []
   beatboardColor: {r: 1, g: 1, b: 1, a: 1}
   currentPoints: 
@@ -981,7 +983,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b8693e411254f96b32cd0a0c0aaafec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  beatList: []
   closestBeat: {fileID: 0}
 --- !u!1 &2006165231
 GameObject:

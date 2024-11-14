@@ -10,7 +10,7 @@ namespace Beat
         public GameObject beatPrefab;
         public int beatIndex;
         
-        public void CreateBeat(int index, int sides, int side, float speed, float bpm, float size, Color color, string easing)
+        public void CreateBeat(int index, int boardnum, int sides, int side, float speed, float bpm, float size, Color color, string easing)
         {
             var pos = BeatboardManager.GetBeatboardPosition(index);
             GameObject beatObject = Instantiate(beatPrefab, pos, Quaternion.identity, transform);

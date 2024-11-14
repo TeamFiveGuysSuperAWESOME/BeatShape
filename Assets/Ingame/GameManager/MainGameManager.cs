@@ -149,7 +149,7 @@ namespace GameManager
                 );
                 if (color == Color.black) color = Color.white;
                 float speed = currentCycle[currentSide]["Speed"] != null ? currentCycle[currentSide]["Speed"].AsFloat : 1;
-                _beatManager.CreateBeat(i, _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color, "OutCubic");
+                _beatManager.CreateBeat(i, 1, _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color, "OutCubic");
             }
         }
     }

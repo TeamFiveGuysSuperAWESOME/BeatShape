@@ -16,6 +16,7 @@ TagManager:
   - stage_text
   - screen
   - effectmanager
+  - boardmanager
   layers:
   - Default
   - TransparentFX

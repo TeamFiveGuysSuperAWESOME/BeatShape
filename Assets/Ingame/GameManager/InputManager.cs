@@ -30,7 +30,7 @@ namespace Ingame.GameManager
                     closestBeat = beatData;
                 }
             }
-            Debug.Log(string.Join(", ", beatDataList.Select(b => b.distance)) + " / " + minDistance);
+            //Debug.Log(string.Join(", ", beatDataList.Select(b => b.distance)) + " / " + minDistance);
 
             if (Input.anyKeyDown && closestBeat != null)
             {

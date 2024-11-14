@@ -11,6 +11,7 @@ namespace Beatboard
     public class BeatboardManager : MonoBehaviour
     {
         public GameObject beatboardPrefab;
+        public List<GameObject> beatboards = new List<GameObject>();
         public static List<GameObject> Beatboards = new();
         public List<GameObject> updateBeatboards;
         public static List<int> UpdateBbIndex = new();
@@ -31,6 +32,7 @@ namespace Beatboard
             if (points < 3) points = 360f;
 
             GameObject beatboardObject = Instantiate(beatboardPrefab, position, Quaternion.identity, transform);
+            beatboards.Add(beatboardObject);
             beatboardObject.transform.rotation = Rotation;
 
             BeatboardData bbdata = beatboardObject.GetComponent<BeatboardData>();

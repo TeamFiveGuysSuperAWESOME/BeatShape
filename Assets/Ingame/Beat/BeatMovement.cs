@@ -46,18 +46,20 @@ namespace Beat
         private void Update()
         {
             float secondsPerBeat = 60f / _bpm;
-            elapsedTime = Time.time - _personalTimeOffset;
-            sineValue = Mathf.Sin(((elapsedTime / secondsPerBeat) * 0.5f * Mathf.PI * _spd) + _offset) * _amplitude;
-            adjustedSpeed = _size * 3.5f * sineValue;
+            //elapsedTime = Time.time - _personalTimeOffset;
+            //sineValue = Mathf.Sin(((elapsedTime / secondsPerBeat) * 0.5f * Mathf.PI * _spd) + _offset) * _amplitude;
+            //sineValue = 
+            //Easing.OutCubic((elapsedTime/secondsPerBeat))
+            //adjustedSpeed = _size * 3.5f * sineValue;
 
-            transform.Translate(_direction * (adjustedSpeed * Time.deltaTime));
-            transform.RotateAround(_pos, Vector3.forward, _rotationSpeed * Time.deltaTime);
-            GetComponent<BeatData>().distance = Vector2.Distance(transform.position, _pos);
+            //transform.Translate(_direction * (adjustedSpeed * Time.deltaTime));
+            //transform.RotateAround(_pos, Vector3.forward, _rotationSpeed * Time.deltaTime);
+            //GetComponent<BeatData>().distance = Vector2.Distance(transform.position, _pos);
 
-            if (Vector2.Distance(transform.position, _pos) <= Math.Pow(_size, 1.1f) && sineValue <= 0)
-            {
-                Destroy(gameObject);
-            }
+            //if (Vector2.Distance(transform.position, _pos) <= Math.Pow(_size, 1.1f) && sineValue <= 0)
+            //{
+            //    Destroy(gameObject);
+            //}
 
             
         }
