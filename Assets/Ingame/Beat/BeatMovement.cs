@@ -12,18 +12,20 @@ namespace Beat
         private float _bpm;
         private float _size;
         private Vector2 _pos;
+        private string _easing;
         private readonly float _amplitude = 1f;
         private readonly float _offset = 0f;
         private float _personalTimeOffset;
         private readonly float _rotationSpeed = -BeatboardManager.RotationSpeed;
 
-        public void SetMovement(Vector2 dir, float spd, float bpm, Vector2 pos, float sze)
+        public void SetMovement(Vector2 dir, float spd, float bpm, Vector2 pos, string eas, float sze)
         {
             _direction = dir;
             _spd = spd;
             _bpm = bpm;
             _size = sze;
             _pos = pos;
+            _easing = eas;
             _personalTimeOffset = Time.time;
         }
         
