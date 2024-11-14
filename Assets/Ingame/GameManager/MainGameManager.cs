@@ -68,7 +68,6 @@ namespace GameManager
 
         private void Start()
         {
-            GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
             StartGame();
 
             _beatHandler = gameObject.AddComponent<BeatHandler>();
@@ -89,6 +88,8 @@ namespace GameManager
         void Update()
         {
             if (!GameStarted) {
+                GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
+                GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm);
                 if(Input.GetKeyDown(KeyCode.Space)) GameStarted = true;
                 return;
             }

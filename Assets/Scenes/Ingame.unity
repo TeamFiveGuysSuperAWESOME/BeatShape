@@ -238,7 +238,6 @@ GameObject:
   - component: {fileID: 226026868}
   - component: {fileID: 226026867}
   - component: {fileID: 226026866}
-  - component: {fileID: 226026865}
   m_Layer: 5
   m_Name: Countdown
   m_TagString: countdown
@@ -265,20 +264,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 150, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &226026865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226026863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbf8fc8a6d16465bb667ca35cd29f3b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeLeft: 3
-  startText: {fileID: 0}
 --- !u!114 &226026866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -291,7 +276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbf8fc8a6d16465bb667ca35cd29f3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLeft: 3
+  startTime: 3
+  leftTime: 3
   startText: {fileID: 226026867}
 --- !u!114 &226026867
 MonoBehaviour:
@@ -604,7 +590,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbf8fc8a6d16465bb667ca35cd29f3b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLeft: 3
+  startTime: 3
+  leftTime: 3
   startText: {fileID: 0}
 --- !u!1 &814022496
 GameObject:
@@ -1076,7 +1063,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closestBeat: {fileID: 0}
-  beatDataList: []
 --- !u!1 &1713206674
 GameObject:
   m_ObjectHideFlags: 0
