@@ -27,7 +27,7 @@ public class MenuBeatBoard : MonoBehaviour
     {
         menuScenes_rt.position = new Vector2(0, -150);
         menuScenes.targetPos = menuScenes_rt.position;
-        arrows_UD.transform.position = new Vector2(180, -150);
+        arrows_UD.transform.position = new Vector2(160, -150);
     }
 
     public void NewBeat()
@@ -71,7 +71,7 @@ public class MenuBeatBoard : MonoBehaviour
                 if(timer > 1.25f) {
                     menuScenes_rt.position = new Vector2(0, -150+150*Easing.InOutCubic((timer-1.25f)/1f));
                     menuScenes.targetPos = menuScenes_rt.position;
-                    arrows_UD.transform.position = new Vector2(180, -150+150*Easing.InOutCubic((timer-1.25f)/1f));
+                    arrows_UD.transform.position = new Vector2(160, -150+150*Easing.InOutCubic((timer-1.25f)/1f));
                 }
             }
             else {
@@ -105,7 +105,7 @@ public class MenuBeatBoard : MonoBehaviour
             if(timer < 0.5f) {
                 timer += Time.deltaTime;
                 transform.position = new Vector3(-230 - 50*Easing.InCubic(timer/0.5f), 0, 0);
-                arrows_UD.transform.position = new Vector3(180 + 50*Easing.InCubic(timer/0.5f), 0, 0);
+                arrows_UD.transform.position = new Vector3(160 + 50*Easing.InCubic(timer/0.5f), 0, 0);
             }
 
             else {
