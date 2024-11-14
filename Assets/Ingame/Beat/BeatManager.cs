@@ -10,7 +10,7 @@ namespace Beat
         public GameObject beatPrefab;
         public int beatIndex;
         
-        public void CreateBeat(int index, int sides, int side, float speed, float bpm, float size, Color color)
+        public void CreateBeat(int index, int sides, int side, float speed, float bpm, float size, Color color, string easing)
         {
             var pos = BeatboardManager.GetBeatboardPosition(index);
             GameObject beatObject = Instantiate(beatPrefab, pos, Quaternion.identity, transform);
@@ -31,7 +31,7 @@ namespace Beat
             beatObject.transform.position = edgePosition;
 
             beatObject.GetComponent<BeatMovement>().SetMovement(
-                updatedDirection, speed, bpm, pos,
+                updatedDirection, speed, bpm, pos, easing,
                 BeatboardManager.GetBeatboardSize(index) - BeatboardManager.GetBeatboardSize(index) / 2.5f);
         }
 

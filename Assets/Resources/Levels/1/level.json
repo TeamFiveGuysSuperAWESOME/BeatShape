@@ -28,7 +28,7 @@
             },
             "Cycle2": {
                 "Points" : 4,
-                "Size" : 40,
+                "Size" : 20,
                 "1": {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
