@@ -92,7 +92,7 @@ namespace GameManager {
 
                 if (!currentCycle[currentSide]["Beat"]) continue;
 
-                float size = (currentCycle[currentSide]["Size"] != null ? currentCycle[currentSide]["Size"].AsFloat : 1) * BeatboardManager.GetBeatboardSize(i) / 20f;
+                float size = (currentCycle[currentSide]["Size"] != null ? currentCycle[currentSide]["Size"].AsFloat : 1);
                 Color color = new Color(
                     currentCycle[currentSide]["Color"]?[0]?.AsFloat ?? 1,
                     currentCycle[currentSide]["Color"]?[1]?.AsFloat ?? 1,
@@ -100,7 +100,7 @@ namespace GameManager {
                 );
                 if (color == Color.black) color = Color.white;
                 float speed = currentCycle[currentSide]["Speed"] != null ? currentCycle[currentSide]["Speed"].AsFloat : 1;
-                _beatManager.CreateBeat(i, _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color);
+                _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color, "OutCubic");
             }
         }
     }

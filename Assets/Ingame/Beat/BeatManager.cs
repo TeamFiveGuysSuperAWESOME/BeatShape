@@ -10,10 +10,10 @@ namespace Beat
         public GameObject beatPrefab;
         public int beatIndex;
         
-        public void CreateBeat(int index, int boardnum, int sides, int side, float speed, float bpm, float size, Color color, string easing)
+        public void CreateBeat(int index, int boardnum, float boardsize, int sides, int side, float speed, float bpm, float size, Color color, string easing)
         {
             var pos = BeatboardManager.GetBeatboardPosition(index);
-            GameObject beatObject = Instantiate(beatPrefab, pos, Quaternion.identity, transform);
+            GameObject beatObject = Instantiate(beatPrefab, pos, Quaternion.identity, GameObject.FindWithTag("boardmanager").GetComponent<BeatboardManager>().beatboards[boardnum-1].transform);
             beatObject.name = "Beat of board" + index;
             beatObject.GetComponent<SpriteRenderer>().material.color = color;
             beatObject.transform.localScale = new Vector3(size * 10f, size * 10f, 1f);
@@ -23,16 +23,11 @@ namespace Beat
             beatData.angle = angle;
             beatData.speed = speed;
 
-            var angleRadians = angle * Mathf.Deg2Rad;
-            Vector3 direction = new Vector2(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians));
-            Quaternion rotation = BeatboardManager.Rotation;
-            Vector3 updatedDirection = rotation * new Vector3(direction.x, direction.y, 0f);
-            Vector2 edgePosition = pos + (Vector2)updatedDirection * (BeatboardManager.GetBeatboardSize(index) - BeatboardManager.GetBeatboardSize(index) / 2.4f);
-            beatObject.transform.position = edgePosition;
+            beatObject.transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(angle))*boardsize, Mathf.Sin((Mathf.PI/180)*(angle))*boardsize, beatObject.transform.localPosition.z);
 
             beatObject.GetComponent<BeatMovement>().SetMovement(
-                updatedDirection, speed, bpm, pos, easing,
-                BeatboardManager.GetBeatboardSize(index) - BeatboardManager.GetBeatboardSize(index) / 2.5f);
+                angle, sides, boardsize, speed, bpm, pos, easing,
+                20f);
         }
 
         private void Start()

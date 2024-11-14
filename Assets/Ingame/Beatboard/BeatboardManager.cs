@@ -103,6 +103,7 @@ namespace Beatboard
             {
                 transform = { rotation = Rotation, position = position, parent = beatboardObject.transform }
             };
+            transparentOverlay.layer = LayerMask.NameToLayer("Board");
 
             Material secondMaterial = new Material(Shader.Find("Standard"))
             {

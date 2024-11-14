@@ -7,12 +7,14 @@ namespace Beat
 {
     public class BeatMovement : MonoBehaviour
     {
-        private Vector2 _direction;
+        private float _angle;
+        private float _boardsize;
         private float _spd;
         private float _bpm;
         private float _size;
         private Vector2 _pos;
         private string _easing;
+        public int _sides;
         private readonly float _amplitude = 1f;
         private readonly float _offset = 0f;
         private float _personalTimeOffset;
@@ -21,14 +23,16 @@ namespace Beat
         private float sineValue;
         private float adjustedSpeed;
 
-        public void SetMovement(Vector2 dir, float spd, float bpm, Vector2 pos, string eas, float sze)
+        public void SetMovement(float angle, int sides, float boardsize, float spd, float bpm, Vector2 pos, string eas, float sze)
         {
-            _direction = dir;
+            _angle = angle;
+            _boardsize = boardsize;
             _spd = spd;
             _bpm = bpm;
             _size = sze;
             _pos = pos;
             _easing = eas;
+            _sides = sides;
             _personalTimeOffset = Time.time;
         }
         
@@ -46,7 +50,7 @@ namespace Beat
         private void Update()
         {
             float secondsPerBeat = 60f / _bpm;
-            //elapsedTime = Time.time - _personalTimeOffset;
+            elapsedTime = Time.time - _personalTimeOffset;
             //sineValue = Mathf.Sin(((elapsedTime / secondsPerBeat) * 0.5f * Mathf.PI * _spd) + _offset) * _amplitude;
             //sineValue = 
             //Easing.OutCubic((elapsedTime/secondsPerBeat))
@@ -60,8 +64,13 @@ namespace Beat
             //{
             //    Destroy(gameObject);
             //}
-
             
+            sineValue = elapsedTime/(secondsPerBeat*_sides/2) < 1f ? Easing.Ease(elapsedTime/(secondsPerBeat*_sides/2), _easing) : Easing.Ease(2-(elapsedTime/(secondsPerBeat*_sides/2)), _easing);
+            transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), transform.localPosition.z);
+
+            if(elapsedTime/(secondsPerBeat*_sides) > 1f) Destroy(gameObject);
+
+            Debug.Log(sineValue);
         }
     }
 }
