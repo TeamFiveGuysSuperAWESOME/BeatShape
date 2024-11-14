@@ -4,6 +4,29 @@ using UnityEngine;
 
 public static class Easing
 {
+    public static float Ease(float t, string easing)
+    {
+        switch (easing.ToLower())
+        {
+            case "linear":
+                return t;
+            case "insine":
+                return InSine(t);
+            case "outsine":
+                return OutSine(t);
+            case "incubic":
+                return InCubic(t);
+            case "outcubic":
+                return OutCubic(t);
+            case "inoutcubic":
+                return InOutCubic(t);
+            case "outquint":
+                return OutQuint(t);
+            default:
+                return t;
+        }
+    }
+
     // Sine
     public static float InSine(float t)
     {
