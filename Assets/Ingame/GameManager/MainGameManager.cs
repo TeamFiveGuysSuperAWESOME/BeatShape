@@ -30,6 +30,8 @@ namespace GameManager
         public static int Combo = 0;
         public TextMeshProUGUI scoreText;
 
+        public TextAsset textFile;
+
         public void StartGame()
         {
             if (GameStarted) return;
@@ -39,7 +41,10 @@ namespace GameManager
             //JsonFilePath = Path.Combine(Application.streamingAssetsPath, "Levels/1/level.json");
 
             //var jsonFile = File.ReadAllText(JsonFilePath);
-            var levelString = LevelManager.Level1;
+
+            textFile = Resources.Load<TextAsset>("Levels/1/level");
+
+            var levelString = textFile.text;
             var levelDataJsonNode = JSON.Parse(levelString)["Data"];
             _boardsData = JSON.Parse(levelString)["Boards"];
 
