@@ -18,6 +18,7 @@ namespace GameManager {
         private List<float> _currentBoardSizes;
         private float _startTime;
         private int _bpm;
+        private float timer;
 
         public void Initialize(
             BeatboardManager beatboardManager,
@@ -46,7 +47,8 @@ namespace GameManager {
 
         public void HandleGame()
         {
-            var time = Time.time - _startTime;
+            timer += Time.deltaTime;
+            var time = timer - _startTime;
             if (Boards == null || _boardsData == null || _beatIntervals == null) return;
 
             for (var i = 0; i < _boardsData.Count; i++)

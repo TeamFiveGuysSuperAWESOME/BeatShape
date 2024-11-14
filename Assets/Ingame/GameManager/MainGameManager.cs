@@ -39,9 +39,6 @@ namespace GameManager
 
             _beatboardManager = FindFirstObjectByType<BeatboardManager>();
             _beatManager = FindFirstObjectByType<BeatManager>();
-            //JsonFilePath = Path.Combine(Application.streamingAssetsPath, "Levels/1/level.json");
-
-            //var jsonFile = File.ReadAllText(JsonFilePath);
 
             textFile = Resources.Load<TextAsset>("Levels/1/level");
 
@@ -67,12 +64,11 @@ namespace GameManager
 
             foreach (var t in Boards) _currentBoardPoints.Add(t["points"]);
             foreach (var t in Boards) _currentBoardSizes.Add(t["size"]);
-            
-            GameStarted = true;
         }
 
         private void Start()
         {
+            GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
             StartGame();
 
             _beatHandler = gameObject.AddComponent<BeatHandler>();
@@ -92,7 +88,10 @@ namespace GameManager
 
         void Update()
         {
-            if (!GameStarted) return; 
+            if (!GameStarted) {
+                if(Input.GetKeyDown(KeyCode.Space)) GameStarted = true;
+                return;
+            }
             _beatHandler.HandleGame();
             scoreText.text = Score.ToString();
         }

@@ -19,19 +19,18 @@ namespace Ingame.GameManager
 
         private void Update()
         {
-            closestBeat = null;
             beatDataList = new List<BeatData>(FindObjectsOfType<BeatData>());
-            float minDistance = float.MaxValue;
+            float minOffset = -float.MaxValue;
             foreach (var beatData in beatDataList)
             {
-                if (beatData.distance < minDistance && beatData.distance != 0)
+                if (beatData.input_offset > minOffset)
                 {
-                    minDistance = beatData.distance;
+                    minOffset = beatData.input_offset;
                     closestBeat = beatData;
                 }
             }
             //Debug.Log(string.Join(", ", beatDataList.Select(b => b.distance)) + " / " + minDistance);
-
+            
             if (Input.anyKeyDown && closestBeat != null)
             {
                 BeatMovement beatMovement = closestBeat.GetComponent<BeatMovement>();

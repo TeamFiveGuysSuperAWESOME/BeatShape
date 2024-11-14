@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuBeatBoard : MonoBehaviour
 {
@@ -108,7 +109,8 @@ public class MenuBeatBoard : MonoBehaviour
             }
 
             else {
-                timer = 0.5f;
+                timer += Time.deltaTime;
+                if(timer > 2f) SceneManager.LoadScene("InGame");
             }
         }
     }
