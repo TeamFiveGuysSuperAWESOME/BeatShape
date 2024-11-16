@@ -3,7 +3,7 @@
         "LevelName" : "Test1",
         "LevelDescription" : "Test Level",
         "LevelAuthor" : "Test Author",
-        "Bpm" : 100,
+        "Bpm" : 260,
         "Offset" : 0,
         "Boards" : {
             "board1" : {"points" : 4, "position" : [0,0], "size" : 20}
@@ -19,31 +19,53 @@
                     "Beat" : true,
                     "Color" : [1, 0, 0]
                 },
-                "2" : {
-                },
                 "3" : {
-                },
-                "4" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
                 }
             },
-            "Cycle2": {
+            "Cycle2" : {
                 "Points" : 4,
                 "Size" : 20,
-                "1": {
+                "1" : {
                     "Beat" : true,
-                    "Color" : [1, 1, 1]
+                    "Color" : [1, 0, 0]
                 },
-                "2": {
+                "3" : {
                     "Beat" : true,
-                    "Color" : [0.9, 1, 1]
+                    "Color" : [1, 0, 0]
+                }
+            },
+            "Cycle3" : {
+                "Points" : 4,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
                 },
-                "3": {
+                "3" : {
                     "Beat" : true,
-                    "Color" : [0.8, 1, 1]
+                    "Color" : [1, 0, 0]
+                }
+            },
+            "Cycle4" : {
+                "Points" : 4,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [0.7, 1, 1]
+                    "Color" : [1, 0, 0]
+                }
+            },
+            "Cycle5" : {
+                "Points" : 4,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
                 }
             }
         }

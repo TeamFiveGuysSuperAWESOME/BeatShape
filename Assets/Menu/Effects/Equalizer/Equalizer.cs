@@ -20,11 +20,11 @@ public class Equalizer : MonoBehaviour
 
     void Start()
     {
-        spectrums = new GameObject[array*2];
+        spectrums = new GameObject[array];
 
-        for(int i=0; i<array*2; i++) {
+        for(int i=0; i<array; i++) {
             spectrums[i] = Instantiate(spectrum_prefab, transform);
-            spectrums[i].transform.localPosition = new Vector3(i, spectrums[i].transform.localPosition.y, spectrums[i].transform.localPosition.z);
+            spectrums[i].transform.localPosition = new Vector3(i+0.5f, spectrums[i].transform.localPosition.y, spectrums[i].transform.localPosition.z);
             spectrums[i].GetComponent<SpriteRenderer>().color = manager.menuColor_dark;
         }
     }
@@ -32,11 +32,7 @@ public class Equalizer : MonoBehaviour
     void Update()
     {
         for(int i=0; i<array; i++) {
-            Vector3 targetScale = new Vector3(spectrums[i].transform.localScale.x, ap._samples[i]*2000, spectrums[i].transform.localScale.z);
-            spectrums[i].transform.localScale = Vector3.Lerp(spectrums[i].transform.localScale, targetScale, 6f*Time.deltaTime);
-        }
-        for(int i=array; i<array*2; i++) {
-            Vector3 targetScale = new Vector3(spectrums[i].transform.localScale.x, ap._samples[array*2-1 - i]*4000, spectrums[i].transform.localScale.z);
+            Vector3 targetScale = new Vector3(spectrums[i].transform.localScale.x, ap._samples[i+4]*3000, spectrums[i].transform.localScale.z);
             spectrums[i].transform.localScale = Vector3.Lerp(spectrums[i].transform.localScale, targetScale, 6f*Time.deltaTime);
         }
     }
