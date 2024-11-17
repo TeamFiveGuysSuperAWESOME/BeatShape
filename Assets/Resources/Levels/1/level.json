@@ -17,11 +17,23 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [0, 50],
+                        "Rotation" : 0,
+                        "Zoom" : 100,
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
                 },
                 "3" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [50, 50],
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
                 }
             },
             "Cycle2" : {
@@ -29,11 +41,21 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [50, -50],
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
                 },
                 "3" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [-50, -50],
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
                 }
             },
             "Cycle3" : {
@@ -41,11 +63,22 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [-50, 50],
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
                 },
                 "3" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [0, 0],
+                        "Rotation" : 720,
+                        "Duration" : 1.5,
+                        "Easing" : "outquint"
+                    }
                 }
             },
             "Cycle4" : {
@@ -65,7 +98,8 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "Easing" : "inoutcubic"
                 }
             }
         }

@@ -42,5 +42,23 @@ namespace GameManager
             }
             Camera.main.orthographicSize = endSize;
         }
+
+        public void RotateCamera(float angle, string easing, float dur)
+        {
+            StartCoroutine(RotateCameraToAngle(angle, easing, dur));
+        }
+
+        private IEnumerator RotateCameraToAngle(float endAngle, string easing, float dur)
+        {
+            float startAngle = Camera.main.transform.rotation.eulerAngles.z;
+            float time = 0;
+            while (time < dur) 
+            {
+                Camera.main.transform.rotation = Quaternion.Euler(0, 0, Easing.Ease(time / dur, easing) * (endAngle - startAngle) + startAngle);
+                time += Time.deltaTime;
+                yield return null;
+            }
+            Camera.main.transform.rotation = Quaternion.Euler(0, 0, endAngle);
+        }
     }
 }

@@ -169,8 +169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a87fe2e5e29c34489855755813640a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mask: {fileID: 1713206674}
-  screenState: FadeOut
 --- !u!212 &130672035
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -388,6 +386,9 @@ GameObject:
   m_Component:
   - component: {fileID: 356242954}
   - component: {fileID: 356242955}
+  - component: {fileID: 356242957}
+  - component: {fileID: 356242956}
+  - component: {fileID: 356242958}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -424,6 +425,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1340163341}
   textFile: {fileID: 0}
+--- !u!114 &356242956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356242953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78df042ded9656742a6bd5485db10ecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &356242957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356242953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ba6f595b9ba83b4d9c0d45cf8f9d86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &356242958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356242953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b8693e411254f96b32cd0a0c0aaafec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  closestBeat: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1013,7 +1051,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1586483479}
   - component: {fileID: 1586483478}
-  - component: {fileID: 1586483481}
   m_Layer: 0
   m_Name: BeatManager
   m_TagString: Untagged
@@ -1050,19 +1087,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1586483481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1586483477}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b8693e411254f96b32cd0a0c0aaafec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  closestBeat: {fileID: 0}
 --- !u!1 &1713206674
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,10 +6,11 @@ using Beat;
 using Beatboard;
 
 namespace GameManager {
-    public class BeatHandler : MonoBehaviour
+    public class GameHandler : MonoBehaviour
     {
         private BeatboardManager _beatboardManager;
         private BeatManager _beatManager;
+        private CameraManager _cameraManager;
         private List<JSONNode> Boards;
         private JSONNode _boardsData;
         private List<int> _currentBoardPoints;
@@ -23,6 +24,7 @@ namespace GameManager {
         public void Initialize(
             BeatboardManager beatboardManager,
             BeatManager beatManager,
+            CameraManager cameraManager,
             List<JSONNode> boards,
             JSONNode boardsData,
             List<int> currentBoardPoints,
@@ -35,6 +37,7 @@ namespace GameManager {
         {
             _beatboardManager = beatboardManager;
             _beatManager = beatManager;
+            _cameraManager = cameraManager;
             Boards = boards;
             _boardsData = boardsData;
             _currentBoardPoints = currentBoardPoints;
@@ -92,17 +95,27 @@ namespace GameManager {
 
                 _nextBeatTimes[i] += _beatIntervals[i];
 
-                if (!currentCycle[currentSide]["Beat"]) continue;
+                JSONNode currentBeat = currentCycle[currentSide];
 
-                float size = (currentCycle[currentSide]["Size"] != null ? currentCycle[currentSide]["Size"].AsFloat : 1);
-                Color color = new Color(
-                    currentCycle[currentSide]["Color"]?[0]?.AsFloat ?? 1,
-                    currentCycle[currentSide]["Color"]?[1]?.AsFloat ?? 1,
-                    currentCycle[currentSide]["Color"]?[2]?.AsFloat ?? 1
+                if (currentBeat["Camera"] != null)
+                    {
+                        JSONNode camera = currentBeat["Camera"];
+                        if (camera["Position"] != null) _cameraManager.MoveCamera(camera["Position"][0], camera["Position"][1], camera["Easing"], camera["Duration"]);
+                        if (camera["Rotation"] != null) _cameraManager.RotateCamera(camera["Rotation"], camera["Easing"], camera["Duration"]);
+                        if (camera["Zoom"] != null) _cameraManager.ZoomCamera(camera["Zoom"], camera["Easing"], camera["Duration"]);
+                    }
+                if (!currentBeat["Beat"]) continue;
+                
+                float size = currentBeat["Size"] != null ? currentBeat["Size"].AsFloat : 1;
+                Color color = new(
+                    currentBeat["Color"]?[0]?.AsFloat ?? 1,
+                    currentBeat["Color"]?[1]?.AsFloat ?? 1,
+                    currentBeat["Color"]?[2]?.AsFloat ?? 1
                 );
                 if (color == Color.black) color = Color.white;
-                float speed = currentCycle[currentSide]["Speed"] != null ? currentCycle[currentSide]["Speed"].AsFloat : 1;
-                _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color, "OutCubic");
+                float speed = currentBeat["Speed"] != null ? currentBeat["Speed"].AsFloat : 1;
+                string easing = currentBeat["Easing"] != null ? currentBeat["Easing"] : "inoutcubic";
+                _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color, easing);
             }
         }
     }

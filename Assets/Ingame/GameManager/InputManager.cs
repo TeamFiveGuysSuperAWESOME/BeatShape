@@ -14,22 +14,13 @@ namespace Ingame.GameManager
 
         private void Start()
         {
-            beatDataList.AddRange(FindObjectsOfType<BeatData>());
+            beatDataList.AddRange(FindObjectsByType<BeatData>(FindObjectsSortMode.None));
         }
 
         private void Update()
         {
-            beatDataList = new List<BeatData>(FindObjectsOfType<BeatData>());
-            float minOffset = -float.MaxValue;
-            foreach (var beatData in beatDataList)
-            {
-                if (beatData.input_offset > minOffset)
-                {
-                    minOffset = beatData.input_offset;
-                    closestBeat = beatData;
-                }
-            }
-            //Debug.Log(string.Join(", ", beatDataList.Select(b => b.distance)) + " / " + minDistance);
+            beatDataList = new List<BeatData>(FindObjectsByType<BeatData>(FindObjectsSortMode.None));
+            closestBeat = beatDataList.OrderByDescending(beatData => beatData.input_offset).FirstOrDefault();
             
             if (Input.anyKeyDown && closestBeat != null)
             {

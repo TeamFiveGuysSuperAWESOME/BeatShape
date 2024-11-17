@@ -17,6 +17,7 @@ namespace GameManager
     {
         private static BeatboardManager _beatboardManager;
         private static BeatManager _beatManager;
+        private static CameraManager _cameraManager;
         private static string _levelName, _levelDescription, _levelAuthor;
         private static int _bpm, _offset;
         private static List<JSONNode> Boards = new();
@@ -31,7 +32,7 @@ namespace GameManager
         public TextMeshProUGUI scoreText;
 
         public TextAsset textFile;
-        private BeatHandler _beatHandler;
+        private GameHandler _gameHandler;
 
         public void StartGame()
         {
@@ -39,6 +40,7 @@ namespace GameManager
 
             _beatboardManager = FindFirstObjectByType<BeatboardManager>();
             _beatManager = FindFirstObjectByType<BeatManager>();
+            _cameraManager = FindFirstObjectByType<CameraManager>();
 
             textFile = Resources.Load<TextAsset>("Levels/1/level");
 
@@ -70,10 +72,11 @@ namespace GameManager
         {
             StartGame();
 
-            _beatHandler = gameObject.AddComponent<BeatHandler>();
-            _beatHandler.Initialize(
+            _gameHandler = gameObject.AddComponent<GameHandler>();
+            _gameHandler.Initialize(
                 _beatboardManager,
                 _beatManager,
+                _cameraManager,
                 Boards,
                 _boardsData,
                 _currentBoardPoints,
@@ -93,7 +96,7 @@ namespace GameManager
                 if(Input.GetKeyDown(KeyCode.Space)) GameStarted = true;
                 return;
             }
-            _beatHandler.HandleGame();
+            _gameHandler.HandleGame();
             scoreText.text = Score.ToString();
         }
 

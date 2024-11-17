@@ -30,7 +30,7 @@ public static class Easing
     // Sine
     public static float InSine(float t)
     {
-        return 1 - Mathf.Cos((t * Mathf.PI) / 2);
+        return 1 - Mathf.Cos(t * Mathf.PI / 2);
     }
     public static float OutSine(float t)
     {

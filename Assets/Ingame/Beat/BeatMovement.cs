@@ -15,10 +15,10 @@ namespace Beat
         private Vector2 _pos;
         private string _easing;
         public int _sides;
-        private readonly float _amplitude = 1f;
-        private readonly float _offset = 0f;
+        //private readonly float _amplitude = 1f;
+        //private readonly float _offset = 0f;
         private float _personalTimeOffset;
-        private readonly float _rotationSpeed = -BeatboardManager.RotationSpeed;
+        //private readonly float _rotationSpeed = -BeatboardManager.RotationSpeed;
         private float elapsedTime;
         private float secondsPerBeat;
         private float sineValue;
@@ -41,19 +41,35 @@ namespace Beat
         
         public void TryRemoveBeatScored()
         {
-            if (elapsedTime-(secondsPerBeat*_sides) < -0.2f || elapsedTime-(secondsPerBeat*_sides) > 0.2f) //offset = -200 ~ 200ms
+            if (elapsedTime-(secondsPerBeat*_sides) < -0.15f) //offset = -100 ~ 100ms
             {
-                Debug.Log("모찌나간다");
+                Debug.Log("Too Early");
+                return;
+            }
+            if (elapsedTime-(secondsPerBeat*_sides) > 0.15f)
+            {
+                Debug.Log("Too Late");
                 return;
             }
             Destroy(gameObject);
-            Debug.Log("Beat removed");
+            switch (elapsedTime-(secondsPerBeat*_sides)) {
+                case float n when n < -0.075f:
+                    Debug.Log("Early!");
+                    break;
+                case float n when n > 0.075f:
+                    Debug.Log("Late!");
+                    break;
+                case float n when n < -0.025f:
+                    Debug.Log("Early");
+                    break;
+                case float n when n > 0.025f:
+                    Debug.Log("Late");
+                    break;
+                default:
+                    Debug.Log("Perfect");
+                    break;
+            }
             MainGameManager.Score += 1;
-        }
-
-        private void Start()
-        {
-            
         }
 
         private void Update()
@@ -63,11 +79,11 @@ namespace Beat
 
             if(elapsedTime - (secondsPerBeat*_sides) < 0f) {
                 sineValue = elapsedTime/(secondsPerBeat*_sides/2) < 1f ? Easing.Ease(elapsedTime/(secondsPerBeat*_sides/2), _easing) : Easing.Ease(2-(elapsedTime/(secondsPerBeat*_sides/2)), _easing);
-                transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), transform.localPosition.z);
+                transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), 100f);
             }
             else {
                 GetComponent<SpriteRenderer>().sprite = null;
-                if(elapsedTime - (secondsPerBeat*_sides) > 0.2f) Destroy(gameObject);
+                if(elapsedTime - (secondsPerBeat*_sides) > 0.15f) Destroy(gameObject);
             }
         }
     }
