@@ -66,11 +66,6 @@ namespace GameManager
 
             foreach (var t in Boards) _currentBoardPoints.Add(t["points"]);
             foreach (var t in Boards) _currentBoardSizes.Add(t["size"]);
-        }
-
-        private void Start()
-        {
-            StartGame();
 
             _gameHandler = gameObject.AddComponent<GameHandler>();
             _gameHandler.Initialize(
@@ -88,6 +83,11 @@ namespace GameManager
             );
         }
 
+        private void Start()
+        {
+            StartGame();
+        }
+
         void Update()
         {
             if (!GameStarted) {
@@ -98,6 +98,8 @@ namespace GameManager
             }
             _gameHandler.HandleGame();
             scoreText.text = Score.ToString();
+            
+            
         }
 
         private static void CreateBeatboardAtStart(List<JSONNode> boards)

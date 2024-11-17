@@ -169,6 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a87fe2e5e29c34489855755813640a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mask: {fileID: 1713206674}
+  screenState: FadeOut
 --- !u!212 &130672035
 SpriteRenderer:
   m_ObjectHideFlags: 0
