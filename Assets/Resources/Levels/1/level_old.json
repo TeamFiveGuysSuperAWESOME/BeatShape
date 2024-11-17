@@ -3,47 +3,136 @@
         "LevelName" : "Test1",
         "LevelDescription" : "Test Level",
         "LevelAuthor" : "Test Author",
-        "Bpm" : 100,
+        "Bpm" : 260,
         "Offset" : 0,
         "Boards" : {
-            "board1" : {"points" : 4, "position" : [0,0], "size" : 20}
+            "board1" : {"points" : 5, "position" : [0,0], "size" : 20}
         }
     },
     
     "Boards" : {
         "Board1" : {
             "Cycle1" : {
+                "Points" : 5,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [0, 50],
+                        "Rotation" : 0,
+                        "Zoom" : 100,
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
+                },
+                "2" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [0, 50],
+                        "Rotation" : 0,
+                        "Zoom" : 100,
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
+                },
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [50, 50],
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
+                },
+                "4" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [0, 50],
+                        "Rotation" : 0,
+                        "Zoom" : 100,
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
+                },
+                "5" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [0, 50],
+                        "Rotation" : 0,
+                        "Zoom" : 100,
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
+                }
+            },
+            "Cycle2" : {
+                "Points" : 4,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [50, -50],
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
+                },
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [-50, -50],
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
+                }
+            },
+            "Cycle3" : {
+                "Points" : 4,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [-50, 50],
+                        "Duration" : 0.5,
+                        "Easing" : "outquint"
+                    }
+                },
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Position" : [0, 0],
+                        "Rotation" : 720,
+                        "Duration" : 1.5,
+                        "Easing" : "outquint"
+                    }
+                }
+            },
+            "Cycle4" : {
                 "Points" : 4,
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
                     "Color" : [1, 0, 0]
                 },
-                "2" : {
-                },
-                "3" : {
-                },
                 "4" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
                 }
             },
-            "Cycle2": {
+            "Cycle5" : {
                 "Points" : 4,
                 "Size" : 20,
-                "1": {
+                "1" : {
                     "Beat" : true,
-                    "Color" : [1, 1, 1]
-                },
-                "2": {
-                    "Beat" : true,
-                    "Color" : [0.9, 1, 1]
-                },
-                "3": {
-                    "Beat" : true,
-                    "Color" : [0.8, 1, 1]
-                },
-                "4" : {
-                    "Beat" : true,
-                    "Color" : [0.7, 1, 1]
+                    "Color" : [1, 0, 0],
+                    "Easing" : "inoutcubic"
                 }
             }
         }

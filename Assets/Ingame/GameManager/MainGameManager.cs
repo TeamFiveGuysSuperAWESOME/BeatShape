@@ -19,7 +19,8 @@ namespace GameManager
         private static BeatManager _beatManager;
         private static CameraManager _cameraManager;
         private static string _levelName, _levelDescription, _levelAuthor;
-        private static int _bpm, _offset;
+        private static float _bpm;
+        private static float _offset;
         private static List<JSONNode> Boards = new();
         private static JSONNode _boardsData;
         private static List<int> _currentBoardPoints = new();
@@ -51,8 +52,8 @@ namespace GameManager
             _levelName = levelDataJsonNode["LevelName"];
             _levelDescription = levelDataJsonNode["LevelDescription"];
             _levelAuthor = levelDataJsonNode["LevelAuthor"];
-            _bpm = levelDataJsonNode["Bpm"] / 4;
-            _offset = (levelDataJsonNode["Offset"]?.AsInt ?? 0) / 1000;
+            _bpm = levelDataJsonNode["Bpm"];
+            _offset = levelDataJsonNode["Offset"] / 1000f;
 
             foreach (var board in levelDataJsonNode["Boards"]) Boards.Add(board);
             CreateBeatboardAtStart(Boards);
@@ -92,14 +93,15 @@ namespace GameManager
         {
             if (!GameStarted) {
                 GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
-                GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm);
-                if(Input.GetKeyDown(KeyCode.Space)) GameStarted = true;
+                GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm, 0.6f+_offset, Boards[0]["points"]);
+                if(Input.GetKeyDown(KeyCode.Space)) {
+                    GameStarted = true;
+                    GetComponent<AudioSource>().Play();
+                }
                 return;
             }
             _gameHandler.HandleGame();
             scoreText.text = Score.ToString();
-            
-            
         }
 
         private static void CreateBeatboardAtStart(List<JSONNode> boards)

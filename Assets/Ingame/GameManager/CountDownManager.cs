@@ -8,12 +8,14 @@ namespace GameManager
     {
         public float startTime = 3.0f;
         public float leftTime = 3.0f;
+        public int count = 4;
         public TextMeshProUGUI startText; // used for showing countdown from 3, 2, 1 
 
-        public void RefreshTimer(float onetick_time)
+        public void RefreshTimer(float onetick_time, float offset, int countnum)
         {
             startTime = onetick_time;
-            leftTime = onetick_time*1.5f;
+            leftTime = onetick_time + offset + onetick_time/countnum;
+            count = countnum;
         }
 
         void Update()
@@ -21,7 +23,7 @@ namespace GameManager
             if (!MainGameManager.GameStarted || !startText) return;
 
             leftTime -= Time.deltaTime;
-            float currentTime = (leftTime/startTime)*4;
+            float currentTime = (leftTime/startTime)*count;
             if (leftTime < 0)
             {
                 startText.text = "";
@@ -29,7 +31,7 @@ namespace GameManager
                 return;
             }
             
-            if(currentTime > 4) startText.text = "Ready";
+            if(currentTime > count) startText.text = "Ready";
             else startText.text = Mathf.Floor(currentTime).ToString();
         }
     }

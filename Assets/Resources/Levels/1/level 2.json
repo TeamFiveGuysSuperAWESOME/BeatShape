@@ -1,0 +1,53 @@
+{
+    "Data" : {
+        "LevelName" : "Test1",
+        "LevelDescription" : "Test Level",
+        "LevelAuthor" : "Test Author",
+        "Bpm" : 260,
+        "Offset" : 0,
+        "Boards" : {
+            "board1" : {"points" : 3, "position" : [0,0], "size" : 20}
+        }
+    },
+    
+    "Boards" : {
+        "Board1" : {
+            "Cycle1" : {
+                "Points" : 3,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
+                },
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
+                }
+            },
+            "Cycle2" : {
+                "Points" : 3,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
+                },
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
+                }
+            },
+            "Cycle3" : {
+                "Points" : 3,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
+                },
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
+                }
+            }
+        }
+    }
+}

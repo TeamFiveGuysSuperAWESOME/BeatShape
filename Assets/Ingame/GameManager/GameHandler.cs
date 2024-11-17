@@ -17,7 +17,7 @@ namespace GameManager {
         private List<float> _nextBeatTimes;
         private List<float> _currentBoardSizes;
         private float _startTime;
-        private int _bpm;
+        private float _bpm;
         private float timer;
         private float _elapsedTime = 0f;
 
@@ -32,7 +32,7 @@ namespace GameManager {
             List<float> nextBeatTimes,
             List<float> currentBoardSizes,
             float startTime,
-            int bpm
+            float bpm
         )
         {
             _beatboardManager = beatboardManager;
@@ -115,8 +115,8 @@ namespace GameManager {
                 );
                 if (color == Color.black) color = Color.white;
                 float speed = currentBeat["Speed"] != null ? currentBeat["Speed"].AsFloat : 1;
-                string easing = currentBeat["Easing"] != null ? currentBeat["Easing"] : "inoutcubic";
-                _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color, easing);
+                string easing = currentBeat["Easing"] != null ? currentBeat["Easing"] : "outcubic";
+                _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm*4, size, color, easing);
             }
         }
     }

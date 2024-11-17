@@ -41,32 +41,33 @@ namespace Beat
         
         public void TryRemoveBeatScored()
         {
-            if (elapsedTime-(secondsPerBeat*_sides) < -0.15f) //offset = -100 ~ 100ms
+            float inputOffset = elapsedTime-(secondsPerBeat*4);
+            if (inputOffset < -0.15f) //offset = -100 ~ 100ms
             {
-                Debug.Log("Too Early");
+                Debug.Log("Too Early! / " + inputOffset.ToString());
                 return;
             }
-            if (elapsedTime-(secondsPerBeat*_sides) > 0.15f)
+            if (inputOffset > 0.15f)
             {
-                Debug.Log("Too Late");
+                Debug.Log("Too Late! / " + inputOffset.ToString());
                 return;
             }
             Destroy(gameObject);
-            switch (elapsedTime-(secondsPerBeat*_sides)) {
-                case float n when n < -0.075f:
-                    Debug.Log("Early!");
+            switch (inputOffset) {
+                case float n when n < -0.1f:
+                    Debug.Log("Early! / " + inputOffset.ToString());
                     break;
-                case float n when n > 0.075f:
-                    Debug.Log("Late!");
+                case float n when n > 0.1f:
+                    Debug.Log("Late! / " + inputOffset.ToString());
                     break;
-                case float n when n < -0.025f:
-                    Debug.Log("Early");
+                case float n when n < -0.07f:
+                    Debug.Log("Early / " + inputOffset.ToString());
                     break;
-                case float n when n > 0.025f:
-                    Debug.Log("Late");
+                case float n when n > 0.07f:
+                    Debug.Log("Late / " + inputOffset.ToString());
                     break;
                 default:
-                    Debug.Log("Perfect");
+                    Debug.Log("Perfect / " + inputOffset.ToString());
                     break;
             }
             MainGameManager.Score += 1;
@@ -75,15 +76,15 @@ namespace Beat
         private void Update()
         {
             elapsedTime = Time.time - _personalTimeOffset;
-            GetComponent<BeatData>().input_offset = elapsedTime - (secondsPerBeat*_sides);
+            GetComponent<BeatData>().input_offset = elapsedTime - (secondsPerBeat*4);
 
-            if(elapsedTime - (secondsPerBeat*_sides) < 0f) {
-                sineValue = elapsedTime/(secondsPerBeat*_sides/2) < 1f ? Easing.Ease(elapsedTime/(secondsPerBeat*_sides/2), _easing) : Easing.Ease(2-(elapsedTime/(secondsPerBeat*_sides/2)), _easing);
+            if(elapsedTime - (secondsPerBeat*4) < 0f) {
+                sineValue = elapsedTime/(secondsPerBeat*4/2) < 1f ? Easing.Ease(elapsedTime/(secondsPerBeat*4/2), _easing) : Easing.Ease(2-(elapsedTime/(secondsPerBeat*4/2)), _easing);
                 transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), 100f);
             }
             else {
                 GetComponent<SpriteRenderer>().sprite = null;
-                if(elapsedTime - (secondsPerBeat*_sides) > 0.15f) Destroy(gameObject);
+                if(elapsedTime - (secondsPerBeat*4) > 0.15f) Destroy(gameObject);
             }
         }
     }

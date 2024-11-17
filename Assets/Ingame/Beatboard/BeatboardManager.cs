@@ -25,7 +25,7 @@ namespace Beatboard
         private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
 
-        private void CreateBeatboard(float points, float size, Vector2 position, bool update, int index)
+        private void CreateBeatboard(float points, float size, Vector2 position, int index)
         {
             RemoveBeatboard("update", null, index);
 
@@ -40,28 +40,26 @@ namespace Beatboard
             bbdata.size = size;
             bbdata.position = position;
 
-            if (update)
+            if (index != -1)
             {
-                updateBeatboards.Add(beatboardObject);
-                if (!UpdateBbIndex.Contains(index)) UpdateBbIndex.Add(index);
-                beatboardObject.name = "BeatboardUpdate" + index;
+                Beatboards[index] = beatboardObject;
+                beatboardObject.name = "Beatboard " + index;
             }
             else
             {
-                if (index != -1)
-                {
-                    Beatboards[index] = beatboardObject;
-                    beatboardObject.name = "Beatboard " + index;
-                }
-                else
-                {
-                    Beatboards.Add(beatboardObject);
-                    beatboardObject.name = "Beatboard " + Beatboards.Count;
-                }
+                Beatboards.Add(beatboardObject);
+                beatboardObject.name = "Beatboard " + Beatboards.Count;
             }
 
-            MeshFilter meshFilter = beatboardObject.AddComponent<MeshFilter>();
-            MeshRenderer meshRenderer = beatboardObject.AddComponent<MeshRenderer>();
+            UpdateMesh(beatboardObject, points, size, position);
+        }
+
+        private void UpdateMesh(GameObject beatboardObject, float points, float size, Vector2 position)
+        {
+            GameObject meshObj1 = beatboardObject.transform.Find("bbMeshIn").gameObject;
+
+            MeshFilter meshFilter = meshObj1.GetComponent<MeshFilter>();
+            MeshRenderer meshRenderer = meshObj1.GetComponent<MeshRenderer>();
             Mesh mesh = new Mesh();
             meshFilter.mesh = mesh;
 
@@ -99,11 +97,9 @@ namespace Beatboard
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
 
-            GameObject transparentOverlay = new GameObject("TransparentOverlay", typeof(MeshFilter), typeof(MeshRenderer))
-            {
-                transform = { rotation = Rotation, position = position, parent = beatboardObject.transform }
-            };
-            transparentOverlay.layer = LayerMask.NameToLayer("Board");
+            GameObject meshObj2 = beatboardObject.transform.Find("bbMeshOut").gameObject;
+
+            meshObj2.layer = LayerMask.NameToLayer("Board");
 
             Material secondMaterial = new Material(Shader.Find("Standard"))
             {
@@ -116,8 +112,8 @@ namespace Beatboard
             secondMaterial.DisableKeyword("_ALPHATEST_ON");
             secondMaterial.EnableKeyword("_ALPHABLEND_ON");
 
-            MeshFilter secondMeshFilter = transparentOverlay.GetComponent<MeshFilter>();
-            MeshRenderer secondMeshRenderer = transparentOverlay.GetComponent<MeshRenderer>();
+            MeshFilter secondMeshFilter = meshObj2.GetComponent<MeshFilter>();
+            MeshRenderer secondMeshRenderer = meshObj2.GetComponent<MeshRenderer>();
             secondMeshRenderer.material = secondMaterial;
 
             Mesh secondMesh = new Mesh();
@@ -176,31 +172,44 @@ namespace Beatboard
         {
             int pointDiff = Math.Abs(_currentPoints - nextPoints);
             float sizeDiff = Math.Abs(currentSize - nextSize);
+
+            BeatboardData bbdata = Beatboards[index].GetComponent<BeatboardData>();
+
             if (_currentPoints > nextPoints)
             {
                 for (float i = 0; i <= pointDiff*20; i += pointDiff)
                 {
-                    float size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / 20 * i;
-                    CreateBeatboard(_currentPoints-(i/20), size, position, true, index);
+                    bbdata.points = _currentPoints-(i/20);
+                    bbdata.size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / 20 * i;
+                    bbdata.position = position;
+                    UpdateMesh(Beatboards[index], bbdata.points, bbdata.size, bbdata.position);
                     yield return new WaitForSeconds(0f);
                 }
             } else if (_currentPoints < nextPoints)
             {
                 for (float i = 0; i <= pointDiff*20; i += pointDiff)
                 {
-                    float size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / 20 * i;
-                    CreateBeatboard(_currentPoints+(i/20), size, position, true, index);
+                    bbdata.points = _currentPoints+(i/20);
+                    bbdata.size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / 20 * i;
+                    bbdata.position = position;
+                    UpdateMesh(Beatboards[index], bbdata.points, bbdata.size, bbdata.position);
                     yield return new WaitForSeconds(0f);
                 }
             } else
             {
                 for (float i = 0; i <= 20; i ++)
                 {
-                    CreateBeatboard(_currentPoints, currentSize + sizeDiff / 20 * i, position, true, index);
+                    bbdata.points = _currentPoints;
+                    bbdata.size = currentSize + sizeDiff / 20 * i;
+                    bbdata.position = position;
+                    UpdateMesh(Beatboards[index], bbdata.points, bbdata.size, bbdata.position);
                     yield return new WaitForSeconds(0f);
                 }
             }
-            CreateBeatboard(nextPoints, nextSize, position, false, index);
+            bbdata.points = nextPoints;
+            bbdata.size = nextSize;
+            bbdata.position = position;
+            UpdateMesh(Beatboards[index], bbdata.points, bbdata.size, bbdata.position);
             UpdateBbIndex.Remove(index);
         }
 
@@ -257,13 +266,13 @@ namespace Beatboard
                 {
                     _nextPoints = 360;
                 }
-                Destroy(_gameObject);
+                //Destroy(_gameObject);
                 StartCoroutine(UpdateBeatboard(_currentPoints, _nextPoints, currentSize, nextSize, position, gameObjectIndex));
                 currentPoints[gameObjectIndex] = _nextPoints;
             }
             else if (!UpdateBbIndex.Contains(gameObjectIndex) && _gameObject == null)
             {
-                CreateBeatboard(_nextPoints, nextSize, position, false, -1);
+                CreateBeatboard(_nextPoints, nextSize, position, -1);
                 currentPoints.Add(_nextPoints);
             }
         }
