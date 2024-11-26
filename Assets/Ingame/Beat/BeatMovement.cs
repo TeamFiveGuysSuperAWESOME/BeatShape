@@ -17,12 +17,11 @@ namespace Beat
         public int _sides;
         //private readonly float _amplitude = 1f;
         //private readonly float _offset = 0f;
-        private float _personalTimeOffset;
         //private readonly float _rotationSpeed = -BeatboardManager.RotationSpeed;
-        private float elapsedTime;
-        private float secondsPerBeat;
-        private float sineValue;
-        private float adjustedSpeed;
+        private float _elapsedTime = 0f;
+        //private float _elapsedTime;
+        private float _secondsPerBeat;
+        private float _sineValue;
 
         public void SetMovement(float angle, int sides, float boardsize, float spd, float bpm, Vector2 pos, string eas, float sze)
         {
@@ -34,57 +33,64 @@ namespace Beat
             _pos = pos;
             _easing = eas;
             _sides = sides;
-            _personalTimeOffset = Time.time;
 
-            secondsPerBeat = 60f / _bpm;
+            _secondsPerBeat = 60f / _bpm;
         }
         
         public void TryRemoveBeatScored()
         {
-            float inputOffset = elapsedTime-(secondsPerBeat*4);
-            if (inputOffset < -0.15f) //offset = -100 ~ 100ms
+            float inputOffset = _elapsedTime - _secondsPerBeat * 4;
+            if (inputOffset < -0.15f) //offset = -150 ~ 150ms
             {
                 Debug.Log("Too Early! / " + inputOffset.ToString());
+                MainGameManager.Overload += 1;
                 return;
             }
             if (inputOffset > 0.15f)
             {
                 Debug.Log("Too Late! / " + inputOffset.ToString());
+                MainGameManager.Overload += 1;
                 return;
             }
-            Destroy(gameObject);
             switch (inputOffset) {
                 case float n when n < -0.1f:
                     Debug.Log("Early! / " + inputOffset.ToString());
+                    MainGameManager.Score += 1;
                     break;
                 case float n when n > 0.1f:
                     Debug.Log("Late! / " + inputOffset.ToString());
+                    MainGameManager.Score += 1;
                     break;
                 case float n when n < -0.07f:
                     Debug.Log("Early / " + inputOffset.ToString());
+                    MainGameManager.Score += 3;
                     break;
                 case float n when n > 0.07f:
                     Debug.Log("Late / " + inputOffset.ToString());
+                    MainGameManager.Score += 3;
                     break;
                 default:
                     Debug.Log("Perfect / " + inputOffset.ToString());
+                    MainGameManager.Score += 5;
                     break;
             }
-            MainGameManager.Score += 1;
+            Destroy(gameObject);
         }
 
         private void Update()
         {
-            elapsedTime = Time.time - _personalTimeOffset;
-            GetComponent<BeatData>().input_offset = elapsedTime - (secondsPerBeat*4);
+            if (MainGameManager.Paused) return;
+            _elapsedTime += Time.deltaTime;
+            //_elapsedTime = _elapsedTime;
+            GetComponent<BeatData>().input_offset = _elapsedTime - (_secondsPerBeat*4);
 
-            if(elapsedTime - (secondsPerBeat*4) < 0f) {
-                sineValue = elapsedTime/(secondsPerBeat*4/2) < 1f ? Easing.Ease(elapsedTime/(secondsPerBeat*4/2), _easing) : Easing.Ease(2-(elapsedTime/(secondsPerBeat*4/2)), _easing);
-                transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+sineValue*_size), 100f);
+            if(_elapsedTime - (_secondsPerBeat*4) < 0f) {
+                _sineValue = _elapsedTime/(_secondsPerBeat*4/2) < 1f ? Easing.Ease(_elapsedTime/(_secondsPerBeat*4/2), _easing) : Easing.Ease(2-(_elapsedTime/(_secondsPerBeat*4/2)), _easing);
+                transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), 100f);
             }
             else {
                 GetComponent<SpriteRenderer>().sprite = null;
-                if(elapsedTime - (secondsPerBeat*4) > 0.15f) Destroy(gameObject);
+                if(_elapsedTime - (_secondsPerBeat*4) > 0.15f) Destroy(gameObject);
             }
         }
     }

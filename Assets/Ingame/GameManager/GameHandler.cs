@@ -18,8 +18,12 @@ namespace GameManager {
         private List<float> _currentBoardSizes;
         private float _startTime;
         private float _bpm;
-        private float timer;
         private float _elapsedTime = 0f;
+
+        void Awake()
+        {
+            _elapsedTime = 0f;
+        }
 
         public void Initialize(
             BeatboardManager beatboardManager,
@@ -50,9 +54,11 @@ namespace GameManager {
 
         public void HandleGame()
         {
+            if (MainGameManager.Paused) return;
             _elapsedTime += Time.deltaTime;
             var timeSinceStart = _elapsedTime - _startTime;
             if (Boards == null || _boardsData == null || _beatIntervals == null) return;
+            var gameEnded = 0;
 
             for (var i = 0; i < _boardsData.Count; i++)
             {
@@ -60,6 +66,7 @@ namespace GameManager {
 
                 var currentCycle = _boardsData["Board" + (i + 1)]
                     ["Cycle" + (Mathf.FloorToInt((timeSinceStart / _beatIntervals[i] - 1) / _currentBoardPoints[i]) + 1)];
+                if (currentCycle == null) {gameEnded++; continue;}
                 var prevCycle = _boardsData["Board" + (i + 1)]
                     ["Cycle" + (Mathf.FloorToInt((timeSinceStart / _beatIntervals[i] - 1) / _currentBoardPoints[i]))];
                 var currentSide = (Mathf.FloorToInt((timeSinceStart / _beatIntervals[i] - 1) % _currentBoardPoints[i]) + 1).ToString();
@@ -118,6 +125,7 @@ namespace GameManager {
                 string easing = currentBeat["Easing"] != null ? currentBeat["Easing"] : "outcubic";
                 _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm*4, size, color, easing);
             }
+            if (gameEnded == _boardsData.Count) MainGameManager.GameEnded = true;
         }
     }
 }

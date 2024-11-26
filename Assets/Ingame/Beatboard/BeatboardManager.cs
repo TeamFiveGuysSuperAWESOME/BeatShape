@@ -24,6 +24,13 @@ namespace Beatboard
         private static readonly int ZWrite = Shader.PropertyToID("_ZWrite");
         private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
+        void Awake()
+        {
+            Beatboards.Clear();
+            UpdateBbIndex.Clear();
+            Rotation = Quaternion.identity;
+        }
+
 
         private void CreateBeatboard(float points, float size, Vector2 position, int index)
         {
@@ -170,6 +177,7 @@ namespace Beatboard
 
         private IEnumerator UpdateBeatboard(int _currentPoints, int nextPoints, float currentSize, float nextSize, Vector2 position, int index)
         {
+            if (MainGameManager.Paused) yield return null;
             int pointDiff = Math.Abs(_currentPoints - nextPoints);
             float sizeDiff = Math.Abs(currentSize - nextSize);
 
@@ -286,18 +294,16 @@ namespace Beatboard
 
         void Update()
         {
-            if (MainGameManager.GameStarted)
+            if (!MainGameManager.GameStarted) return;
+            if (MainGameManager.Paused) return;
+            for (int i = Beatboards.Count - 1; i >= 0; i--)
             {
-                for (int i = Beatboards.Count - 1; i >= 0; i--)
+                if (Beatboards[i] == null)
                 {
-                    if (Beatboards[i] == null)
-                    {
-                        continue;
-                    }
-
-                    Beatboards[i].transform.Rotate(Vector3.back * (RotationSpeed * Time.deltaTime), Space.Self);
-                    Rotation = Beatboards[i].transform.rotation;
+                   continue;
                 }
+                Beatboards[i].transform.Rotate(Vector3.back * (RotationSpeed * Time.deltaTime), Space.Self);
+                Rotation = Beatboards[i].transform.rotation;
             }
         }
     }

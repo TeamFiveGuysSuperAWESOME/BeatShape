@@ -19,7 +19,9 @@ namespace Ingame.GameManager
 
         private void Update()
         {
+            if (MainGameManager.Paused) return;
             beatDataList = new List<BeatData>(FindObjectsByType<BeatData>(FindObjectsSortMode.None));
+            if (beatDataList.Count == 0 && MainGameManager.GameEnded) MainGameManager.GameReallyEnded = true;
             closestBeat = beatDataList.OrderByDescending(beatData => beatData.input_offset).FirstOrDefault();
             
             if (Input.anyKeyDown && closestBeat != null)
