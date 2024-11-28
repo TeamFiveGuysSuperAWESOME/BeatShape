@@ -34,8 +34,8 @@ namespace GameManager
         public static bool GameEnded = false;
         public static bool GameReallyEnded = false;
         public static int Score = 0;
-        public static int Combo = 0;
-        public static float Overload = 0;
+        //public static int Combo = 0;
+        public static float Overload = 0f;
         public TextMeshProUGUI scoreText;
 
         public TextAsset textFile;
@@ -61,7 +61,7 @@ namespace GameManager
             JsonFilePath = string.Empty;
             GameStarted = false;
             Score = 0;
-            Combo = 0;
+            //Combo = 0;
             Paused = false;
             GameEnded = false;
             GameReallyEnded = false;
@@ -90,7 +90,7 @@ namespace GameManager
             foreach (var board in levelDataJsonNode["Boards"]) Boards.Add(board);
             CreateBeatboardAtStart(Boards);
 
-            _startTime = 0.6f + _offset;
+            _startTime = 0.55f + _offset;
             for (var i = 0; i < Boards.Count; i++)
             {
                 _beatIntervals.Insert(i, 60f / _bpm / Boards[i]["points"]);
@@ -156,12 +156,11 @@ namespace GameManager
             scoreText.text = Overload.ToString();
             if (Overload >= 3)
             {
-                GameEnded = true;
-                GameReallyEnded = true;
+                Debug.Log("Game Over");
             }
             if (GameReallyEnded)
             {
-                SceneManager.LoadScene("MainMenu");
+                //SceneManager.LoadScene("MainMenu");
             }
         }
 
@@ -178,11 +177,14 @@ namespace GameManager
 
         private IEnumerator DecreaseOverloadRoutine()
         {
-            if (Overload >= 0.3f && Overload < 3)
+            while (!GameReallyEnded) 
             {
-                Overload -= 0.3f;
+                if (Overload >= 0.5f)
+                {
+                    Overload -= 0.5f;
+                }
+                yield return new WaitForSeconds(0.2f);
             }
-            yield return new WaitForSeconds(0.2f);
         }
     }
 }

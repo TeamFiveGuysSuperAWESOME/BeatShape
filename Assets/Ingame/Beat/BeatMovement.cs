@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Beatboard;
 using GameManager;
 using UnityEngine;
@@ -74,6 +75,26 @@ namespace Beat
                     MainGameManager.Score += 5;
                     break;
             }
+            StartCoroutine(RemoveBeatRoutine());
+        }
+
+        private IEnumerator RemoveBeatRoutine()
+        {
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            //Color startColor = spriteRenderer.color;
+            float startSize = transform.localScale.x;
+            float outTime = 0.1f;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < outTime)
+            {
+                elapsedTime += Time.deltaTime;
+                //spriteRenderer.color = Color.Lerp(startColor, Color.clear, elapsedTime / fadeTime);
+                transform.localScale = new Vector3(Mathf.Lerp(startSize, 0f, elapsedTime / outTime), Mathf.Lerp(startSize, 0f, elapsedTime / outTime), 1f);
+                yield return null;
+            }
+            
+            spriteRenderer.sprite = null;
             Destroy(gameObject);
         }
 
@@ -88,9 +109,17 @@ namespace Beat
                 _sineValue = _elapsedTime/(_secondsPerBeat*4/2) < 1f ? Easing.Ease(_elapsedTime/(_secondsPerBeat*4/2), _easing) : Easing.Ease(2-(_elapsedTime/(_secondsPerBeat*4/2)), _easing);
                 transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), 100f);
             }
-            else {
-                GetComponent<SpriteRenderer>().sprite = null;
-                if(_elapsedTime - (_secondsPerBeat*4) > 0.15f) Destroy(gameObject);
+            else 
+            {
+                if(_elapsedTime - (_secondsPerBeat*4) > 0.15f) 
+                {
+                    if (!GetComponent<BeatData>().missedLogged)
+                    {
+                        Debug.Log("Missed! / " + GetComponent<BeatData>().input_offset.ToString());
+                        GetComponent<BeatData>().missedLogged = true;
+                    }
+                    StartCoroutine(RemoveBeatRoutine());
+                }
             }
         }
     }

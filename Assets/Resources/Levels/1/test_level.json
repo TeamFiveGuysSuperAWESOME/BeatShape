@@ -24,6 +24,13 @@
                         "Zoom" : 100,
                         "Duration" : 0.5,
                         "Easing" : "outquint"
+                    },
+                    "PP" : {
+                        "Bloom" : {
+                            "Intensity" : 0.5,
+                            "Threshold" : 0.5,
+                            "Color" : [1, 1, 1]
+                        }
                     }
                 },
                 "2" : {

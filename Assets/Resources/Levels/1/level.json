@@ -17,7 +17,36 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Zoom" : 75,
+                        "Duration" : 0.5,
+                        "Easing" : "inoutsine"
+                    },
+                    "PP" : {
+                        "General": {
+                            "Exposure" : 0.5
+                        },
+                        "Bloom" : {
+                            "Intensity" : 15,
+                            "Threshold" : 1,
+                            "Color" : [1, 1, 1]
+                        },
+                        "DoF" : {
+                            "FocusDistance" : 10,
+                            "Aperture" : 5,
+                            "FocalLength" : 50
+                        },
+                        "Chromatic Aberration" : {
+                            "Intensity" : 1
+                        },
+                        "Vignette" : {
+                            "Intensity" : 0.4,
+                            "Smoothness" : 1
+                        },
+                        "Duration" : 1.5,
+                        "Easing" : "outcubic"
+                    }
                 },
                 "4" : {
                     "Beat" : true,
@@ -53,11 +82,23 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : -10
+                        }
+                    }
                 },
                 "6" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : 0.5
+                        },
+                        "Duration" : 0.5,
+                        "Easing" : "outcubic"
+                    }
                 }
             },
             "Cycle5" : {
@@ -101,11 +142,23 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : -10
+                        }
+                    }
                 },
                 "6" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : 0.5
+                        },
+                        "Duration" : 0.5,
+                        "Easing" : "outcubic"
+                    }
                 }
             },
             "Cycle9" : {
@@ -149,11 +202,23 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : -10
+                        }
+                    }
                 },
                 "6" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : 0.5
+                        },
+                        "Duration" : 0.5,
+                        "Easing" : "outcubic"
+                    }
                 }
             },
             "Cycle13" : {
@@ -185,19 +250,39 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : -10
+                        }
+                    }
                 },
                 "3" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : 0.5
+                        }
+                    }
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : -10
+                        }
+                    }
                 },
                 "6" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : 0.5
+                        }
+                    }
                 }
             },
             "Cycle16" : {
@@ -205,11 +290,21 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : -10
+                        }
+                    }
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "PP" : {
+                        "General": {
+                            "Exposure" : 0.5
+                        }
+                    }
                 }
             },
             "Cycle17" : {
@@ -217,7 +312,29 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [1, 0, 0],
+                    "Camera" : {
+                        "Zoom" : 100,
+                        "Duration" : 0
+                    },
+                    "PP" : {
+                        "General": {
+                            "Exposure" : 0.7
+                        },
+                        "Bloom" : {
+                            "Intensity" : 10
+                        },
+                        "DoF" : {
+                            "FocalLength" : 1
+                        },
+                        "Chromatic Aberration" : {
+                            "Intensity" : 0.2
+                        },
+                        "Vignette" : {
+                            "Intensity" : 0
+                        },
+                        "Duration" : 0
+                    }
                 }
             }
         }
