@@ -1,9 +1,6 @@
 name: WebGL Auto Build & Deploy ⭐
 
-on:
-  push:
-     branches:
-       - 'main'
+on: workflow_dispatch
     
 jobs:
   buildWebGL:
