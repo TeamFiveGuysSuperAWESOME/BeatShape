@@ -1,4 +1,6 @@
-﻿namespace StreamingAssets.Levels
+﻿//deprecated
+
+namespace StreamingAssets.Levels
 {
     public static class LevelManager
     {

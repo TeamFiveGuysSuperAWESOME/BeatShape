@@ -70,7 +70,11 @@ namespace Beatboard
             Mesh mesh = new Mesh();
             meshFilter.mesh = mesh;
 
-            Material beatboardMaterial = new Material(Shader.Find("Unlit/Color")) { color = beatboardColor };
+            Material beatboardMaterial = new Material(Shader.Find("Unlit/Color")) 
+            { 
+                color = beatboardColor,
+                renderQueue = 3001
+            };
             meshRenderer.material = beatboardMaterial;
 
             int numVertices = Mathf.CeilToInt(points) + 1;
@@ -111,7 +115,7 @@ namespace Beatboard
             Material secondMaterial = new Material(Shader.Find("Standard"))
             {
                 color = new Color(beatboardColor.r, beatboardColor.g, beatboardColor.b, 0.35f),
-                renderQueue = -1
+                renderQueue = 3000
             };
             secondMaterial.SetInt(SrcBlend, (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             secondMaterial.SetInt(DstBlend, (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
@@ -287,13 +291,22 @@ namespace Beatboard
 
         void Start()
         {
-            //old way to create beatboard
+            //deprecated
             //CreateBeatboard(0f, 20f, new Vector2(0, 0), false, -1);
             //currentPoints.Add(0);
         }
 
         void Update()
         {
+            if (beatboardColor != MainGameManager.BeatboardColor)
+            {
+                beatboardColor = MainGameManager.BeatboardColor;
+                foreach (var beatboard in Beatboards)
+                {
+                    beatboard.transform.Find("bbMeshOut").gameObject.GetComponent<MeshRenderer>().material.color = beatboardColor;
+                    beatboard.transform.Find("bbMeshIn").gameObject.GetComponent<MeshRenderer>().material.color = beatboardColor;
+                }
+            }
             if (!MainGameManager.GameStarted) return;
             if (MainGameManager.Paused) return;
             for (int i = Beatboards.Count - 1; i >= 0; i--)

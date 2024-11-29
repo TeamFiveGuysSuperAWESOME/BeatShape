@@ -88,29 +88,6 @@ namespace GameManager
             Camera.main.transform.position = originalPos;
         }
 
-        public void FlashCamera(Color color, float dur)
-        {
-            StartCoroutine(FlashCameraForDuration(color, dur));
-        }
-
-        private IEnumerator FlashCameraForDuration(Color color, float dur)
-        {
-            Image flash = new GameObject("Flash", typeof(Image)).GetComponent<Image>();
-            flash.transform.SetParent(transform);
-            flash.rectTransform.anchorMin = Vector2.zero;
-            flash.rectTransform.anchorMax = Vector2.one;
-            flash.rectTransform.sizeDelta = Vector2.zero;
-            flash.color = color;
-            float time = 0;
-            while (time < dur) 
-            {
-                flash.color = new Color(color.r, color.g, color.b, Easing.Ease(time / dur, "linear"));
-                time += Time.deltaTime;
-                yield return null;
-            }
-            Destroy(flash.gameObject);
-        }
-
         public void Bloom(float intensity, float threshold, Color color, string easing = "linear", float duration = 1f)
         {
             StartCoroutine(Bloomer(intensity, threshold, color, easing, duration));
@@ -287,10 +264,47 @@ namespace GameManager
             colorGrading.saturation.value = saturation;
         }
 
+        public void ChangeBBColor(Color color, string easing = "linear", float duration = 1f)
+        {
+            StartCoroutine(ChangeBBColorer(color, easing, duration));
+        }
+
+        private IEnumerator ChangeBBColorer(Color color, string easing, float duration)
+        {
+            Color originalColor = MainGameManager.BeatboardColor;
+            float time = 0f;
+            while (time < duration) 
+            {
+                float t = Easing.Ease(time / duration, easing);
+                MainGameManager.BeatboardColor = Color.Lerp(originalColor, color, t);
+                time += Time.deltaTime;
+                yield return null;
+            }
+            MainGameManager.BeatboardColor = color;
+        }
+
+        public void ChangeBGColor(Color color, string easing = "linear", float duration = 1f)
+        {
+            StartCoroutine(ChangeBGColorer(color, easing, duration));
+        }
+
+        private IEnumerator ChangeBGColorer(Color color, string easing, float duration)
+        {
+            Color originalColor = Camera.main.backgroundColor;
+            float time = 0f;
+            while (time < duration) 
+            {
+                float t = Easing.Ease(time / duration, easing);
+                Camera.main.backgroundColor = Color.Lerp(originalColor, color, t);
+                time += Time.deltaTime;
+                yield return null;
+            }
+            Camera.main.backgroundColor = color;
+        }
+
         void Start()
         {
             var volume = FindObjectsByType<PostProcessVolume>(FindObjectsSortMode.None)[0].GetComponent<PostProcessVolume>();
-            Debug.Log(volume);
             volume.profile.TryGetSettings(out bloom);
             volume.profile.TryGetSettings(out depthOfField);
             volume.profile.TryGetSettings(out lensDistortion);

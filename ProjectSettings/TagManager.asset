@@ -18,6 +18,7 @@ TagManager:
   - effectmanager
   - boardmanager
   - countdown
+  - BackgroundImg
   layers:
   - Default
   - TransparentFX

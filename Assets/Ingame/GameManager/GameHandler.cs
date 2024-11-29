@@ -131,12 +131,16 @@ namespace GameManager {
                 if (currentBeat["Camera"] != null)
                 {
                     JSONNode camera = currentBeat["Camera"];
+                    if (camera["BBColor"] != null) _cameraManager.ChangeBBColor(new Color(camera["BBColor"][0], camera["BBColor"][1], camera["BBColor"][2]), camera["Easing"], camera["Duration"]);
+                    if (camera["BGColor"] != null) _cameraManager.ChangeBGColor(new Color(camera["BGColor"][0], camera["BGColor"][1], camera["BGColor"][2]), camera["Easing"], camera["Duration"]);
+                    if (camera["BGImage"] != null) GameObject.FindGameObjectsWithTag("BackgroundImg")[0].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Levels/1/" + camera["BGImage"]);
                     if (camera["Position"] != null) _cameraManager.MoveCamera(camera["Position"][0], camera["Position"][1], camera["Easing"], camera["Duration"]);
                     if (camera["Rotation"] != null) _cameraManager.RotateCamera(camera["Rotation"], camera["Easing"], camera["Duration"]);
                     if (camera["Zoom"] != null) _cameraManager.ZoomCamera(camera["Zoom"], camera["Easing"], camera["Duration"]);
+                    if (camera["Shake"] != null) _cameraManager.ShakeCamera(camera["Shake"]["Intensity"], camera["Shake"]["Duration"]);
                 }
 
-                //Post Processing
+                //Deprecated Post Processing
                 /*if (currentBeat["PP"] != null)
                 {
                     JSONNode pp = currentBeat["PP"];
@@ -153,6 +157,7 @@ namespace GameManager {
                     new Color(pp["Vignette"]["Color"][0], pp["Vignette"]["Color"][1], pp["Vignette"]["Color"][2]));
                 }*/
 
+                //Post Processing
                 if (currentBeat["PP"] != null)
                 {
                     JSONNode pp = currentBeat["PP"];

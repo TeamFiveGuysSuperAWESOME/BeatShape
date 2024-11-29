@@ -23,6 +23,7 @@ namespace GameManager
         private static string _levelName, _levelDescription, _levelAuthor;
         private static float _bpm;
         private static float _offset;
+        public static Color BeatboardColor;
         private static List<JSONNode> Boards = new();
         private static JSONNode _boardsData;
         private static List<int> _currentBoardPoints = new();
@@ -52,6 +53,7 @@ namespace GameManager
             _levelAuthor = string.Empty;
             _bpm = 0f;
             _offset = 0f;
+            BeatboardColor = Color.white;
             Boards.Clear();
             _boardsData = null;
             _currentBoardPoints.Clear();
@@ -84,6 +86,8 @@ namespace GameManager
             _levelName = levelDataJsonNode["LevelName"];
             _levelDescription = levelDataJsonNode["LevelDescription"];
             _levelAuthor = levelDataJsonNode["LevelAuthor"];
+            var levelAudio = levelDataJsonNode["AudioFile"];
+            GetComponent<AudioSource>().clip = Resources.Load<AudioClip>("Levels/1/" + levelAudio);
             _bpm = levelDataJsonNode["Bpm"];
             _offset = levelDataJsonNode["Offset"] / 1000f;
 
@@ -99,6 +103,29 @@ namespace GameManager
 
             foreach (var t in Boards) _currentBoardPoints.Add(t["points"]);
             foreach (var t in Boards) _currentBoardSizes.Add(t["size"]);
+
+            var background = levelDataJsonNode["Background"];
+            BeatboardColor = new Color(background["BBColor"][0], background["BBColor"][1], background["BBColor"][2]);
+            Camera.main.backgroundColor = new Color(background["BGColor"][0], background["BGColor"][1], background["BGColor"][2]);
+            if (background["BGImage"] != null)
+            {
+                var backgroundSprite = Resources.Load<Sprite>("Levels/1/" + background["BGImage"]);
+                if (backgroundSprite != null)
+                {
+                    GameObject backgroundObj = new("Background");
+                    backgroundObj.transform.SetParent(Camera.main.transform, false);
+                    backgroundObj.tag = "BackgroundImg";
+                    SpriteRenderer spriteRenderer = backgroundObj.AddComponent<SpriteRenderer>();
+                    spriteRenderer.sprite = backgroundSprite;
+                    float screenHeight = Camera.main.orthographicSize * 2;
+                    float screenWidth = screenHeight * Screen.width / Screen.height;
+                    Vector2 spriteSize = backgroundSprite.bounds.size;
+                    float scale = Mathf.Max(screenWidth / spriteSize.x, screenHeight / spriteSize.y);
+                    backgroundObj.transform.localScale = new Vector3(scale, scale, 1);
+                    backgroundObj.transform.position = new Vector3(0, 0, 2);
+                    spriteRenderer.sortingOrder = -1;
+                }
+            }
 
             _gameHandler = gameObject.AddComponent<GameHandler>();
             _gameHandler.Initialize(

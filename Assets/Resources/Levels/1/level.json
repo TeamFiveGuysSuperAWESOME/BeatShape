@@ -3,10 +3,16 @@
         "LevelName" : "Test1",
         "LevelDescription" : "Test Level",
         "LevelAuthor" : "Test Author",
+        "AudioFile" : "Riya - Polygons (remaster)", 
         "Bpm" : 65,
         "Offset" : 820,
         "Boards" : {
             "board1" : {"points" : 6, "position" : [0,0], "size" : 20}
+        },
+        "Background" : {
+            "BBColor" : [0, 0, 0],
+            "BGColor" : [1, 1, 1],
+            "BGImage" : "bg1"
         }
     },
     
@@ -19,8 +25,19 @@
                     "Beat" : true,
                     "Color" : [1, 0, 0],
                     "Camera" : {
+                        "BBColor" : [1, 1, 1],
+                        "BGColor" : [0.1, 0.1, 0.1],
+                        "BGImage" : "",
                         "Zoom" : 75,
                         "Duration" : 0.5,
+                        "Shake" : {
+                            "Intensity" : 10,
+                            "Duration" : 0.5
+                        },
+                        "Flash" : {
+                            "Color" : [1, 1, 1],
+                            "Duration" : 0.5
+                        },
                         "Easing" : "inoutsine"
                     },
                     "PP" : {
@@ -314,8 +331,13 @@
                     "Beat" : true,
                     "Color" : [1, 0, 0],
                     "Camera" : {
+                        "BGImage" : "bg1",
                         "Zoom" : 100,
-                        "Duration" : 0
+                        "Duration" : 0,
+                        "Shake" : {
+                            "Intensity" : 20,
+                            "Duration" : 0.25
+                        }
                     },
                     "PP" : {
                         "General": {
