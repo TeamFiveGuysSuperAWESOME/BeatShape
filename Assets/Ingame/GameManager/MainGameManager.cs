@@ -12,6 +12,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Runtime.InteropServices;
 
 namespace GameManager
 {
@@ -30,6 +31,7 @@ namespace GameManager
         private static List<float> _beatIntervals = new(), _nextBeatTimes = new(), _currentBoardSizes = new();
         private float _startTime;
         public static string JsonFilePath;
+        private bool _isJsonFileLoaded = false;
         public static bool GameStarted = false;
         public static bool Paused = false;
         public static bool GameEnded = false;
@@ -42,6 +44,12 @@ namespace GameManager
         public TextAsset textFile;
         private GameHandler _gameHandler;
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+        [DllImport("__Internal")]
+        private static extern void UploadFile();
+#endif
+
+        private string levelJsonData;
 
         void Awake()
         {
@@ -69,6 +77,22 @@ namespace GameManager
             GameReallyEnded = false;
         }
 
+        void Start()
+        {
+            // 파일 업로드 버튼 표시
+#if UNITY_WEBGL && !UNITY_EDITOR
+            UploadFile();
+#endif
+            StartCoroutine(DecreaseOverloadRoutine());
+        }
+
+        public void OnFileUpload(string jsonData)
+        {
+            levelJsonData = jsonData;
+            StartGame();
+            _isJsonFileLoaded = true;
+        }
+
         public void StartGame()
         {
             if (GameStarted) return;
@@ -77,9 +101,11 @@ namespace GameManager
             _beatManager = FindFirstObjectByType<BeatManager>();
             _cameraManager = FindFirstObjectByType<CameraManager>();
 
-            textFile = Resources.Load<TextAsset>("Levels/1/level");
+            //textFile = Resources.Load<TextAsset>("Levels/1/level");
+            //textFile = 
 
-            var levelString = textFile.text;
+            // 업로드된 JSON 데이터 사용
+            var levelString = levelJsonData;
             var levelDataJsonNode = JSON.Parse(levelString)["Data"];
             _boardsData = JSON.Parse(levelString)["Boards"];
 
@@ -144,12 +170,6 @@ namespace GameManager
             
         }
 
-        private void Start()
-        {
-            StartGame();
-            StartCoroutine(DecreaseOverloadRoutine());
-        }
-
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.Tab))
@@ -158,7 +178,7 @@ namespace GameManager
             }
             if (!GameStarted) {
                 GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
-                GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm, 0.6f+_offset, Boards[0]["points"]);
+                if (_isJsonFileLoaded) GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm, 0.6f+_offset, Boards[0]["points"]);
                 if(Input.GetKeyDown(KeyCode.Space)) {
                     GameStarted = true;
                     GetComponent<AudioSource>().Play();
