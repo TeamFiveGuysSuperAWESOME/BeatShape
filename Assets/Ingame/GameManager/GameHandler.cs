@@ -64,6 +64,8 @@ namespace GameManager {
             {
                 if (timeSinceStart < _nextBeatTimes[i]) continue;
 
+                _nextBeatTimes[i] += _beatIntervals[i];
+
                 var currentCycle = _boardsData["Board" + (i + 1)]
                     ["Cycle" + (Mathf.FloorToInt((timeSinceStart / _beatIntervals[i] - 1) / _currentBoardPoints[i]) + 1)];
                 if (currentCycle == null) {gameEnded++; continue;}
@@ -100,8 +102,6 @@ namespace GameManager {
                         _beatIntervals[i] = 60f / _bpm / currentPoint;
                     }
                 }
-
-                _nextBeatTimes[i] += _beatIntervals[i];
 
                 JSONNode currentBeat = currentCycle[currentSide];
 

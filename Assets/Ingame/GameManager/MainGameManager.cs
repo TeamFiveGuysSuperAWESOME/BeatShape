@@ -83,6 +83,9 @@ namespace GameManager
 #if UNITY_WEBGL && !UNITY_EDITOR
             UploadFile();
 #endif
+#if UNITY_EDITOR
+            StartGame();
+#endif
             StartCoroutine(DecreaseOverloadRoutine());
         }
 
@@ -101,11 +104,16 @@ namespace GameManager
             _beatManager = FindFirstObjectByType<BeatManager>();
             _cameraManager = FindFirstObjectByType<CameraManager>();
 
-            //textFile = Resources.Load<TextAsset>("Levels/1/level");
+            textFile = Resources.Load<TextAsset>("Levels/1/level");
             //textFile = 
 
-            // 업로드된 JSON 데이터 사용
+#if UNITY_WEBGL && !UNITY_EDITOR
             var levelString = levelJsonData;
+#endif
+#if UNITY_EDITOR
+            var levelString = textFile.text;
+#endif
+            Debug.Log(levelString);
             var levelDataJsonNode = JSON.Parse(levelString)["Data"];
             _boardsData = JSON.Parse(levelString)["Boards"];
 
