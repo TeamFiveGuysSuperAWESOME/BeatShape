@@ -92,10 +92,15 @@ namespace GameManager
 #if UNITY_WEBGL && !UNITY_EDITOR
                 UploadFile();
 #endif
-            }
 #if UNITY_EDITOR
             StartGame();
 #endif
+            }
+            else
+            {
+                StartGame();
+            }
+
 
             StartCoroutine(DecreaseOverloadRoutine());
         }
@@ -117,16 +122,20 @@ namespace GameManager
 
             textFile = Resources.Load<TextAsset>("Levels/1/level");
             //textFile = 
+            var levelString = textFile.text;
             if (DebugMode)
             {
 #if UNITY_WEBGL && !UNITY_EDITOR
-                var levelString = levelJsonData;
+                levelString = levelJsonData;
+#endif
+#if UNITY_EDITOR
+            levelString = textFile.text;
 #endif
             }
-
-#if UNITY_EDITOR
-            var levelString = textFile.text;
-#endif
+            else
+            {
+                levelString = textFile.text;
+            }
             var levelDataJsonNode = JSON.Parse(levelString)["Data"];
             _boardsData = JSON.Parse(levelString)["Boards"];
 
