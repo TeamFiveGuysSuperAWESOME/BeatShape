@@ -1,0 +1,25 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.yourcompany.yourapp">
+
+    <!-- 권한 선언 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    
+    <!-- Android 10 이상에서 Scoped Storage를 비활성화하려면 추가 -->
+    <application android:requestLegacyExternalStorage="true">
+        <!-- Unity 메인 액티비티 -->
+        <activity android:name="com.unity3d.player.UnityPlayerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/UnityThemeSelector"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            android:configChanges="locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenSize|smallestScreenSize|screenLayout|density|fontScale|uiMode">
+            
+            <!-- 메인 엔트리 포인트 설정 -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

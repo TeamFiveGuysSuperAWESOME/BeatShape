@@ -22,7 +22,7 @@ public class MenuManager : MonoBehaviour
     public string menuState = "menu";
     public int sceneState = 0;
     public int levelIndex = 5;
-    public int levelNumber = 1;
+    public static int levelNumber = 1;
 
     private readonly KeyCode[] cheatCode = { KeyCode.D, KeyCode.G, KeyCode.B, KeyCode.A, KeyCode.B, KeyCode.O };
     public static bool DebugMode = false;

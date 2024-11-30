@@ -37,9 +37,24 @@ public class LevelSelectScene : MonoBehaviour
             levels[i].transform.localPosition += new Vector3(10*i, 0, 0);
 
             MenuLevel level_scr = levels[i].GetComponent<MenuLevel>();
-            if(i == manager.levelNumber-1) {level_scr.targetScale = new Vector3(10, 10, 1);}
+            if(i == MenuManager.levelNumber-1) {level_scr.targetScale = new Vector3(10, 10, 1);}
             else {level_scr.targetScale = new Vector3(5, 5, 1);}
             level_scr.stageNum = i;
+        }
+    }
+
+    public void Input_spaceDown()
+    {
+        if(manager.menuState == "stageSelect" && manager.sceneState == 0) {
+            stage_text_rt.localScale = new Vector3(0.9f,0.9f,1);
+        }
+    }
+    public void Input_spaceUp()
+    {
+        if(manager.menuState == "stageSelect" && manager.sceneState == 0) {
+            stage_text_rt.localScale = new Vector3(1,1,1);
+            effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*10,menuScenes.liveLevelScale.y*10), new Vector2(150,150), 0.75f, manager.menuColor_dark);
+            manager.menuState = "stageEntry";
         }
     }
 
@@ -47,6 +62,7 @@ public class LevelSelectScene : MonoBehaviour
     {
         levelsGroup.transform.localPosition = Vector3.Lerp(levelsGroup.transform.localPosition, targetPos, Time.deltaTime * 6f);
         
+        //input_spaceUp / Down
         if(manager.menuState == "stageSelect" && manager.sceneState == 0) {
             if(Input.GetKeyDown(KeyCode.Space)) {
                 stage_text_rt.localScale = new Vector3(0.9f,0.9f,1);

@@ -42,6 +42,23 @@ public class MenuBeatBoard : MonoBehaviour
         GameObject clack_obj = Instantiate(clack_prefab, transform);
     }
 
+    public void Input_up()
+    {
+        if(manager.sceneState > 0) {
+            rot_z -= 90f;
+            manager.sceneState -= 1;
+            menuScenes.targetPos.y -= 200;
+        }
+    }
+    public void Input_down()
+    {
+        if(manager.sceneState < 1) {
+            rot_z += 90f;
+            manager.sceneState += 1;
+            menuScenes.targetPos.y += 200;
+        }
+    }
+
     void Update()
     {
         if(transform.localScale.x > 150) {
@@ -85,20 +102,7 @@ public class MenuBeatBoard : MonoBehaviour
         if(manager.menuState == "stageSelect") {
             Quaternion targetRotation = Quaternion.Euler(0, 0, rot_z);
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 6f);
-            if(Input.GetKeyDown(KeyCode.UpArrow)) {
-                if(manager.sceneState > 0) {
-                    rot_z -= 90f;
-                    manager.sceneState -= 1;
-                    menuScenes.targetPos.y -= 200;
-                }
-            }
-            if(Input.GetKeyDown(KeyCode.DownArrow)) {
-                if(manager.sceneState < 1) {
-                    rot_z += 90f;
-                    manager.sceneState += 1;
-                    menuScenes.targetPos.y += 200;
-                }
-            }
+            //input_up / down
         }
 
         if(manager.menuState == "stageEntry") {

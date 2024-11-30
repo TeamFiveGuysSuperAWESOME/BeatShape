@@ -20,6 +20,9 @@ TagManager:
   - countdown
   - BackgroundImg
   - Canvas
+  - levelselect
+  - gamemanager
+  - testtext
   layers:
   - Default
   - TransparentFX
