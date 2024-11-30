@@ -19,6 +19,7 @@ TagManager:
   - boardmanager
   - countdown
   - BackgroundImg
+  - Canvas
   layers:
   - Default
   - TransparentFX

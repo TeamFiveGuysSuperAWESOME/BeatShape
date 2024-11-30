@@ -22,6 +22,8 @@ namespace Beat
             BeatData beatData = beatObject.GetComponent<BeatData>();
             beatData.angle = angle;
             beatData.speed = speed;
+            beatData.displayed = false;
+            beatData.scored = false;
 
             beatObject.transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(angle))*boardsize, Mathf.Sin((Mathf.PI/180)*(angle))*boardsize, beatObject.transform.localPosition.z);
 

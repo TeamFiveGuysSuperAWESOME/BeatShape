@@ -13,6 +13,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Runtime.InteropServices;
+using System.Data;
+using Unity.VisualScripting;
 
 namespace GameManager
 {
@@ -40,9 +42,12 @@ namespace GameManager
         //public static int Combo = 0;
         public static float Overload = 0f;
         public TextMeshProUGUI scoreText;
-
+        private FadeInScreen screen;
         public TextAsset textFile;
         private GameHandler _gameHandler;
+        public static bool DebugMode = MenuManager.DebugMode;
+        private bool _isLeaving = false;
+        private float animtimer = 0f;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
@@ -53,6 +58,7 @@ namespace GameManager
 
         void Awake()
         {
+            screen = GameObject.FindWithTag("screen").GetComponent<FadeInScreen>();
             _beatboardManager = null;
             _beatManager = null;
             _cameraManager = null;
@@ -75,17 +81,22 @@ namespace GameManager
             Paused = false;
             GameEnded = false;
             GameReallyEnded = false;
+            DebugMode = MenuManager.DebugMode;
         }
 
         void Start()
         {
-            // 파일 업로드 버튼 표시
+            Debug.Log("Debug Mode: " + DebugMode);
+            if (DebugMode)
+            {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            UploadFile();
+                UploadFile();
 #endif
+            }
 #if UNITY_EDITOR
             StartGame();
 #endif
+
             StartCoroutine(DecreaseOverloadRoutine());
         }
 
@@ -106,14 +117,16 @@ namespace GameManager
 
             textFile = Resources.Load<TextAsset>("Levels/1/level");
             //textFile = 
-
+            if (DebugMode)
+            {
 #if UNITY_WEBGL && !UNITY_EDITOR
-            var levelString = levelJsonData;
+                var levelString = levelJsonData;
 #endif
+            }
+
 #if UNITY_EDITOR
             var levelString = textFile.text;
 #endif
-            Debug.Log(levelString);
             var levelDataJsonNode = JSON.Parse(levelString)["Data"];
             _boardsData = JSON.Parse(levelString)["Boards"];
 
@@ -128,7 +141,7 @@ namespace GameManager
             foreach (var board in levelDataJsonNode["Boards"]) Boards.Add(board);
             CreateBeatboardAtStart(Boards);
 
-            _startTime = 0.55f + _offset;
+            _startTime = 0.5f + _offset;
             for (var i = 0; i < Boards.Count; i++)
             {
                 _beatIntervals.Insert(i, 60f / _bpm / Boards[i]["points"]);
@@ -182,8 +195,15 @@ namespace GameManager
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                SceneManager.LoadScene("MainMenu");
+                LoadMainMenu();
             }
+            if (_isLeaving) 
+            {
+                screen.screenState = "FadeIn";
+                animtimer += Time.deltaTime;
+                if (animtimer > 0.75f) { _isLeaving = false; SceneManager.LoadScene("MainMenu"); }
+            }
+
             if (!GameStarted) {
                 GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
                 if (_isJsonFileLoaded) GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm, 0.6f+_offset, Boards[0]["points"]);
@@ -193,6 +213,7 @@ namespace GameManager
                 }
                 return;
             }
+
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Paused = !Paused;
@@ -207,15 +228,12 @@ namespace GameManager
                     GetComponent<AudioSource>().Play();
                 }
             }
+
             _gameHandler.HandleGame();
             scoreText.text = Overload.ToString();
             if (Overload >= 3)
             {
                 Debug.Log("Game Over");
-            }
-            if (GameReallyEnded)
-            {
-                //SceneManager.LoadScene("MainMenu");
             }
         }
 
@@ -240,6 +258,12 @@ namespace GameManager
                 }
                 yield return new WaitForSeconds(0.2f);
             }
+        }
+
+        private void LoadMainMenu()
+        {
+            animtimer = 0f;
+            _isLeaving = true;
         }
     }
 }

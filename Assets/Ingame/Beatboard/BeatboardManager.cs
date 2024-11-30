@@ -225,7 +225,7 @@ namespace Beatboard
             UpdateBbIndex.Remove(index);
         }
 
-        private void RemoveBeatboard(String category, GameObject thing, int index)
+        private void RemoveBeatboard(string category, GameObject thing, int index)
         {
             if (category == "update")
             {

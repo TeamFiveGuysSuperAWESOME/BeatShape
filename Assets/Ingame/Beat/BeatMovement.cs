@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using Beatboard;
 using GameManager;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Beat
@@ -44,38 +47,111 @@ namespace Beat
             if (inputOffset < -0.15f) //offset = -150 ~ 150ms
             {
                 Debug.Log("Too Early! / " + inputOffset.ToString());
+                //StartCoroutine(DisplayIndicator("Too EARLY", Color.red));
+                StartCoroutine(ChangeColorRoutine(new Color(0.5f, 0f, 0f)));
                 MainGameManager.Overload += 1;
                 return;
             }
             if (inputOffset > 0.15f)
             {
                 Debug.Log("Too Late! / " + inputOffset.ToString());
+                //StartCoroutine(DisplayIndicator("Too LATE", Color.red));
+                StartCoroutine(ChangeColorRoutine(new Color(0.5f, 0f, 0f)));
                 MainGameManager.Overload += 1;
                 return;
             }
+            if (GetComponent<BeatData>().scored) return;
+            GetComponent<BeatData>().input_offset = -9999f;
+            GetComponent<BeatData>().scored = true;
             switch (inputOffset) {
                 case float n when n < -0.1f:
                     Debug.Log("Early! / " + inputOffset.ToString());
+                    StartCoroutine(DisplayIndicator("EARLY", Color.red));
+                    //StartCoroutine(ChangeColorRoutine(Color.red));
                     MainGameManager.Score += 1;
                     break;
                 case float n when n > 0.1f:
                     Debug.Log("Late! / " + inputOffset.ToString());
+                    StartCoroutine(DisplayIndicator("LATE", Color.red));
+                    //StartCoroutine(ChangeColorRoutine(Color.red));
                     MainGameManager.Score += 1;
                     break;
                 case float n when n < -0.07f:
                     Debug.Log("Early / " + inputOffset.ToString());
+                    StartCoroutine(DisplayIndicator("Early", Color.yellow));
+                    //StartCoroutine(ChangeColorRoutine(Color.yellow));
                     MainGameManager.Score += 3;
                     break;
                 case float n when n > 0.07f:
                     Debug.Log("Late / " + inputOffset.ToString());
+                    StartCoroutine(DisplayIndicator("Late", Color.yellow));
+                    //StartCoroutine(ChangeColorRoutine(Color.yellow));
                     MainGameManager.Score += 3;
                     break;
                 default:
-                    Debug.Log("Perfect / " + inputOffset.ToString());
+                    Debug.Log("Perfect! / " + inputOffset.ToString());
+                    StartCoroutine(DisplayIndicator("Perfect!", Color.green));
+                    //StartCoroutine(ChangeColorRoutine(Color.green));
                     MainGameManager.Score += 5;
                     break;
             }
             StartCoroutine(RemoveBeatRoutine());
+        }
+
+        private IEnumerator DisplayIndicator(string text, Color color = default)
+        {
+            GameObject scoreText = new("Indicator");
+            scoreText.transform.localScale = new Vector3(0f, 0f, 1f);
+            scoreText.transform.SetParent(GameObject.FindWithTag("Canvas").transform);
+            scoreText.transform.position = new Vector3(0, 0, -1f);
+            scoreText.layer = 5;
+            var tmp = scoreText.AddComponent<TextMeshPro>();
+            RectTransform rectTransform = scoreText.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(300f, 150f);
+            tmp.text = text;
+            tmp.fontSize = 170;
+            tmp.alignment = TextAlignmentOptions.Center;
+            tmp.color = color == default ? Color.white : color;
+            tmp.autoSizeTextContainer = true; 
+
+            float animDuration = 0.1f;
+            float holdDuration = 0.1f;
+            float elapsedTime = 0f;
+            while (elapsedTime < animDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float scale = Easing.Ease(elapsedTime / animDuration, "outcubic");
+                float yaxis = Easing.Ease(elapsedTime / animDuration, "outcubic") * 50f;
+                scoreText.transform.localPosition = new Vector3(0, yaxis, -1f);
+                scoreText.transform.localScale = new Vector3(scale, scale, 1);
+                yield return null;
+            }
+            yield return new WaitForSeconds(holdDuration);
+            elapsedTime = 0f;
+            while (elapsedTime < animDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float scale = 1 - Easing.Ease(elapsedTime / animDuration, "incubic");
+                scoreText.transform.localScale = new Vector3(scale, scale, 1);
+                yield return null;
+            }
+
+            Destroy(scoreText);
+            if (text != "Too Early!" && text != "Too Late!") GetComponent<BeatData>().displayed = true;
+        }
+
+        private IEnumerator ChangeColorRoutine(Color color) {
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+            Color startColor = spriteRenderer.color;
+            float fadeTime = 0.1f;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < fadeTime)
+            {
+                elapsedTime += Time.deltaTime;
+                spriteRenderer.color = Color.Lerp(startColor, color, elapsedTime / fadeTime);
+                yield return null;
+            }
         }
 
         private IEnumerator RemoveBeatRoutine()
@@ -93,8 +169,7 @@ namespace Beat
                 transform.localScale = new Vector3(Mathf.Lerp(startSize, 0f, elapsedTime / outTime), Mathf.Lerp(startSize, 0f, elapsedTime / outTime), 1f);
                 yield return null;
             }
-            
-            spriteRenderer.sprite = null;
+            yield return new WaitUntil(() => GetComponent<BeatData>().displayed);
             Destroy(gameObject);
         }
 
@@ -103,7 +178,8 @@ namespace Beat
             if (MainGameManager.Paused) return;
             _elapsedTime += Time.deltaTime;
             //_elapsedTime = _elapsedTime;
-            GetComponent<BeatData>().input_offset = _elapsedTime - (_secondsPerBeat*4);
+            BeatData beatData = GetComponent<BeatData>();
+            if (beatData.input_offset != -9999f) beatData.input_offset = _elapsedTime - (_secondsPerBeat*4);
 
             if(_elapsedTime - (_secondsPerBeat*4) < 0f) {
                 _sineValue = _elapsedTime/(_secondsPerBeat*4/2) < 1f ? Easing.Ease(_elapsedTime/(_secondsPerBeat*4/2), _easing) : Easing.Ease(2-(_elapsedTime/(_secondsPerBeat*4/2)), _easing);
@@ -113,12 +189,12 @@ namespace Beat
             {
                 if(_elapsedTime - (_secondsPerBeat*4) > 0.15f) 
                 {
-                    if (!GetComponent<BeatData>().missedLogged)
+                    if (!GetComponent<BeatData>().missedLogged && !GetComponent<BeatData>().scored)
                     {
                         Debug.Log("Missed! / " + GetComponent<BeatData>().input_offset.ToString());
                         GetComponent<BeatData>().missedLogged = true;
                     }
-                    StartCoroutine(RemoveBeatRoutine());
+                    if (!GetComponent<BeatData>().scored) { GetComponent<BeatData>().input_offset = -9999f; StartCoroutine(RemoveBeatRoutine()); }
                 }
             }
         }

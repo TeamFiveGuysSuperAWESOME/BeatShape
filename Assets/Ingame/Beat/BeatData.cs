@@ -8,6 +8,8 @@ namespace Beat
         public double angle;
         public float speed;
         public float input_offset;
-        public Boolean missedLogged = false;
+        public bool missedLogged = false;
+        public bool scored = false;
+        public bool displayed = false;
     }
 }

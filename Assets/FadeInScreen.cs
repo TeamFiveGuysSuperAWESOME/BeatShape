@@ -44,8 +44,5 @@ public class FadeInScreen : MonoBehaviour
     {
         if(screenState == "FadeIn") {FadeIn();}
         else if(screenState == "FadeOut") {FadeOut();}
-
-        if(Input.GetKeyDown(KeyCode.O)) {screenState = "FadeIn";}
-        if(Input.GetKeyDown(KeyCode.P)) {screenState = "FadeOut";}
     }
 }

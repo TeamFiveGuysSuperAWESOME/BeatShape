@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using GameManager;
 
 public class MenuManager : MonoBehaviour
 {
@@ -22,6 +23,12 @@ public class MenuManager : MonoBehaviour
     public int sceneState = 0;
     public int levelIndex = 5;
     public int levelNumber = 1;
+
+    private readonly KeyCode[] cheatCode = { KeyCode.D, KeyCode.G, KeyCode.B, KeyCode.A, KeyCode.B, KeyCode.O };
+    public static bool DebugMode = false;
+    private int codeIndex = 0;
+    private float timer = 0f;
+    private readonly float timeLimit = 10f;
     
 
     void Awake()
@@ -48,6 +55,38 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-        
+        if (codeIndex > 0)
+        {
+            timer += Time.deltaTime;
+            if (timer > timeLimit)
+            {
+                codeIndex = 0;
+                timer = 0f;
+            }
+        }
+
+        if (Input.anyKeyDown)
+        {
+            if (Input.GetKeyDown(cheatCode[codeIndex]))
+            {
+                codeIndex++;
+                if (codeIndex == cheatCode.Length)
+                {
+                    Debug.Log("Debug mode toggled!");
+                    DebugMode = !DebugMode;
+                    codeIndex = 0;
+                    timer = 0f;
+                }
+                else if (codeIndex == 1)
+                {
+                    timer = 0f;
+                }
+            }
+            else
+            {
+                codeIndex = 0;
+                timer = 0f;
+            }
+        }
     }
 }
