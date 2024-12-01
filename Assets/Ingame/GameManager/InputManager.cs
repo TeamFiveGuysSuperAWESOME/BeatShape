@@ -29,6 +29,14 @@ namespace Ingame.GameManager
                 BeatMovement beatMovement = closestBeat.GetComponent<BeatMovement>();
                 beatMovement.TryRemoveBeatScored();
             }
+            /*foreach (Touch touch in Input.touches)
+            {
+                if (touch.phase == TouchPhase.Began && closestBeat != null)
+                {
+                    BeatMovement beatMovement = closestBeat.GetComponent<BeatMovement>();
+                    beatMovement.TryRemoveBeatScored();
+                }
+            }*/
         }
     }
 }

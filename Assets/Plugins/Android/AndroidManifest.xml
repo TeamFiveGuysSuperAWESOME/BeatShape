@@ -2,8 +2,8 @@
     package="com.yourcompany.yourapp">
 
     <!-- 권한 선언 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     
     <!-- Android 10 이상에서 Scoped Storage를 비활성화하려면 추가 -->
     <application android:requestLegacyExternalStorage="true">

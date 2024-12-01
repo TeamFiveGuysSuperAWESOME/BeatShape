@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Data;
 using Unity.VisualScripting;
 using NativeFilePickerNamespace;
+using UnityEngine.Android;
 
 namespace GameManager
 {
@@ -120,21 +121,7 @@ namespace GameManager
                 UploadFile();
 #endif
 #if UNITY_ANDROID && !UNITY_EDITOR
-                NativeFilePicker.PickFile((path) =>
-                {
-                    if (path == null)
-                    {
-                        Debug.Log("failed to load file");
-                        return;
-                    }
-
-                    Debug.Log($"file path: {path}");
-
-                    // 파일 읽기
-                    string fileContent = File.ReadAllText(path);
-                    Debug.Log($"file content: {fileContent}");
-                    OnFileUpload(fileContent);
-                }, "json");
+                StartCoroutine(AndroidLoadCustomLevel());
 #endif
 #if UNITY_EDITOR
             StartGame();
@@ -147,6 +134,25 @@ namespace GameManager
 
 
             StartCoroutine(DecreaseOverloadRoutine());
+        }
+
+        public IEnumerator AndroidLoadCustomLevel() {
+            var jsonType = NativeFilePicker.ConvertExtensionToFileType("json");
+            string fileContent = "";
+            NativeFilePicker.PickFile((path) =>
+            {
+                if (path == null)
+                {
+                    Debug.Log("failed to load file");
+                    return;
+               }
+                Debug.Log($"file path: {path}");
+                fileContent = File.ReadAllText(path);
+            }, new string[] {jsonType});
+            yield return new WaitUntil(() => fileContent != "");
+            Debug.Log($"file content: {fileContent}");
+            OnFileUpload(fileContent);
+            yield return null;
         }
 
         public void OnFileUpload(string jsonData)
@@ -260,7 +266,7 @@ namespace GameManager
             if (!GameStarted) {
                 GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
                 if (_isJsonFileLoaded) GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm, 0.6f+_offset, Boards[0]["points"]);
-                if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+                if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || Input.touchCount > 0) {
                     GameStarted = true;
                     GetComponent<AudioSource>().Play();
                 }
