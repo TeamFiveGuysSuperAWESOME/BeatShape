@@ -23,7 +23,7 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "Camera" : {
                         "BBColor" : [1, 1, 1],
                         "BGColor" : [0.1, 0.1, 0.1],
@@ -32,10 +32,6 @@
                         "Duration" : 0.5,
                         "Shake" : {
                             "Intensity" : 10,
-                            "Duration" : 0.5
-                        },
-                        "Flash" : {
-                            "Color" : [1, 1, 1],
                             "Duration" : 0.5
                         },
                         "Easing" : "inoutsine"
@@ -67,7 +63,7 @@
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle2" : {
@@ -75,11 +71,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle3" : {
@@ -87,11 +83,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle4" : {
@@ -99,7 +95,7 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : -10
@@ -108,7 +104,7 @@
                 },
                 "6" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : 0.5
@@ -123,11 +119,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle6" : {
@@ -135,11 +131,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle7" : {
@@ -147,11 +143,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle8" : {
@@ -159,7 +155,7 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : -10
@@ -168,7 +164,7 @@
                 },
                 "6" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : 0.5
@@ -183,11 +179,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle10" : {
@@ -195,11 +191,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle11" : {
@@ -207,11 +203,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle12" : {
@@ -219,7 +215,7 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : -10
@@ -228,7 +224,7 @@
                 },
                 "6" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : 0.5
@@ -243,11 +239,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle14" : {
@@ -255,11 +251,11 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0]
+                    "Color" : [0, 0, 0]
                 }
             },
             "Cycle15" : {
@@ -267,7 +263,7 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : -10
@@ -276,7 +272,7 @@
                 },
                 "3" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : 0.5
@@ -285,7 +281,7 @@
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : -10
@@ -294,7 +290,7 @@
                 },
                 "6" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : 0.5
@@ -307,7 +303,7 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : -10
@@ -316,7 +312,7 @@
                 },
                 "4" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "PP" : {
                         "General": {
                             "Exposure" : 0.5
@@ -329,7 +325,7 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "Camera" : {
                         "BGImage" : "bg1",
                         "Zoom" : 100,

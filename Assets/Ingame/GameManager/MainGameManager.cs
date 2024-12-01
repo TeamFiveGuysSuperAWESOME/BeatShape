@@ -6,7 +6,6 @@ using System.IO;
 using System.Net.Mime;
 using Beat;
 using Beatboard;
-using StreamingAssets.Levels;
 using TMPro;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -24,6 +23,7 @@ namespace GameManager
         private static BeatboardManager _beatboardManager;
         private static BeatManager _beatManager;
         private static CameraManager _cameraManager;
+        public static int LevelNumber;
         private static string _levelName, _levelDescription, _levelAuthor;
         private static float _bpm;
         private static float _offset;
@@ -39,9 +39,11 @@ namespace GameManager
         public static bool Paused = false;
         public static bool GameEnded = false;
         public static bool GameReallyEnded = false;
+        private static bool ResultShwon = false;
         public static int Score = 0;
         //public static int Combo = 0;
         public static float Overload = 0f;
+        public static int[] Judgement = {0, 0, 0, 0, 0, 0, 0};
         public TextMeshProUGUI scoreText;
         private FadeInScreen screen;
         public TextAsset textFile;
@@ -49,6 +51,15 @@ namespace GameManager
         public static bool DebugMode = MenuManager.DebugMode;
         private bool _isLeaving = false;
         private float animtimer = 0f;
+        [SerializeField] private GameObject gameOverPanel;
+        [SerializeField] private TextMeshPro finalScoreText;
+        [SerializeField] private TextMeshPro perfectText;
+        [SerializeField] private TextMeshPro earlyText;
+        [SerializeField] private TextMeshPro lateText;
+        [SerializeField] private TextMeshPro earlyBadText;
+        [SerializeField] private TextMeshPro lateBadText;
+        [SerializeField] private TextMeshPro tooEarlyText;
+        [SerializeField] private TextMeshPro tooLateText;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
@@ -59,6 +70,7 @@ namespace GameManager
 
         void Awake()
         {
+            LevelNumber = MenuManager.levelNumber;
             screen = GameObject.FindWithTag("screen").GetComponent<FadeInScreen>();
             _beatboardManager = null;
             _beatManager = null;
@@ -79,10 +91,13 @@ namespace GameManager
             GameStarted = false;
             Score = 0;
             //Combo = 0;
+            Judgement = new[] {0, 0, 0, 0, 0, 0, 0};
             Paused = false;
             GameEnded = false;
             GameReallyEnded = false;
+            ResultShwon = false;
             DebugMode = MenuManager.DebugMode;
+            gameOverPanel.SetActive(false);
         }
 
         public static MainGameManager Instance { get; private set; }
@@ -149,7 +164,7 @@ namespace GameManager
             _beatManager = FindFirstObjectByType<BeatManager>();
             _cameraManager = FindFirstObjectByType<CameraManager>();
 
-            textFile = Resources.Load<TextAsset>("Levels/1/level");
+            textFile = Resources.Load<TextAsset>("Levels/" + LevelNumber + "/level");
             //textFile = 
             var levelString = textFile.text;
             if (DebugMode)
@@ -273,6 +288,38 @@ namespace GameManager
             {
                 Debug.Log("Game Over");
             }
+
+            if (GameReallyEnded && !ResultShwon)
+            {
+                Debug.Log("Game Ended");
+                gameOverPanel.SetActive(true);
+
+                SetTextRenderQueue(finalScoreText, 3002);
+                SetTextRenderQueue(perfectText, 3002);
+                SetTextRenderQueue(earlyText, 3002);
+                SetTextRenderQueue(lateText, 3002);
+                SetTextRenderQueue(earlyBadText, 3002);
+                SetTextRenderQueue(lateBadText, 3002);
+                SetTextRenderQueue(tooEarlyText, 3002);
+                SetTextRenderQueue(tooLateText, 3002);
+                
+                finalScoreText.text = "Score: " + Score;
+                perfectText.text = "Perfect: " + Judgement[6];
+                earlyText.text = "Early: " + Judgement[2];
+                lateText.text = "Late: " + Judgement[3];
+                earlyBadText.text = "EARLY: " + Judgement[4];
+                lateBadText.text = "LATE: " + Judgement[5];
+                tooEarlyText.text = "Too EARLY: " + Judgement[0];
+                tooLateText.text = "Too LATE: " + Judgement[1];
+                ResultShwon = true;
+            }
+        }
+
+        private void SetTextRenderQueue(TextMeshPro text, int queueValue)
+        {
+            Material newMaterial = new Material(text.material);
+            newMaterial.renderQueue = queueValue;
+            text.material = newMaterial;
         }
 
         private static void CreateBeatboardAtStart(List<JSONNode> boards)

@@ -64,13 +64,20 @@ public class LevelSelectScene : MonoBehaviour
         
         //input_spaceUp / Down
         if(manager.menuState == "stageSelect" && manager.sceneState == 0) {
-            if(Input.GetKeyDown(KeyCode.Space)) {
+            if(Input.GetKeyDown(KeyCode.Space)) 
+            {
                 stage_text_rt.localScale = new Vector3(0.9f,0.9f,1);
             }
-            if(Input.GetKeyUp(KeyCode.Space)) {
+            if(Input.GetKeyUp(KeyCode.Space)) 
+            {
                 stage_text_rt.localScale = new Vector3(1,1,1);
                 effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*10,menuScenes.liveLevelScale.y*10), new Vector2(150,150), 0.75f, manager.menuColor_dark);
-                manager.menuState = "stageEntry";
+                var tempLevel = Resources.Load<TextAsset>("Levels/" + MenuManager.levelNumber + "/level");
+                if (tempLevel != null) 
+                {
+                    manager.menuState = "stageEntry";
+                }
+                else Debug.Log("Level not found");
             }
         }
         else {stage_text_rt.localScale = new Vector3(1,1,1);}
@@ -78,7 +85,8 @@ public class LevelSelectScene : MonoBehaviour
         if(manager.menuState == "stageEntry") {
             if(timer >= 0f) timer += Time.deltaTime;
             
-            if(timer > 1f) {
+            if(timer > 1f) 
+            {
                 screen.screenState = "FadeIn";
                 timer = -1f;
             }

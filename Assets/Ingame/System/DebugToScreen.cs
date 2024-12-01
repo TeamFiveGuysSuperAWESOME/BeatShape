@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DebugToScreen : MonoBehaviour {
  	string myLog;
- 	Queue myLogQueue = new Queue ();
+ 	Queue myLogQueue = new Queue();
 
  	void OnEnable () {
  		Application.logMessageReceived += HandleLog;
