@@ -271,6 +271,10 @@ namespace GameManager
             {
                 LoadMainMenu();
             }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene("Ingame");
+            }
             if (_isLeaving) 
             {
                 screen.screenState = "FadeIn";

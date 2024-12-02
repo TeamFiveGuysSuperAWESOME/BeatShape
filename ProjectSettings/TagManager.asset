@@ -31,8 +31,8 @@ TagManager:
   - Water
   - UI
   - Effect_square
-  - Clack
   - Board
+  - Clack
   - Beat
   - 
   - 
@@ -74,6 +74,9 @@ TagManager:
     locked: 0
   - name: Beat
     uniqueID: 2072640837
+    locked: 0
+  - name: UI
+    uniqueID: 2449460325
     locked: 0
   m_RenderingLayers:
   - Default

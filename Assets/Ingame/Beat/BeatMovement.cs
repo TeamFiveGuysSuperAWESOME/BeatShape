@@ -196,6 +196,7 @@ namespace Beat
             }
             else 
             {
+                transform.localScale = new Vector3(0,0,0);
                 if(_elapsedTime - (_secondsPerBeat*4) > 0.15f) 
                 {
                     if (!GetComponent<BeatData>().missedLogged && !GetComponent<BeatData>().scored)
