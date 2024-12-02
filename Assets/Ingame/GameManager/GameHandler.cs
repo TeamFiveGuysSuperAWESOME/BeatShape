@@ -104,7 +104,8 @@ namespace GameManager {
                     }
                 }
 
-                JSONNode currentBeat = currentCycle[currentSide];
+                JSONNode currentBeat = currentCycle?[currentSide]?.AsObject ?? null;
+                if (currentBeat == null) continue;
 
                 //Camera Handling
                 HandleCamera(currentBeat);

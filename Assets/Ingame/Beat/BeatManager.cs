@@ -12,7 +12,6 @@ namespace Beat
         
         public void CreateBeat(int index, int boardnum, float boardsize, int sides, int side, float speed, float bpm, float size, Color color, string easing)
         {
-            Debug.Log("CreateBeat" + side);
             var pos = BeatboardManager.GetBeatboardPosition(index);
             GameObject beatObject = Instantiate(beatPrefab, pos, Quaternion.identity, GameObject.FindWithTag("boardmanager").GetComponent<BeatboardManager>().beatboards[boardnum-1].transform);
             beatObject.name = "Beat of board" + index;
