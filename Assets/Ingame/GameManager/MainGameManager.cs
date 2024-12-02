@@ -14,7 +14,7 @@ using System.Collections;
 using System.Runtime.InteropServices;
 using System.Data;
 using Unity.VisualScripting;
-using NativeFilePickerNamespace;
+//using NativeFilePickerNamespace; // unable in WebGL
 using UnityEngine.Android;
 using UnityEngine.Networking;
 

@@ -1422,9 +1422,257 @@
         }
       },
       "Cycle49": {
-        "Points": 6,
+        "Points": 3,
         "Size": 20,
         "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle50": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle51": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle52": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle53": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle54": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle55": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle56": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle57": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle58": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle59": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle60": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle61": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle62": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle63": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle64": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle65": {
+        "Points": 3,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
           "Beat": true,
           "Color": [
             1,
