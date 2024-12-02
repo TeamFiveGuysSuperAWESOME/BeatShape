@@ -3,7 +3,7 @@
         "LevelName" : "Test1",
         "LevelDescription" : "Test Level",
         "LevelAuthor" : "Test Author",
-        "Bpm" : 260,
+        "Bpm" : 50,
         "Offset" : 0,
         "Boards" : {
             "board1" : {"points" : 5, "position" : [0,0], "size" : 20}
@@ -17,21 +17,7 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
-                    "Camera" : {
-                        "Position" : [0, 50],
-                        "Rotation" : 0,
-                        "Zoom" : 100,
-                        "Duration" : 0.5,
-                        "Easing" : "outquint"
-                    },
-                    "PP" : {
-                        "Bloom" : {
-                            "Intensity" : 0.5,
-                            "Threshold" : 0.5,
-                            "Color" : [1, 1, 1]
-                        }
-                    }
+                    "Color" : [1, 0, 0]
                 },
                 "2" : {
                     "Beat" : true,
@@ -138,7 +124,7 @@
                 "Size" : 20,
                 "1" : {
                     "Beat" : true,
-                    "Color" : [1, 0, 0],
+                    "Color" : [0, 0, 0],
                     "Easing" : "inoutcubic"
                 }
             }

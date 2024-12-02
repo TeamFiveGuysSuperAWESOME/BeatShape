@@ -309,7 +309,7 @@ namespace Beatboard
             }
             if (!MainGameManager.GameStarted) return;
             if (MainGameManager.Paused) return;
-            for (int i = Beatboards.Count - 1; i >= 0; i--)
+            /*for (int i = Beatboards.Count - 1; i >= 0; i--)
             {
                 if (Beatboards[i] == null)
                 {
@@ -317,7 +317,7 @@ namespace Beatboard
                 }
                 Beatboards[i].transform.Rotate(Vector3.back * (RotationSpeed * Time.deltaTime), Space.Self);
                 Rotation = Beatboards[i].transform.rotation;
-            }
+            }*/
         }
     }
 }

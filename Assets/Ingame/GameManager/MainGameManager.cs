@@ -231,7 +231,7 @@ namespace GameManager
             foreach (var board in levelDataJsonNode["Boards"]) Boards.Add(board);
             CreateBeatboardAtStart(Boards);
 
-            _startTime = 0.5d + _offset;
+            _startTime = 30 / _bpm + _offset;
             for (var i = 0; i < Boards.Count; i++)
             {
                 _beatIntervals.Insert(i, 60f / _bpm / Boards[i]["points"]);
@@ -242,8 +242,8 @@ namespace GameManager
             foreach (var t in Boards) _currentBoardSizes.Add(t["size"]);
 
             var background = levelDataJsonNode["Background"];
-            BeatboardColor = new Color(background["BBColor"][0], background["BBColor"][1], background["BBColor"][2]);
-            Camera.main.backgroundColor = new Color(background["BGColor"][0], background["BGColor"][1], background["BGColor"][2]);
+            BeatboardColor = new Color(background["BBColor"]?[0]?.AsFloat ?? 0, background["BBColor"]?[1]?.AsFloat ?? 0, background["BBColor"]?[2]?.AsFloat ?? 0);
+            Camera.main.backgroundColor = new Color(background["BGColor"]?[0]?.AsFloat ?? 1, background["BGColor"]?[1]?.AsFloat ?? 1, background["BGColor"]?[2]?.AsFloat ?? 1);
             if (background["BGImage"] != null)
             {
                 var backgroundSprite = Resources.Load<Sprite>("Levels/1/" + background["BGImage"]);
