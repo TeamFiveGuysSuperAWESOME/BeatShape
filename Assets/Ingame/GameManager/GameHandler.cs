@@ -3,6 +3,7 @@ using SimpleJSON;
 using UnityEngine;
 using Beat;
 using Beatboard;
+using System;
 
 namespace GameManager {
     public class GameHandler : MonoBehaviour
@@ -16,9 +17,9 @@ namespace GameManager {
         private List<float> _beatIntervals;
         private List<float> _nextBeatTimes;
         private List<float> _currentBoardSizes;
-        private float _startTime;
+        private double _startTime;
         private float _bpm;
-        private float _elapsedTime = 0f;
+        private double _elapsedTime = 0d;
 
         void Awake()
         {
@@ -35,7 +36,7 @@ namespace GameManager {
             List<float> beatIntervals,
             List<float> nextBeatTimes,
             List<float> currentBoardSizes,
-            float startTime,
+            double startTime,
             float bpm
         )
         {
@@ -55,8 +56,8 @@ namespace GameManager {
         public void HandleGame()
         {
             if (MainGameManager.Paused) return;
-            _elapsedTime += Time.deltaTime;
-            var timeSinceStart = _elapsedTime - _startTime;
+            _elapsedTime = AudioSettings.dspTime;
+            double timeSinceStart = _elapsedTime - _startTime;
             if (Boards == null || _boardsData == null || _beatIntervals == null) return;
             var gameEnded = 0;
 
@@ -67,11 +68,11 @@ namespace GameManager {
                 _nextBeatTimes[i] += _beatIntervals[i];
 
                 var currentCycle = _boardsData["Board" + (i + 1)]
-                    ["Cycle" + (Mathf.FloorToInt((timeSinceStart / _beatIntervals[i] - 1) / _currentBoardPoints[i]) + 1)];
+                    ["Cycle" + ((int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) / _currentBoardPoints[i]) + 1)];
                 if (currentCycle == null) {gameEnded++; continue;}
                 var prevCycle = _boardsData["Board" + (i + 1)]
-                    ["Cycle" + (Mathf.FloorToInt((timeSinceStart / _beatIntervals[i] - 1) / _currentBoardPoints[i]))];
-                var currentSide = (Mathf.FloorToInt((timeSinceStart / _beatIntervals[i] - 1) % _currentBoardPoints[i]) + 1).ToString();
+                    ["Cycle" + ((int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) / _currentBoardPoints[i]))];
+                var currentSide = ((int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) % _currentBoardPoints[i]) + 1).ToString();
                 //if (currentCycle == null || currentCycle[currentSide] == null) continue;
 
                 var currentPoint = currentCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
@@ -97,8 +98,8 @@ namespace GameManager {
                     if (currentPoint != _currentBoardPoints[i] && currentPoint != 0)
                     {
                         _currentBoardPoints[i] = currentPoint;
-                        currentCycle = _boardsData[i][Mathf.FloorToInt((timeSinceStart / _beatIntervals[i] - 1) / currentPoint)];
-                        currentSide = (Mathf.FloorToInt((timeSinceStart / _beatIntervals[i] - 1) % currentPoint) + 1).ToString();
+                        currentCycle = _boardsData[i][(int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) / currentPoint)];
+                        currentSide = ((int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) % currentPoint) + 1).ToString();
                         _beatIntervals[i] = 60f / _bpm / currentPoint;
                     }
                 }

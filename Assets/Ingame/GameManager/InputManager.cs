@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Beat;
 using GameManager;
+using UnityEditor;
 using UnityEngine;
 
 namespace Ingame.GameManager
@@ -21,10 +22,22 @@ namespace Ingame.GameManager
         {
             if (MainGameManager.Paused) return;
             beatDataList = new List<BeatData>(FindObjectsByType<BeatData>(FindObjectsSortMode.None));
-            if (beatDataList.Count == 0 && MainGameManager.GameEnded) MainGameManager.GameReallyEnded = true;
-            closestBeat = beatDataList.OrderByDescending(beatData => beatData.input_offset).FirstOrDefault();
+
+            if (MainGameManager.GameEnded) 
+            {
+                var tempn = beatDataList.Count;
+                foreach (BeatData beatData in beatDataList)
+                {
+                    if (beatData.input_offset >= 0f || beatData.input_offset == -9999f) tempn--;
+                }
+                if (tempn == 0) MainGameManager.GameReallyEnded = true;
+            }
             
-            if (Input.anyKeyDown && closestBeat != null)
+
+            closestBeat = beatDataList.OrderByDescending(beatData => beatData.input_offset).FirstOrDefault();
+            if (closestBeat == null) return;
+
+            if (Input.anyKeyDown)
             {
                 BeatMovement beatMovement = closestBeat.GetComponent<BeatMovement>();
                 beatMovement.TryRemoveBeatScored();

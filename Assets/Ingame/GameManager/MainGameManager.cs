@@ -16,6 +16,7 @@ using System.Data;
 using Unity.VisualScripting;
 using NativeFilePickerNamespace;
 using UnityEngine.Android;
+using UnityEngine.Networking;
 
 namespace GameManager
 {
@@ -25,6 +26,7 @@ namespace GameManager
         private static BeatManager _beatManager;
         private static CameraManager _cameraManager;
         public static int LevelNumber;
+        private AudioClip _levelAudioContent = null;
         private static string _levelName, _levelDescription, _levelAuthor;
         private static float _bpm;
         private static float _offset;
@@ -33,14 +35,14 @@ namespace GameManager
         private static JSONNode _boardsData;
         private static List<int> _currentBoardPoints = new();
         private static List<float> _beatIntervals = new(), _nextBeatTimes = new(), _currentBoardSizes = new();
-        private float _startTime;
+        private double _startTime;
         public static string JsonFilePath;
         private bool _isJsonFileLoaded = false;
         public static bool GameStarted = false;
         public static bool Paused = false;
         public static bool GameEnded = false;
         public static bool GameReallyEnded = false;
-        private static bool ResultShwon = false;
+        private static bool ResultShown = false;
         public static int Score = 0;
         //public static int Combo = 0;
         public static float Overload = 0f;
@@ -96,7 +98,7 @@ namespace GameManager
             Paused = false;
             GameEnded = false;
             GameReallyEnded = false;
-            ResultShwon = false;
+            ResultShown = false;
             DebugMode = MenuManager.DebugMode;
             gameOverPanel.SetActive(false);
         }
@@ -138,20 +140,45 @@ namespace GameManager
 
         public IEnumerator AndroidLoadCustomLevel() {
             var jsonType = NativeFilePicker.ConvertExtensionToFileType("json");
-            string fileContent = "";
+            var oggType = NativeFilePicker.ConvertExtensionToFileType("ogg");
+            string levelFileContent = null;
+            _levelAudioContent = null;
+            string uri = null;
             NativeFilePicker.PickFile((path) =>
             {
                 if (path == null)
                 {
                     Debug.Log("failed to load file");
+                    LoadMainMenu();
                     return;
                }
-                Debug.Log($"file path: {path}");
-                fileContent = File.ReadAllText(path);
+                //Debug.Log($"file path: {path}");
+                levelFileContent = File.ReadAllText(path);
             }, new string[] {jsonType});
-            yield return new WaitUntil(() => fileContent != "");
-            Debug.Log($"file content: {fileContent}");
-            OnFileUpload(fileContent);
+            yield return new WaitUntil(() => levelFileContent != null);
+            Debug.Log("json loaded");
+            UnityWebRequest audioLoader = null;
+            NativeFilePicker.PickFile((path) =>
+            {
+                if (path == null)
+                {
+                    Debug.Log("failed to load file");
+                    LoadMainMenu();
+                    return;
+               }
+                //Debug.Log($"file path: {path}");
+                var builder = new UriBuilder(path) {Scheme = Uri.UriSchemeFile}; 
+                uri = builder.ToString();
+            }, new string[] {oggType});
+            yield return new WaitUntil(() => uri != null);
+            audioLoader = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.OGGVORBIS);
+            audioLoader.SendWebRequest();
+            yield return new WaitUntil(() => audioLoader.isDone);
+            Debug.Log("audio loaded");
+            _levelAudioContent = DownloadHandlerAudioClip.GetContent(audioLoader);
+            yield return new WaitUntil(() => _levelAudioContent != null);
+            Debug.Log($"file content: {levelFileContent}");
+            OnFileUpload(levelFileContent);
             yield return null;
         }
 
@@ -194,13 +221,17 @@ namespace GameManager
             _levelAuthor = levelDataJsonNode["LevelAuthor"];
             var levelAudio = levelDataJsonNode["AudioFile"];
             GetComponent<AudioSource>().clip = Resources.Load<AudioClip>("Levels/1/" + levelAudio);
+            if (_levelAudioContent != null)
+            {
+                GetComponent<AudioSource>().clip = _levelAudioContent;
+            }
             _bpm = levelDataJsonNode["Bpm"];
             _offset = levelDataJsonNode["Offset"] / 1000f;
 
             foreach (var board in levelDataJsonNode["Boards"]) Boards.Add(board);
             CreateBeatboardAtStart(Boards);
 
-            _startTime = 0.5f + _offset;
+            _startTime = 0.5d + _offset;
             for (var i = 0; i < Boards.Count; i++)
             {
                 _beatIntervals.Insert(i, 60f / _bpm / Boards[i]["points"]);
@@ -232,22 +263,6 @@ namespace GameManager
                     spriteRenderer.sortingOrder = -1;
                 }
             }
-
-            _gameHandler = gameObject.AddComponent<GameHandler>();
-            _gameHandler.Initialize(
-                _beatboardManager,
-                _beatManager,
-                _cameraManager,
-                Boards,
-                _boardsData,
-                _currentBoardPoints,
-                _beatIntervals,
-                _nextBeatTimes,
-                _currentBoardSizes,
-                _startTime,
-                _bpm
-            );
-            
         }
 
         void Update()
@@ -267,8 +282,23 @@ namespace GameManager
                 GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
                 if (_isJsonFileLoaded) GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm, 0.6f+_offset, Boards[0]["points"]);
                 if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || Input.touchCount > 0) {
-                    GameStarted = true;
+                    _startTime += AudioSettings.dspTime;
+                    _gameHandler = gameObject.AddComponent<GameHandler>();
+                    _gameHandler.Initialize(
+                        _beatboardManager,
+                        _beatManager,
+                        _cameraManager,
+                        Boards,
+                        _boardsData,
+                        _currentBoardPoints,
+                        _beatIntervals,
+                        _nextBeatTimes,
+                        _currentBoardSizes,
+                        _startTime,
+                        _bpm
+                    );
                     GetComponent<AudioSource>().Play();
+                    GameStarted = true;
                 }
                 return;
             }
@@ -295,8 +325,9 @@ namespace GameManager
                 Debug.Log("Game Over");
             }
 
-            if (GameReallyEnded && !ResultShwon)
+            if (GameReallyEnded && !ResultShown)
             {
+                StartCoroutine(GameEndFlash());
                 Debug.Log("Game Ended");
                 gameOverPanel.SetActive(true);
 
@@ -317,8 +348,14 @@ namespace GameManager
                 lateBadText.text = "LATE: " + Judgement[5];
                 tooEarlyText.text = "Too EARLY: " + Judgement[0];
                 tooLateText.text = "Too LATE: " + Judgement[1];
-                ResultShwon = true;
+                ResultShown = true;
             }
+        }
+        private IEnumerator GameEndFlash()
+        {
+            _cameraManager.Cg(100, 0, 0, "incubic", 0.01f);
+            yield return new WaitForSeconds(0.01f);
+            _cameraManager.Cg(0, 0, 0, "outcubic", 0.5f);
         }
 
         private void SetTextRenderQueue(TextMeshPro text, int queueValue)
