@@ -4,6 +4,7 @@ using UnityEngine;
 using Beat;
 using Beatboard;
 using System;
+using UnityEngine.XR;
 
 namespace GameManager {
     public class GameHandler : MonoBehaviour
@@ -14,16 +15,18 @@ namespace GameManager {
         private List<JSONNode> Boards;
         private JSONNode _boardsData;
         private List<int> _currentBoardPoints;
-        private List<float> _beatIntervals;
-        private List<float> _nextBeatTimes;
+        private List<double> _beatIntervals;
+        private List<double> _beatIntervalsTmp;
+        private List<double> _nextBeatTimes;
+        private List<double> _nextPointTimes;
+        private List<int> _nextPointCycles;
         private List<float> _currentBoardSizes;
         private double _startTime;
         private float _bpm;
-        private double _elapsedTime = 0d;
+        private bool _debugBeatboardModified = false;
 
         void Awake()
         {
-            _elapsedTime = 0f;
         }
 
         public void Initialize(
@@ -33,8 +36,8 @@ namespace GameManager {
             List<JSONNode> boards,
             JSONNode boardsData,
             List<int> currentBoardPoints,
-            List<float> beatIntervals,
-            List<float> nextBeatTimes,
+            List<double> beatIntervals,
+            List<double> nextBeatTimes,
             List<float> currentBoardSizes,
             double startTime,
             float bpm
@@ -47,17 +50,32 @@ namespace GameManager {
             _boardsData = boardsData;
             _currentBoardPoints = currentBoardPoints;
             _beatIntervals = beatIntervals;
+            _beatIntervalsTmp = beatIntervals;
             _nextBeatTimes = nextBeatTimes;
             _currentBoardSizes = currentBoardSizes;
             _startTime = startTime;
             _bpm = bpm;
+            _nextPointTimes = new List<double>();
+            _nextPointCycles = new List<int>();
+            for (var i = 0; i < _boardsData.Count; i++)
+            {
+                _nextPointTimes.Add(0);
+                _nextPointCycles.Add(0);
+            }
+            if (MainGameManager._debugTime != 0)
+            {
+                for (int i = 0; i <= MainGameManager._debugTime * 10000; i++)
+                {
+                    HandleGameFF((_startTime - MainGameManager._debugTime + i) / 10000);
+                }
+            }
         }
 
         public void HandleGame()
         {
             if (MainGameManager.Paused) return;
-            _elapsedTime = AudioSettings.dspTime;
-            double timeSinceStart = _elapsedTime - _startTime;
+            //_elapsedTime = ;
+            double timeSinceStart = AudioSettings.dspTime - _startTime;
             if (Boards == null || _boardsData == null || _beatIntervals == null) return;
             var gameEnded = 0;
 
@@ -65,26 +83,27 @@ namespace GameManager {
             {
                 if (timeSinceStart < _nextBeatTimes[i]) continue;
 
-                _nextBeatTimes[i] += _beatIntervals[i];
-
-                var currentCycle = _boardsData["Board" + (i + 1)]
-                    ["Cycle" + ((int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) / _currentBoardPoints[i]) + 1)];
+                var currentBoard = _boardsData["Board" + (i + 1)];
+                var beats = (timeSinceStart - _nextPointTimes[i]) / _beatIntervals[i] - 1;
+                var currentCycle = currentBoard
+                    ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i])];
                 if (currentCycle == null) {gameEnded++; continue;}
-                var prevCycle = _boardsData["Board" + (i + 1)]
-                    ["Cycle" + ((int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) / _currentBoardPoints[i]))];
-                var currentSide = ((int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) % _currentBoardPoints[i]) + 1).ToString();
-                //if (currentCycle == null || currentCycle[currentSide] == null) continue;
+                var prevCycle = currentBoard
+                    ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + _nextPointCycles[i])];
+                var nextCycle = currentBoard
+                    ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 2 + _nextPointCycles[i])];
+                var currentSide = ((int)Math.Floor(beats % _currentBoardPoints[i]) + 1).ToString();
 
                 var currentPoint = currentCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
                 var currentSize = currentCycle["Size"]?.AsFloat ?? _currentBoardSizes[i];
                 if (currentSize == 0) currentSize = _currentBoardSizes[i];
                 var prevPoint = prevCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
-                //Debug.Log(int.Parse(currentSide) + " / " + _nextBeatTimes[i] + " / " + _currentBoardPoints[i]);
+                var nextPoint = nextCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
                 if (int.Parse(currentSide) == _currentBoardPoints[i] && prevPoint != _currentBoardPoints[i] && prevPoint != 0)
                 {
                     _beatboardManager.ManageBeatboard(BeatboardManager.Beatboards[i], prevPoint, _currentBoardPoints[i],
                         _currentBoardSizes[i], currentSize, new Vector2(Boards[i]["position"][0],
-                            Boards[i]["position"][1]));
+                        Boards[i]["position"][1]));
                 }
                 if (int.Parse(currentSide) == 1)
                 {
@@ -95,14 +114,25 @@ namespace GameManager {
                                 Boards[i]["position"][1]));
                         _currentBoardSizes[i] = currentSize;
                     }
-                    if (currentPoint != _currentBoardPoints[i] && currentPoint != 0)
+                    if (currentPoint != prevPoint && currentPoint != 0)
                     {
                         _currentBoardPoints[i] = currentPoint;
-                        currentCycle = _boardsData[i][(int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) / currentPoint)];
-                        currentSide = ((int)Math.Floor((timeSinceStart / _beatIntervals[i] - 1) % currentPoint) + 1).ToString();
+                        currentCycle = _boardsData[i][(int)Math.Floor(beats / currentPoint) + _nextPointCycles[i]];
+                        currentSide = ((int)Math.Floor(beats % currentPoint) + 1).ToString();
                         _beatIntervals[i] = 60f / _bpm / currentPoint;
+                        _beatIntervalsTmp[i] = 60f / _bpm / currentPoint;
                     }
                 }
+
+                if (int.Parse(currentSide) == currentPoint && currentPoint != nextPoint && nextPoint != 0)
+                {
+                    _nextPointCycles[i] = (int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i];
+                    _nextPointTimes[i] = nextPoint % 2 == 0 ? _nextBeatTimes[i] + 30 / _bpm / currentPoint + 30 / _bpm / nextPoint : _nextBeatTimes[i] - 30 / _bpm / currentPoint;
+                    _beatIntervals[i] = 60f / _bpm / nextPoint;
+                    _beatIntervalsTmp[i] = 30f / _bpm / currentPoint + 30f / _bpm / nextPoint;
+                }
+
+                _nextBeatTimes[i] += _beatIntervalsTmp[i];
 
                 JSONNode currentBeat = currentCycle?[currentSide]?.AsObject ?? null;
                 if (currentBeat == null) continue;
@@ -127,19 +157,91 @@ namespace GameManager {
             if (gameEnded == _boardsData.Count) MainGameManager.GameEnded = true;
         }
 
-        public void HandleCamera(JSONNode currentBeat) 
+        public void HandleGameFF(double time)
+        {
+            double timeSinceStart = time;
+            if (Boards == null || _boardsData == null || _beatIntervals == null) return;
+            var gameEnded = 0;
+
+            for (var i = 0; i < _boardsData.Count; i++)
+            {
+                if (timeSinceStart < _nextBeatTimes[i]) continue;
+
+                var currentBoard = _boardsData["Board" + (i + 1)];
+                var beats = (timeSinceStart - _nextPointTimes[i]) / _beatIntervals[i] - 1;
+                var currentCycle = currentBoard
+                    ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i])];
+                if (currentCycle == null) {gameEnded++; continue;}
+                var prevCycle = currentBoard
+                    ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + _nextPointCycles[i])];
+                var nextCycle = currentBoard
+                    ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 2 + _nextPointCycles[i])];
+                var currentSide = ((int)Math.Floor(beats % _currentBoardPoints[i]) + 1).ToString();
+
+                var currentPoint = currentCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
+                var currentSize = currentCycle["Size"]?.AsFloat ?? _currentBoardSizes[i];
+                if (currentSize == 0) currentSize = _currentBoardSizes[i];
+                var prevPoint = prevCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
+                var nextPoint = nextCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
+                if (int.Parse(currentSide) == _currentBoardPoints[i] && prevPoint != _currentBoardPoints[i] && prevPoint != 0)
+                {
+                    _beatboardManager.ManageBeatboard(BeatboardManager.Beatboards[i], prevPoint, _currentBoardPoints[i],
+                        _currentBoardSizes[i], currentSize, new Vector2(Boards[i]["position"][0],
+                        Boards[i]["position"][1]));
+                }
+                if (int.Parse(currentSide) == 1)
+                {
+                    if (!Mathf.Approximately(currentSize, _currentBoardSizes[i]) && currentSize != 0)
+                    {
+                        _beatboardManager.ManageBeatboard(BeatboardManager.Beatboards[i], _currentBoardPoints[i], _currentBoardPoints[i],
+                            _currentBoardSizes[i], currentSize, new Vector2(Boards[i]["position"][0],
+                                Boards[i]["position"][1]));
+                        _currentBoardSizes[i] = currentSize;
+                    }
+                    if (currentPoint != prevPoint && currentPoint != 0)
+                    {
+                        _currentBoardPoints[i] = currentPoint;
+                        currentCycle = _boardsData[i][(int)Math.Floor(beats / currentPoint) + _nextPointCycles[i]];
+                        currentSide = ((int)Math.Floor(beats % currentPoint) + 1).ToString();
+                        _beatIntervals[i] = 60f / _bpm / currentPoint;
+                        _beatIntervalsTmp[i] = 60f / _bpm / currentPoint;
+                    }
+                }
+
+                if (int.Parse(currentSide) == currentPoint && currentPoint != nextPoint && nextPoint != 0)
+                {
+                    _nextPointCycles[i] = (int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i];
+                    _nextPointTimes[i] = nextPoint % 2 == 0 ? _nextBeatTimes[i] + 30 / _bpm / currentPoint + 30 / _bpm / nextPoint : _nextBeatTimes[i] - 30 / _bpm / currentPoint;
+                    _beatIntervals[i] = 60f / _bpm / nextPoint;
+                    _beatIntervalsTmp[i] = 30f / _bpm / currentPoint + 30f / _bpm / nextPoint;
+                }
+
+                _nextBeatTimes[i] += _beatIntervalsTmp[i];
+
+                JSONNode currentBeat = currentCycle?[currentSide]?.AsObject ?? null;
+                if (currentBeat == null) continue;
+
+                //Camera Handling
+                HandleCamera(currentBeat, true);
+            }
+            if (gameEnded == _boardsData.Count) MainGameManager.GameEnded = true;
+        }
+
+        public void HandleCamera(JSONNode currentBeat, bool isWrap = false) 
         {
             // Camera Movement
                 if (currentBeat["Camera"] != null)
                 {
                     JSONNode camera = currentBeat["Camera"];
-                    if (camera["BBColor"] != null) _cameraManager.ChangeBBColor(new Color(camera["BBColor"][0], camera["BBColor"][1], camera["BBColor"][2]), camera["Easing"], camera["Duration"]);
-                    if (camera["BGColor"] != null) _cameraManager.ChangeBGColor(new Color(camera["BGColor"][0], camera["BGColor"][1], camera["BGColor"][2]), camera["Easing"], camera["Duration"]);
+                    float duration = camera["Duration"] != null && !isWrap ? camera["Duration"].AsFloat : 0f;
+                    string easing = camera["Easing"] != null ? camera["Easing"] : "linear";
+                    if (camera["BBColor"] != null) {_cameraManager.ChangeBBColor(new Color(camera["BBColor"][0], camera["BBColor"][1], camera["BBColor"][2]), easing, duration);}
+                    if (camera["BGColor"] != null) _cameraManager.ChangeBGColor(new Color(camera["BGColor"][0], camera["BGColor"][1], camera["BGColor"][2]), easing, duration);
                     if (camera["BGImage"] != null) GameObject.FindGameObjectsWithTag("BackgroundImg")[0].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Levels/1/" + camera["BGImage"]);
-                    if (camera["Position"] != null) _cameraManager.MoveCamera(camera["Position"][0], camera["Position"][1], camera["Easing"], camera["Duration"]);
-                    if (camera["Rotation"] != null) _cameraManager.RotateCamera(camera["Rotation"], camera["Easing"], camera["Duration"]);
-                    if (camera["Zoom"] != null) _cameraManager.ZoomCamera(camera["Zoom"], camera["Easing"], camera["Duration"]);
-                    if (camera["Shake"] != null) _cameraManager.ShakeCamera(camera["Shake"]["Intensity"], camera["Shake"]["Duration"]);
+                    if (camera["Position"] != null) _cameraManager.MoveCamera(camera["Position"][0], camera["Position"][1], easing, duration);
+                    if (camera["Rotation"] != null) _cameraManager.RotateCamera(camera["Rotation"], easing, duration);
+                    if (camera["Zoom"] != null) _cameraManager.ZoomCamera(camera["Zoom"], easing, duration);
+                    if (camera["Shake"] != null && !isWrap) _cameraManager.ShakeCamera(camera["Shake"]["Intensity"], camera["Shake"]["Duration"]);
                 }
 
                 //Deprecated Post Processing
@@ -163,7 +265,7 @@ namespace GameManager {
                 if (currentBeat["PP"] != null)
                 {
                     JSONNode pp = currentBeat["PP"];
-                    float duration = pp["Duration"] != null ? pp["Duration"].AsFloat : 1f;
+                    float duration = pp["Duration"] != null && !isWrap ? pp["Duration"].AsFloat : 0f;
                     string easing = pp["Easing"] != null ? pp["Easing"] : "linear";
                     if (pp["General"] != null) 
                     {

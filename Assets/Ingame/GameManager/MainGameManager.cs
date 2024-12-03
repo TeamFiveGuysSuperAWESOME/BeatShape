@@ -34,8 +34,10 @@ namespace GameManager
         private static List<JSONNode> Boards = new();
         private static JSONNode _boardsData;
         private static List<int> _currentBoardPoints = new();
-        private static List<float> _beatIntervals = new(), _nextBeatTimes = new(), _currentBoardSizes = new();
+        private static List<double> _beatIntervals = new(), _nextBeatTimes = new();
+        private static List<float> _currentBoardSizes = new();
         private double _startTime;
+        public static readonly float _debugTime = 0f;
         public static string JsonFilePath;
         private bool _isJsonFileLoaded = false;
         public static bool GameStarted = false;
@@ -231,7 +233,7 @@ namespace GameManager
             foreach (var board in levelDataJsonNode["Boards"]) Boards.Add(board);
             CreateBeatboardAtStart(Boards);
 
-            _startTime = 30 / _bpm + _offset;
+            _startTime = 30 / _bpm + _offset - _debugTime;
             for (var i = 0; i < Boards.Count; i++)
             {
                 _beatIntervals.Insert(i, 60f / _bpm / Boards[i]["points"]);
@@ -301,6 +303,7 @@ namespace GameManager
                         _startTime,
                         _bpm
                     );
+                    GetComponent<AudioSource>().time = _debugTime;
                     GetComponent<AudioSource>().Play();
                     GameStarted = true;
                 }

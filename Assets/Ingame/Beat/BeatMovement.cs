@@ -201,7 +201,7 @@ namespace Beat
                 {
                     if (!GetComponent<BeatData>().missedLogged && !GetComponent<BeatData>().scored)
                     {
-                        Debug.Log("Missed! / " + GetComponent<BeatData>().input_offset.ToString());
+                        //Debug.Log("Missed! / " + GetComponent<BeatData>().input_offset.ToString());
                         GetComponent<BeatData>().missedLogged = true;
                     }
                     if (!GetComponent<BeatData>().scored) { GetComponent<BeatData>().input_offset = -9999f; StartCoroutine(RemoveBeatRoutine()); }
