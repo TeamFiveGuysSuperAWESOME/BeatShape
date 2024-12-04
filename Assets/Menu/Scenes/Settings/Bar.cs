@@ -3,7 +3,6 @@ using TMPro;
 
 public class Bar : MonoBehaviour
 {
-    MenuSoundManager soundManager;
     MenuManager manager;
 
     bool onClick = false;
@@ -17,7 +16,6 @@ public class Bar : MonoBehaviour
     void Awake()
     {
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
-        soundManager = GameObject.FindWithTag("soundmanager").GetComponent<MenuSoundManager>();
         lr = bar_front.GetComponent<LineRenderer>();
         text_tmp = text.GetComponent<TextMeshProUGUI>();
     }
@@ -42,10 +40,9 @@ public class Bar : MonoBehaviour
                 else {lr.SetPosition(1, newPos*10);}
                 text_tmp.text = (lr.GetPosition(1).x*10).ToString("F0") + "%";
                 
-                if(type == "Music") {soundManager.musicVolume = lr.GetPosition(1).x/10;}
-                else if(type == "SoundEffect") {soundManager.sfxVolume = lr.GetPosition(1).x/10;}
+                if(type == "Music") {MenuSoundManager.musicVolume = lr.GetPosition(1).x/10;}
+                else if(type == "SoundEffect") {MenuSoundManager.sfxVolume = lr.GetPosition(1).x/10;}
             }
         }
-        
     }
 }

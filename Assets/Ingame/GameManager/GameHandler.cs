@@ -23,7 +23,6 @@ namespace GameManager {
         private List<float> _currentBoardSizes;
         private double _startTime;
         private float _bpm;
-        private bool _debugBeatboardModified = false;
 
         void Awake()
         {
@@ -87,6 +86,7 @@ namespace GameManager {
                 var beats = (timeSinceStart - _nextPointTimes[i]) / _beatIntervals[i] - 1;
                 var currentCycle = currentBoard
                     ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i])];
+                //Debug.Log("Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i]));
                 if (currentCycle == null) {gameEnded++; continue;}
                 var prevCycle = currentBoard
                     ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + _nextPointCycles[i])];
@@ -127,12 +127,14 @@ namespace GameManager {
                 if (int.Parse(currentSide) == currentPoint && currentPoint != nextPoint && nextPoint != 0)
                 {
                     _nextPointCycles[i] = (int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i];
-                    _nextPointTimes[i] = nextPoint % 2 == 0 ? _nextBeatTimes[i] + 30 / _bpm / currentPoint + 30 / _bpm / nextPoint : _nextBeatTimes[i] - 30 / _bpm / currentPoint;
+                    _nextPointTimes[i] = nextPoint % 2 == 0 ? _nextBeatTimes[i] : _nextBeatTimes[i] - 30 / _bpm / nextPoint;
                     _beatIntervals[i] = 60f / _bpm / nextPoint;
                     _beatIntervalsTmp[i] = 30f / _bpm / currentPoint + 30f / _bpm / nextPoint;
                 }
 
                 _nextBeatTimes[i] += _beatIntervalsTmp[i];
+
+                //Debug.Log(currentPoint + " " + currentSide + " " + _beatIntervalsTmp[i] + " " +  _nextBeatTimes[i] + " " + timeSinceStart);
 
                 JSONNode currentBeat = currentCycle?[currentSide]?.AsObject ?? null;
                 if (currentBeat == null) continue;
@@ -211,7 +213,7 @@ namespace GameManager {
                 if (int.Parse(currentSide) == currentPoint && currentPoint != nextPoint && nextPoint != 0)
                 {
                     _nextPointCycles[i] = (int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i];
-                    _nextPointTimes[i] = nextPoint % 2 == 0 ? _nextBeatTimes[i] + 30 / _bpm / currentPoint + 30 / _bpm / nextPoint : _nextBeatTimes[i] - 30 / _bpm / currentPoint;
+                    _nextPointTimes[i] = nextPoint % 2 == 0 ? _nextBeatTimes[i] : _nextBeatTimes[i] - 30 / _bpm / currentPoint;
                     _beatIntervals[i] = 60f / _bpm / nextPoint;
                     _beatIntervalsTmp[i] = 30f / _bpm / currentPoint + 30f / _bpm / nextPoint;
                 }
@@ -227,13 +229,13 @@ namespace GameManager {
             if (gameEnded == _boardsData.Count) MainGameManager.GameEnded = true;
         }
 
-        public void HandleCamera(JSONNode currentBeat, bool isWrap = false) 
+        public void HandleCamera(JSONNode currentBeat, bool isFF = false) 
         {
             // Camera Movement
                 if (currentBeat["Camera"] != null)
                 {
                     JSONNode camera = currentBeat["Camera"];
-                    float duration = camera["Duration"] != null && !isWrap ? camera["Duration"].AsFloat : 0f;
+                    float duration = camera["Duration"] != null && !isFF ? camera["Duration"].AsFloat : 0f;
                     string easing = camera["Easing"] != null ? camera["Easing"] : "linear";
                     if (camera["BBColor"] != null) {_cameraManager.ChangeBBColor(new Color(camera["BBColor"][0], camera["BBColor"][1], camera["BBColor"][2]), easing, duration);}
                     if (camera["BGColor"] != null) _cameraManager.ChangeBGColor(new Color(camera["BGColor"][0], camera["BGColor"][1], camera["BGColor"][2]), easing, duration);
@@ -241,31 +243,14 @@ namespace GameManager {
                     if (camera["Position"] != null) _cameraManager.MoveCamera(camera["Position"][0], camera["Position"][1], easing, duration);
                     if (camera["Rotation"] != null) _cameraManager.RotateCamera(camera["Rotation"], easing, duration);
                     if (camera["Zoom"] != null) _cameraManager.ZoomCamera(camera["Zoom"], easing, duration);
-                    if (camera["Shake"] != null && !isWrap) _cameraManager.ShakeCamera(camera["Shake"]["Intensity"], camera["Shake"]["Duration"]);
+                    if (camera["Shake"] != null && !isFF) _cameraManager.ShakeCamera(camera["Shake"]["Intensity"], camera["Shake"]["Duration"]);
                 }
-
-                //Deprecated Post Processing
-                /*if (currentBeat["PP"] != null)
-                {
-                    JSONNode pp = currentBeat["PP"];
-                    if (pp["General"] != null) _cameraManager.Cg(pp["General"]["Exposure"], pp["General"]["Contrast"], pp["General"]["Saturation"]);
-                    if (pp["Bloom"] != null) _cameraManager.Bloom(pp["Bloom"]["Intensity"], pp["Bloom"]["Threshold"], 
-                    new Color(pp["Bloom"]["Color"][0], pp["Bloom"]["Color"][1], pp["Bloom"]["Color"][2]));
-                    if (pp["DoF"] != null) _cameraManager.Dof(pp["DoF"]["FocusDistance"], pp["DoF"]["Aperture"], 
-                    pp["DoF"]["FocalLength"]);
-                    if (pp["Lens Distortion"] != null) _cameraManager.Ld(pp["Lens Distortion"]["Intensity"]);
-                    //if (pp["Motion Blur"] != null) _cameraManager.Mb(pp["Motion Blur"]["Intensity"]);
-                    if (pp["Chromatic Aberration"] != null) _cameraManager.Ca(pp["Chromatic Aberration"]["Intensity"]);
-                    if (pp["Vignette"] != null) _cameraManager.Vignette(pp["Vignette"]["Intensity"], 
-                    pp["Vignette"]["Smoothness"], pp["Vignette"]["Roundness"], 
-                    new Color(pp["Vignette"]["Color"][0], pp["Vignette"]["Color"][1], pp["Vignette"]["Color"][2]));
-                }*/
 
                 //Post Processing
                 if (currentBeat["PP"] != null)
                 {
                     JSONNode pp = currentBeat["PP"];
-                    float duration = pp["Duration"] != null && !isWrap ? pp["Duration"].AsFloat : 0f;
+                    float duration = pp["Duration"] != null && !isFF ? pp["Duration"].AsFloat : 0f;
                     string easing = pp["Easing"] != null ? pp["Easing"] : "linear";
                     if (pp["General"] != null) 
                     {

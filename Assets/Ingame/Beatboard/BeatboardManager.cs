@@ -186,33 +186,34 @@ namespace Beatboard
             float sizeDiff = Math.Abs(currentSize - nextSize);
 
             BeatboardData bbdata = Beatboards[index].GetComponent<BeatboardData>();
+            var transitionTime = 10f;
 
             if (_currentPoints > nextPoints)
             {
-                for (float i = 0; i <= pointDiff*20; i += pointDiff)
+                for (float i = 0; i <= pointDiff*transitionTime; i += pointDiff)
                 {
-                    bbdata.points = _currentPoints-(i/20);
-                    bbdata.size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / 20 * i;
+                    bbdata.points = _currentPoints-(i/transitionTime);
+                    bbdata.size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / transitionTime * i;
                     bbdata.position = position;
                     UpdateMesh(Beatboards[index], bbdata.points, bbdata.size, bbdata.position);
                     yield return new WaitForSeconds(0f);
                 }
             } else if (_currentPoints < nextPoints)
             {
-                for (float i = 0; i <= pointDiff*20; i += pointDiff)
+                for (float i = 0; i <= pointDiff*transitionTime; i += pointDiff)
                 {
-                    bbdata.points = _currentPoints+(i/20);
-                    bbdata.size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / 20 * i;
+                    bbdata.points = _currentPoints+(i/transitionTime);
+                    bbdata.size = sizeDiff == 0 ? nextSize : currentSize + sizeDiff / transitionTime * i;
                     bbdata.position = position;
                     UpdateMesh(Beatboards[index], bbdata.points, bbdata.size, bbdata.position);
                     yield return new WaitForSeconds(0f);
                 }
             } else
             {
-                for (float i = 0; i <= 20; i ++)
+                for (float i = 0; i <= transitionTime; i ++)
                 {
                     bbdata.points = _currentPoints;
-                    bbdata.size = currentSize + sizeDiff / 20 * i;
+                    bbdata.size = currentSize + sizeDiff / transitionTime * i;
                     bbdata.position = position;
                     UpdateMesh(Beatboards[index], bbdata.points, bbdata.size, bbdata.position);
                     yield return new WaitForSeconds(0f);

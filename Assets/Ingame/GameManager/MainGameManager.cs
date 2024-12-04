@@ -27,6 +27,9 @@ namespace GameManager
         private static CameraManager _cameraManager;
         public static int LevelNumber;
         private AudioClip _levelAudioContent = null;
+        private float volume;
+        public static float sfxvolume;
+        public static AudioClip kickSound;
         private static string _levelName, _levelDescription, _levelAuthor;
         private static float _bpm;
         private static float _offset;
@@ -102,6 +105,9 @@ namespace GameManager
             GameReallyEnded = false;
             ResultShown = false;
             DebugMode = MenuManager.DebugMode;
+            volume = MenuSoundManager.musicVolume;
+            sfxvolume = MenuSoundManager.sfxVolume;
+            kickSound = Resources.Load<AudioClip>("Sounds/kickdrum");
             gameOverPanel.SetActive(false);
         }
 
@@ -304,6 +310,7 @@ namespace GameManager
                         _bpm
                     );
                     GetComponent<AudioSource>().time = _debugTime;
+                    GetComponent<AudioSource>().volume = volume;
                     GetComponent<AudioSource>().Play();
                     GameStarted = true;
                 }

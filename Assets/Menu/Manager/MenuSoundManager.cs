@@ -6,8 +6,8 @@ public class MenuSoundManager : MonoBehaviour
 {
     AudioSource audioSource;
 
-    public float musicVolume = 0.2f;
-    public float sfxVolume = 0.2f;
+    public static float musicVolume = 0.2f;
+    public static float sfxVolume = 0.2f;
 
     public AudioClip[] backgroundMusics;
     AudioClip backgroundMusic;

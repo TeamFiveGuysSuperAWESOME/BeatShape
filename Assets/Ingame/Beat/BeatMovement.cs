@@ -26,6 +26,25 @@ namespace Beat
         //private float _elapsedTime;
         private float _secondsPerBeat;
         private float _sineValue;
+        private AudioSource audioSource;
+        private bool _hasPlayedSound = false;
+        private bool _missedLogged = false;
+        
+        void Awake() 
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.clip = MainGameManager.kickSound;
+            audioSource.volume = MainGameManager.sfxvolume * 0.2f;
+            audioSource.priority = 256;
+            audioSource.pitch = 3f;
+            audioSource.bypassEffects = true;
+            audioSource.bypassListenerEffects = true;
+            audioSource.bypassReverbZones = true;
+            audioSource.spatialBlend = 0f;
+            audioSource.reverbZoneMix = 0f;
+            audioSource.dopplerLevel = 0f;
+        }
 
         public void SetMovement(float angle, int sides, float boardsize, float spd, float bpm, Vector2 pos, string eas, float sze)
         {
@@ -189,22 +208,28 @@ namespace Beat
             //_elapsedTime = _elapsedTime;
             BeatData beatData = GetComponent<BeatData>();
             if (beatData.input_offset != -9999f) beatData.input_offset = _elapsedTime - (_secondsPerBeat*4);
-
+            
             if(_elapsedTime - (_secondsPerBeat*4) < 0f) {
                 _sineValue = _elapsedTime/(_secondsPerBeat*4/2) < 1f ? Easing.Ease(_elapsedTime/(_secondsPerBeat*4/2), _easing) : Easing.Ease(2-(_elapsedTime/(_secondsPerBeat*4/2)), _easing);
                 transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), 100f);
+                
+                if (!_hasPlayedSound && Mathf.Abs(_elapsedTime - (_secondsPerBeat*4)) < 0.15f)
+                {
+                    audioSource.Play();
+                    _hasPlayedSound = true;
+                }
             }
             else 
             {
                 transform.localScale = new Vector3(0,0,0);
                 if(_elapsedTime - (_secondsPerBeat*4) > 0.15f) 
                 {
-                    if (!GetComponent<BeatData>().missedLogged && !GetComponent<BeatData>().scored)
+                    if (_missedLogged && !GetComponent<BeatData>().scored)
                     {
-                        //Debug.Log("Missed! / " + GetComponent<BeatData>().input_offset.ToString());
-                        GetComponent<BeatData>().missedLogged = true;
+                        Debug.Log("Missed! / " + GetComponent<BeatData>().input_offset.ToString());
+                        _missedLogged = true;
                     }
-                    if (!GetComponent<BeatData>().scored) { GetComponent<BeatData>().input_offset = -9999f; StartCoroutine(RemoveBeatRoutine()); }
+                    if (!GetComponent<BeatData>().scored) { GetComponent<BeatData>().input_offset = -9999f; GetComponent<BeatData>().displayed = true; StartCoroutine(RemoveBeatRoutine()); }
                 }
             }
         }
