@@ -194,7 +194,7 @@ namespace Beat
             Destroy(gameObject);
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (MainGameManager.Paused) return;
             _elapsedTime += Time.deltaTime;
