@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Rendering;
 using System.Collections;
 using UnityEngine.Rendering.PostProcessing;
+using Beatboard;
 
 namespace GameManager
 {
@@ -271,16 +272,16 @@ namespace GameManager
 
         private IEnumerator ChangeBBColorer(Color color, string easing, float duration)
         {
-            Color originalColor = MainGameManager.BeatboardColor;
+            Color originalColor = BeatboardManager.BeatboardColor;
             float time = 0f;
             while (time < duration) 
             {
                 float t = Easing.Ease(time / duration, easing);
-                MainGameManager.BeatboardColor = Color.Lerp(originalColor, color, t);
+                BeatboardManager.BeatboardColor = Color.Lerp(originalColor, color, t);
                 time += Time.deltaTime;
                 yield return null;
             }
-            MainGameManager.BeatboardColor = color;
+            BeatboardManager.BeatboardColor = color;
         }
 
         public void ChangeBGColor(Color color, string easing = "linear", float duration = 1f)

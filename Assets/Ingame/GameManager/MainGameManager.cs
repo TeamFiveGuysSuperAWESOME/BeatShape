@@ -17,6 +17,8 @@ using Unity.VisualScripting;
 //using NativeFilePickerNamespace; // unable in WebGL
 using UnityEngine.Android;
 using UnityEngine.Networking;
+using UnityEngine.EventSystems;
+using UnityEditor;
 
 namespace GameManager
 {
@@ -33,32 +35,39 @@ namespace GameManager
         private static string _levelName, _levelDescription, _levelAuthor;
         private static float _bpm;
         private static float _offset;
-        public static Color BeatboardColor;
         private static List<JSONNode> Boards = new();
         private static JSONNode _boardsData;
         private static List<int> _currentBoardPoints = new();
         private static List<double> _beatIntervals = new(), _nextBeatTimes = new();
         private static List<float> _currentBoardSizes = new();
         private double _startTime;
-        public static readonly float _debugTime = 0f;
+        public static float _debugTime = 0f;
+        private float _musicLength;
         public static string JsonFilePath;
         private bool _isJsonFileLoaded = false;
         public static bool GameStarted = false;
         public static bool Paused = false;
         public static bool GameEnded = false;
         public static bool GameReallyEnded = false;
+        public static bool IsGameOver = false;
+        public static string WhyGameOver = string.Empty;
         private static bool ResultShown = false;
+        private bool _nowYouCanLeave = false;
         public static int Score = 0;
         //public static int Combo = 0;
         public static float Overload = 0f;
         public static int[] Judgement = {0, 0, 0, 0, 0, 0, 0};
-        public TextMeshProUGUI scoreText;
+        //public TextMeshProUGUI scoreText;
         private FadeInScreen screen;
         public TextAsset textFile;
         private GameHandler _gameHandler;
         public static bool DebugMode = MenuManager.DebugMode;
         private bool _isLeaving = false;
+        private bool _isRestarting = false;
         private float animtimer = 0f;
+        [SerializeField] private GameObject practiceIndicator;
+        [SerializeField] private GameObject pausePanel;
+        [SerializeField] private Slider ffSlider;
         [SerializeField] private GameObject gameOverPanel;
         [SerializeField] private TextMeshPro finalScoreText;
         [SerializeField] private TextMeshPro perfectText;
@@ -88,7 +97,6 @@ namespace GameManager
             _levelAuthor = string.Empty;
             _bpm = 0f;
             _offset = 0f;
-            BeatboardColor = Color.white;
             Boards.Clear();
             _boardsData = null;
             _currentBoardPoints.Clear();
@@ -103,12 +111,15 @@ namespace GameManager
             Paused = false;
             GameEnded = false;
             GameReallyEnded = false;
+            IsGameOver = false;
+            WhyGameOver = string.Empty;
             ResultShown = false;
             DebugMode = MenuManager.DebugMode;
             volume = MenuSoundManager.musicVolume;
             sfxvolume = MenuSoundManager.sfxVolume;
             kickSound = Resources.Load<AudioClip>("Sounds/kickdrum");
             gameOverPanel.SetActive(false);
+            practiceIndicator.SetActive(!_debugTime.Equals(0f));
         }
 
         public static MainGameManager Instance { get; private set; }
@@ -229,6 +240,8 @@ namespace GameManager
             _levelAuthor = levelDataJsonNode["LevelAuthor"];
             var levelAudio = levelDataJsonNode["AudioFile"];
             GetComponent<AudioSource>().clip = Resources.Load<AudioClip>("Levels/1/" + levelAudio);
+            _musicLength = GetComponent<AudioSource>().clip.length;
+            ffSlider.value = _debugTime / _musicLength;
             if (_levelAudioContent != null)
             {
                 GetComponent<AudioSource>().clip = _levelAudioContent;
@@ -240,6 +253,10 @@ namespace GameManager
             CreateBeatboardAtStart(Boards);
 
             _startTime = 30 / _bpm + _offset - _debugTime;
+#if UNITY_ANDROID && !UNITY_EDITOR
+            _startTime -= 0.2f;
+#endif
+
             for (var i = 0; i < Boards.Count; i++)
             {
                 _beatIntervals.Insert(i, 60f / _bpm / Boards[i]["points"]);
@@ -250,7 +267,7 @@ namespace GameManager
             foreach (var t in Boards) _currentBoardSizes.Add(t["size"]);
 
             var background = levelDataJsonNode["Background"];
-            BeatboardColor = new Color(background["BBColor"]?[0]?.AsFloat ?? 0, background["BBColor"]?[1]?.AsFloat ?? 0, background["BBColor"]?[2]?.AsFloat ?? 0);
+            BeatboardManager.BeatboardColor = new Color(background["BBColor"]?[0]?.AsFloat ?? 0, background["BBColor"]?[1]?.AsFloat ?? 0, background["BBColor"]?[2]?.AsFloat ?? 0);
             Camera.main.backgroundColor = new Color(background["BGColor"]?[0]?.AsFloat ?? 1, background["BGColor"]?[1]?.AsFloat ?? 1, background["BGColor"]?[2]?.AsFloat ?? 1);
             if (background["BGImage"] != null)
             {
@@ -272,28 +289,34 @@ namespace GameManager
                 }
             }
         }
+        
+        void FixedUpdate()
+        {
+            if (!GameStarted) return;
+            _gameHandler.HandleGame();
+        }
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
-            {
-                LoadMainMenu();
-            }
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                SceneManager.LoadScene("Ingame");
-            }
             if (_isLeaving) 
             {
                 screen.screenState = "FadeIn";
                 animtimer += Time.deltaTime;
                 if (animtimer > 0.75f) { _isLeaving = false; SceneManager.LoadScene("MainMenu"); }
             }
+            if (_isRestarting) 
+            {
+                screen.screenState = "FadeIn";
+                animtimer += Time.deltaTime;
+                if (animtimer > 0.75f) { _isRestarting = false; SceneManager.LoadScene("Ingame"); }
+            }
 
             if (!GameStarted) {
                 GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
+                if (Paused) return;
                 if (_isJsonFileLoaded) GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm, 0.6f+_offset, Boards[0]["points"]);
-                if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || Input.touchCount > 0) {
+                if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) {
+                    if (EventSystem.current.IsPointerOverGameObject() || (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) || EventSystem.current.IsPointerOverGameObject(1)) return;
                     _startTime += AudioSettings.dspTime;
                     _gameHandler = gameObject.AddComponent<GameHandler>();
                     _gameHandler.Initialize(
@@ -317,52 +340,47 @@ namespace GameManager
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Paused = !Paused;
-                if (Paused)
-                {
-                    Time.timeScale = 0;
-                    GetComponent<AudioSource>().Pause();
-                }
-                else
-                {
-                    Time.timeScale = 1;
-                    GetComponent<AudioSource>().Play();
-                }
-            }
-
-            _gameHandler.HandleGame();
-            scoreText.text = Overload.ToString();
+            //scoreText.text = Overload.ToString();
             if (Overload >= 3)
             {
-                Debug.Log("Game Over");
+                GameReallyEnded = true;
+                IsGameOver = true;
+                WhyGameOver = "Overloaded!";
             }
 
-            if (GameReallyEnded && !ResultShown)
+            if (GameReallyEnded)
             {
-                StartCoroutine(GameEndFlash());
-                Debug.Log("Game Ended");
-                gameOverPanel.SetActive(true);
+                if (!ResultShown) {
+                    StartCoroutine(GameEndFlash());
+                    Debug.Log("Game Ended");
+                    gameOverPanel.SetActive(true);
 
-                SetTextRenderQueue(finalScoreText, 3002);
-                SetTextRenderQueue(perfectText, 3002);
-                SetTextRenderQueue(earlyText, 3002);
-                SetTextRenderQueue(lateText, 3002);
-                SetTextRenderQueue(earlyBadText, 3002);
-                SetTextRenderQueue(lateBadText, 3002);
-                SetTextRenderQueue(tooEarlyText, 3002);
-                SetTextRenderQueue(tooLateText, 3002);
-                
-                finalScoreText.text = "Score: " + Score;
-                perfectText.text = "Perfect: " + Judgement[6];
-                earlyText.text = "Early: " + Judgement[2];
-                lateText.text = "Late: " + Judgement[3];
-                earlyBadText.text = "EARLY: " + Judgement[4];
-                lateBadText.text = "LATE: " + Judgement[5];
-                tooEarlyText.text = "Too EARLY: " + Judgement[0];
-                tooLateText.text = "Too LATE: " + Judgement[1];
-                ResultShown = true;
+                    SetTextRenderQueue(finalScoreText, 3002);
+                    SetTextRenderQueue(perfectText, 3002);
+                    SetTextRenderQueue(earlyText, 3002);
+                    SetTextRenderQueue(lateText, 3002);
+                    SetTextRenderQueue(earlyBadText, 3002);
+                    SetTextRenderQueue(lateBadText, 3002);
+                    SetTextRenderQueue(tooEarlyText, 3002);
+                    SetTextRenderQueue(tooLateText, 3002);
+                    
+                    finalScoreText.text = _debugTime == 0 ? "Score: " + Score : "Practice Mode";
+                    if (IsGameOver) {finalScoreText.text = WhyGameOver; GetComponent<AudioSource>().Stop();}
+                    perfectText.text = Judgement[6].ToString();
+                    earlyText.text = Judgement[2].ToString();
+                    lateText.text = Judgement[3].ToString();
+                    earlyBadText.text = Judgement[4].ToString();
+                    lateBadText.text = Judgement[5].ToString();
+                    tooEarlyText.text = Judgement[0].ToString();
+                    tooLateText.text = Judgement[1].ToString();
+                    StartCoroutine(Wait(2f));
+                    ResultShown = true;
+                }
+
+                if(_nowYouCanLeave || Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) {
+                    if (IsGameOver) {RestartAsPracMode(); return;}
+                    LoadMainMenu();
+                }
             }
         }
         private IEnumerator GameEndFlash()
@@ -370,6 +388,12 @@ namespace GameManager
             _cameraManager.Cg(100, 0, 0, "incubic", 0.01f);
             yield return new WaitForSeconds(0.01f);
             _cameraManager.Cg(0, 0, 0, "outcubic", 0.5f);
+        }
+
+        private IEnumerator Wait(float seconds)
+        {
+            yield return new WaitForSeconds(seconds);
+            _nowYouCanLeave = true;
         }
 
         private void SetTextRenderQueue(TextMeshPro text, int queueValue)
@@ -402,10 +426,37 @@ namespace GameManager
             }
         }
 
-        private void LoadMainMenu()
+        public void LoadMainMenu()
         {
+            if (_isLeaving || _isRestarting) return;
             animtimer = 0f;
+            _debugTime = 0f;
             _isLeaving = true;
+            pausePanel.SetActive(false);
+            gameOverPanel.SetActive(false);
+        }
+        public void Restart()
+        {
+            if (_isLeaving || _isRestarting) return;
+            animtimer = 0f;
+            _isRestarting = true;
+            _debugTime = 0f;
+            pausePanel.SetActive(false);
+            gameOverPanel.SetActive(false);
+        }
+
+        public void RestartAsPracMode()
+        {
+            if (_isLeaving || _isRestarting) return;
+            animtimer = 0f;
+            _isRestarting = true;
+            pausePanel.SetActive(false);
+            gameOverPanel.SetActive(false);
+        }
+
+        public void OnSliderMove() 
+        {
+            _debugTime = _musicLength * ffSlider.value;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Beatboard
         public static List<GameObject> Beatboards = new();
         public List<GameObject> updateBeatboards;
         public static List<int> UpdateBbIndex = new();
-        public Color beatboardColor = Color.white;
+        public static Color BeatboardColor = Color.white;
         public List<int> currentPoints;
         public const float RotationSpeed = 25f;
         public static Quaternion Rotation;
@@ -72,8 +72,8 @@ namespace Beatboard
 
             Material beatboardMaterial = new Material(Shader.Find("Unlit/Color")) 
             { 
-                color = beatboardColor,
-                renderQueue = 3001
+                color = BeatboardColor,
+                renderQueue = 2999
             };
             meshRenderer.material = beatboardMaterial;
 
@@ -114,9 +114,10 @@ namespace Beatboard
 
             Material secondMaterial = new Material(Shader.Find("Standard"))
             {
-                color = new Color(beatboardColor.r, beatboardColor.g, beatboardColor.b, 0.35f),
-                renderQueue = 3000
+                color = new Color(BeatboardColor.r, BeatboardColor.g, BeatboardColor.b, 0.35f),
+                renderQueue = 2998
             };
+            secondMaterial.SetFloat("_Mode", 2);
             secondMaterial.SetInt(SrcBlend, (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
             secondMaterial.SetInt(DstBlend, (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
             secondMaterial.SetInt(ZWrite, 0);
@@ -299,13 +300,13 @@ namespace Beatboard
 
         void Update()
         {
-            if (beatboardColor != MainGameManager.BeatboardColor)
+            if (BeatboardColor != Beatboards[0].transform.Find("bbMeshIn").gameObject.GetComponent<MeshRenderer>().material.color)
             {
-                beatboardColor = MainGameManager.BeatboardColor;
+                Debug.Log("Color changed" + BeatboardColor);
                 foreach (var beatboard in Beatboards)
                 {
-                    beatboard.transform.Find("bbMeshOut").gameObject.GetComponent<MeshRenderer>().material.color = beatboardColor;
-                    beatboard.transform.Find("bbMeshIn").gameObject.GetComponent<MeshRenderer>().material.color = beatboardColor;
+                    beatboard.transform.Find("bbMeshOut").gameObject.GetComponent<MeshRenderer>().material.color = new Color(BeatboardColor.r, BeatboardColor.g, BeatboardColor.b, 0.35f);
+                    beatboard.transform.Find("bbMeshIn").gameObject.GetComponent<MeshRenderer>().material.color = BeatboardColor;
                 }
             }
             if (!MainGameManager.GameStarted) return;

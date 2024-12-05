@@ -5,6 +5,7 @@ using Beat;
 using GameManager;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Ingame.GameManager
 {
@@ -21,6 +22,7 @@ namespace Ingame.GameManager
         private void Update()
         {
             if (MainGameManager.Paused) return;
+            if (MainGameManager.GameReallyEnded) return;
             beatDataList = new List<BeatData>(FindObjectsByType<BeatData>(FindObjectsSortMode.None));
 
             if (MainGameManager.GameEnded) 
@@ -37,19 +39,21 @@ namespace Ingame.GameManager
             closestBeat = beatDataList.OrderByDescending(beatData => beatData.input_offset).FirstOrDefault();
             if (closestBeat == null) return;
 
-            if (Input.anyKeyDown)
+            if (Input.anyKeyDown && Input.touchCount == 0)
             {
+                if (EventSystem.current.IsPointerOverGameObject(0) || EventSystem.current.IsPointerOverGameObject(1)) return;
                 BeatMovement beatMovement = closestBeat.GetComponent<BeatMovement>();
                 beatMovement.TryRemoveBeatScored();
             }
-            /*foreach (Touch touch in Input.touches)
+            foreach (Touch touch in Input.touches)
             {
-                if (touch.phase == TouchPhase.Began && closestBeat != null)
+                if (EventSystem.current.IsPointerOverGameObject(touch.fingerId)) return;
+                if (touch.phase == TouchPhase.Began)
                 {
                     BeatMovement beatMovement = closestBeat.GetComponent<BeatMovement>();
                     beatMovement.TryRemoveBeatScored();
                 }
-            }*/
+            }
         }
     }
 }

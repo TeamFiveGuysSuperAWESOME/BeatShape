@@ -63,18 +63,16 @@ namespace Beat
         public void TryRemoveBeatScored()
         {
             float inputOffset = _elapsedTime - _secondsPerBeat * 4;
-            if (inputOffset < -0.15f) //offset = -150 ~ 150ms
+            if (inputOffset < -0.2f) //offset = -400 ~ 400ms 이거 아닌듯.. 너무 어려워
             {
-                Debug.Log("Too Early! / " + inputOffset.ToString());
                 MainGameManager.Judgement[0] += 1;
                 StartCoroutine(DisplayIndicator("Too EARLY", Color.red));
                 StartCoroutine(ChangeColorRoutine(new Color(0.5f, 0f, 0f)));
                 MainGameManager.Overload += 1;
                 return;
             }
-            if (inputOffset > 0.15f)
+            if (inputOffset > 0.2f)
             {
-                Debug.Log("Too Late! / " + inputOffset.ToString());
                 MainGameManager.Judgement[1] += 1;
                 StartCoroutine(DisplayIndicator("Too LATE", Color.red));
                 StartCoroutine(ChangeColorRoutine(new Color(0.5f, 0f, 0f)));
@@ -86,37 +84,32 @@ namespace Beat
             GetComponent<BeatData>().scored = true;
             switch (inputOffset) {
                 case float n when n < -0.1f:
-                    Debug.Log("Early! / " + inputOffset.ToString());
                     MainGameManager.Judgement[2] += 1;
                     StartCoroutine(DisplayIndicator("EARLY", Color.red));
                     //StartCoroutine(ChangeColorRoutine(Color.red));
                     MainGameManager.Score += 1;
                     break;
                 case float n when n > 0.1f:
-                    Debug.Log("Late! / " + inputOffset.ToString());
                     MainGameManager.Judgement[3] += 1;
                     StartCoroutine(DisplayIndicator("LATE", Color.red));
                     //StartCoroutine(ChangeColorRoutine(Color.red));
                     MainGameManager.Score += 1;
                     break;
                 case float n when n < -0.07f:
-                    Debug.Log("Early / " + inputOffset.ToString());
                     MainGameManager.Judgement[4] += 1;
                     StartCoroutine(DisplayIndicator("Early", Color.yellow));
                     //StartCoroutine(ChangeColorRoutine(Color.yellow));
                     MainGameManager.Score += 3;
                     break;
                 case float n when n > 0.07f:
-                    Debug.Log("Late / " + inputOffset.ToString());
                     MainGameManager.Judgement[5] += 1;
                     StartCoroutine(DisplayIndicator("Late", Color.yellow));
                     //StartCoroutine(ChangeColorRoutine(Color.yellow));
                     MainGameManager.Score += 3;
                     break;
                 default:
-                    Debug.Log("Perfect! / " + inputOffset.ToString());
                     MainGameManager.Judgement[6] += 1;
-                    StartCoroutine(DisplayIndicator("Perfect!", Color.green));
+                    StartCoroutine(DisplayIndicator("PERFECT", Color.green));
                     //StartCoroutine(ChangeColorRoutine(Color.green));
                     MainGameManager.Score += 5;
                     break;
@@ -222,14 +215,20 @@ namespace Beat
             else 
             {
                 transform.localScale = new Vector3(0,0,0);
-                if(_elapsedTime - (_secondsPerBeat*4) > 0.15f) 
+                if(_elapsedTime - (_secondsPerBeat*4) > 0.2f) 
                 {
                     if (_missedLogged && !GetComponent<BeatData>().scored)
                     {
                         Debug.Log("Missed! / " + GetComponent<BeatData>().input_offset.ToString());
                         _missedLogged = true;
                     }
-                    if (!GetComponent<BeatData>().scored) { GetComponent<BeatData>().input_offset = -9999f; GetComponent<BeatData>().displayed = true; StartCoroutine(RemoveBeatRoutine()); }
+                    if (!GetComponent<BeatData>().scored) { 
+                        GetComponent<BeatData>().input_offset = -9999f; 
+                        GetComponent<BeatData>().displayed = true; StartCoroutine(RemoveBeatRoutine());
+                        MainGameManager.GameReallyEnded = true;
+                        MainGameManager.IsGameOver = true; 
+                        MainGameManager.WhyGameOver = "Missed!";
+                    }
                 }
             }
         }
