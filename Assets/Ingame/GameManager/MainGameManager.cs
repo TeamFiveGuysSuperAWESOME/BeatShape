@@ -254,7 +254,7 @@ namespace GameManager
 
             _startTime = 30 / _bpm + _offset - _debugTime;
 #if UNITY_ANDROID && !UNITY_EDITOR
-            _startTime -= 0.2f;
+            _startTime -= 0.11f;
 #endif
 
             for (var i = 0; i < Boards.Count; i++)
@@ -373,11 +373,11 @@ namespace GameManager
                     lateBadText.text = Judgement[5].ToString();
                     tooEarlyText.text = Judgement[0].ToString();
                     tooLateText.text = Judgement[1].ToString();
-                    StartCoroutine(Wait(2f));
+                    StartCoroutine(Wait(1.5f));
                     ResultShown = true;
                 }
 
-                if(_nowYouCanLeave || Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) {
+                if(_nowYouCanLeave && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))) {
                     if (IsGameOver) {RestartAsPracMode(); return;}
                     LoadMainMenu();
                 }
