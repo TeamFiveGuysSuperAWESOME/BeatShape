@@ -8,6 +8,7 @@ public class MenuArrow : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     RectTransform rt;
     MenuScenes ms;
     MenuBeatBoard mbb;
+    AudioSource audioSource;
 
     public KeyCode key;
     public Vector2 scale;
@@ -19,6 +20,7 @@ public class MenuArrow : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         rt = GetComponent<RectTransform>();
         ms = GameObject.FindWithTag("scene").GetComponent<MenuScenes>();
         mbb = GameObject.FindWithTag("beatboard").GetComponent<MenuBeatBoard>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -34,6 +36,9 @@ public class MenuArrow : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if(manager.menuState == "stageSelect" && (manager.sceneState == 0 || key == KeyCode.UpArrow || key == KeyCode.DownArrow)) {
             if(Input.GetKeyDown(key)) {
+                audioSource.volume = MenuSoundManager.sfxVolume;
+                audioSource.Play();
+
                 input = true;
                 if(key == KeyCode.RightArrow) {ms.Input_right();}
                 if(key == KeyCode.LeftArrow) {ms.Input_left();}
@@ -50,6 +55,9 @@ public class MenuArrow : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        audioSource.volume = MenuSoundManager.sfxVolume;
+        audioSource.Play();
+
         if(manager.menuState == "stageSelect" && (manager.sceneState == 0 || key == KeyCode.UpArrow || key == KeyCode.DownArrow)) {
             input = true;
             if(key == KeyCode.RightArrow) {ms.Input_right();}

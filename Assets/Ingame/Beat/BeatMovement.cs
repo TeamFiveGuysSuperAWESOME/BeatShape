@@ -27,25 +27,14 @@ namespace Beat
         //private float _elapsedTime;
         private float _secondsPerBeat;
         private float _sineValue;
-        private AudioSource audioSource;
+        private BeatManager beatmanager;
         private bool _hasPlayedSound = false;
         private bool _missedLogged = false;
         private bool _displayed = false;
         
         void Awake() 
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.playOnAwake = false;
-            audioSource.clip = MainGameManager.kickSound;
-            audioSource.volume = MainGameManager.sfxvolume * 0.2f;
-            audioSource.priority = 256;
-            audioSource.pitch = 3f;
-            audioSource.bypassEffects = true;
-            audioSource.bypassListenerEffects = true;
-            audioSource.bypassReverbZones = true;
-            audioSource.spatialBlend = 0f;
-            audioSource.reverbZoneMix = 0f;
-            audioSource.dopplerLevel = 0f;
+            beatmanager = GameObject.FindWithTag("beatmanager").GetComponent<BeatManager>();
         }
 
         public void SetMovement(float angle, int sides, float boardsize, float spd, float bpm, Vector2 pos, string eas, float sze)
@@ -210,7 +199,7 @@ namespace Beat
                 
                 if (!_hasPlayedSound && Mathf.Abs(_elapsedTime - (_secondsPerBeat*4)) < 0.15f)
                 {
-                    audioSource.Play();
+                    beatmanager.Audio_Kick();
                     _hasPlayedSound = true;
                 }
             }

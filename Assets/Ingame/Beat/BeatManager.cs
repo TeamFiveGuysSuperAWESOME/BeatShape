@@ -7,6 +7,8 @@ namespace Beat
 {
     public class BeatManager : MonoBehaviour
     {
+        AudioSource audioSource;
+
         public GameObject beatPrefab;
         public int beatIndex;
         
@@ -32,8 +34,18 @@ namespace Beat
                 20f);
         }
 
+        public void Audio_Kick()
+        {
+            audioSource.Play();
+        }
+
+        private void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
         private void Start()
         {
+            audioSource.volume = MenuSoundManager.sfxVolume;
         }
 
         void Update()

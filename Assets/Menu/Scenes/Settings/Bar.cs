@@ -7,9 +7,11 @@ public class Bar : MonoBehaviour
 
     bool onClick = false;
     public string type = "Music";
+    float timer;
     
     public GameObject bar_front;
     LineRenderer lr;
+    AudioSource audioSource;
     public GameObject text;
     TextMeshProUGUI text_tmp;
 
@@ -18,6 +20,7 @@ public class Bar : MonoBehaviour
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
         lr = bar_front.GetComponent<LineRenderer>();
         text_tmp = text.GetComponent<TextMeshProUGUI>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void OnMouseDown()
@@ -41,7 +44,15 @@ public class Bar : MonoBehaviour
                 text_tmp.text = (lr.GetPosition(1).x*10).ToString("F0") + "%";
                 
                 if(type == "Music") {MenuSoundManager.musicVolume = lr.GetPosition(1).x/10;}
-                else if(type == "SoundEffect") {MenuSoundManager.sfxVolume = lr.GetPosition(1).x/10;}
+                else if(type == "SoundEffect") {
+                    timer = timer<0 ? timer+Time.deltaTime : 0;
+                    if(MenuSoundManager.sfxVolume != lr.GetPosition(1).x/10 && timer == 0) {
+                        timer = -0.05f;
+                        audioSource.volume = lr.GetPosition(1).x/10;
+                        audioSource.Play();
+                    }
+                    MenuSoundManager.sfxVolume = lr.GetPosition(1).x/10;
+                }
             }
         }
     }

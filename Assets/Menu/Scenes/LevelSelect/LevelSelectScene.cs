@@ -8,6 +8,7 @@ public class LevelSelectScene : MonoBehaviour
     MenuEffects effects;
     MenuScenes menuScenes;
     FadeInScreen screen;
+    AudioSource audioSource;
 
     public GameObject level_prefab;
     public GameObject[] levels;
@@ -24,6 +25,7 @@ public class LevelSelectScene : MonoBehaviour
         effects = GameObject.FindWithTag("effectmanager").GetComponent<MenuEffects>();
         menuScenes = GetComponentInParent<MenuScenes>();
         screen = GameObject.FindWithTag("screen").GetComponent<FadeInScreen>();
+        audioSource = GetComponent<AudioSource>();
 
         levelsGroup = GameObject.FindWithTag("levels");
         stage_text_rt = stage_text_obj.GetComponent<RectTransform>();
@@ -55,6 +57,8 @@ public class LevelSelectScene : MonoBehaviour
             stage_text_rt.localScale = new Vector3(1,1,1);
             effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*25,menuScenes.liveLevelScale.y*25), new Vector2(350,350), 0.75f, manager.menuColor_dark);
             manager.menuState = "stageEntry";
+            audioSource.volume = MenuSoundManager.sfxVolume;
+            audioSource.Play();
         }
     }
 
@@ -76,6 +80,8 @@ public class LevelSelectScene : MonoBehaviour
                 if (tempLevel != null) 
                 {
                     manager.menuState = "stageEntry";
+                    audioSource.volume = MenuSoundManager.sfxVolume;
+                    audioSource.Play();
                 }
                 else Debug.Log("Level not found");
             }

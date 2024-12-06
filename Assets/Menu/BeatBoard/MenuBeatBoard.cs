@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MenuBeatBoard : MonoBehaviour
 {
     MenuManager manager;
+    AudioSource audioSource;
 
     public GameObject beat_prefab;
     public GameObject clack_prefab;
@@ -21,6 +22,7 @@ public class MenuBeatBoard : MonoBehaviour
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
         menuScenes = GameObject.FindWithTag("scene").GetComponent<MenuScenes>();
         menuScenes_rt = GameObject.FindWithTag("scene").GetComponent<RectTransform>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -40,6 +42,8 @@ public class MenuBeatBoard : MonoBehaviour
     public void NewClack()
     {
         GameObject clack_obj = Instantiate(clack_prefab, transform);
+        audioSource.volume = MenuSoundManager.sfxVolume;
+        audioSource.Play();
     }
 
     public void Input_up()

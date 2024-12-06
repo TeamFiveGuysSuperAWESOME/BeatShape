@@ -11,9 +11,18 @@ public class FadeInScreen : MonoBehaviour
     float scale;
     float speed = 0.75f;
     float timer;
+    bool playSFX;
+
+    AudioSource audioSource;
+
+    void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void FadeIn()
     {
+        if(timer == 0) {audioSource.volume = MenuSoundManager.sfxVolume; audioSource.Play();}
         timer += Time.deltaTime;
         rotation = -90*Easing.OutCubic(timer/speed);
         scale = 1-1*Easing.OutCubic(timer/speed);
@@ -28,6 +37,7 @@ public class FadeInScreen : MonoBehaviour
 
     void FadeOut()
     {
+        if(timer == 0) {audioSource.volume = MenuSoundManager.sfxVolume; audioSource.Play();}
         timer += Time.deltaTime;
         rotation = 90*Easing.InCubic(timer/speed);
         scale = 1*Easing.InCubic(timer/speed);

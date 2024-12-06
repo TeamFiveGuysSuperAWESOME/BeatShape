@@ -280,7 +280,7 @@ namespace GameManager
                 if (backgroundSprite != null)
                 {
                     GameObject backgroundObj = new("Background");
-                    backgroundObj.transform.SetParent(Camera.main.transform, false);
+                    //backgroundObj.transform.SetParent(Camera.main.transform, false);
                     backgroundObj.tag = "BackgroundImg";
                     SpriteRenderer spriteRenderer = backgroundObj.AddComponent<SpriteRenderer>();
                     spriteRenderer.sprite = backgroundSprite;
@@ -289,7 +289,7 @@ namespace GameManager
                     Vector2 spriteSize = backgroundSprite.bounds.size;
                     float scale = Mathf.Max(screenWidth / spriteSize.x, screenHeight / spriteSize.y);
                     backgroundObj.transform.localScale = new Vector3(scale, scale, 1);
-                    backgroundObj.transform.position = new Vector3(0, 0, 2);
+                    backgroundObj.transform.position = new Vector3(0, 0, 200);
                     spriteRenderer.sortingOrder = -1;
                 }
             }
@@ -371,11 +371,16 @@ namespace GameManager
                     
                     finalScoreText.text = _debugTime == 0 ? "Score: " + Score : "Practice Mode";
                     missedText.SetActive(_debugTime > 0);
+
+                    ResultAudio resultAudio = GameObject.FindWithTag("resultAudio").GetComponent<ResultAudio>();
                     if (IsGameOver) 
                     {
+                        resultAudio.Audio_Snare();
                         finalScoreText.text = WhyGameOver;
                         judgementPanel.SetActive(false);
                     }
+                    else {resultAudio.Audio_Cymbal();}
+                    
                     perfectText.text = Judgement[6].ToString();
                     earlyText.text = Judgement[2].ToString();
                     lateText.text = Judgement[3].ToString();
