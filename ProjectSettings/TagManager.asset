@@ -57,11 +57,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
+  - name: Background
+    uniqueID: 366942701
     locked: 0
-  - name: FadeScreen
-    uniqueID: 2219674859
+  - name: SquareEffect
+    uniqueID: 1906361437
     locked: 0
   - name: Clack
     uniqueID: 2062652977
@@ -69,14 +69,20 @@ TagManager:
   - name: LevelSelect
     uniqueID: 1745106327
     locked: 0
-  - name: Board
-    uniqueID: 3579626171
-    locked: 0
   - name: Beat
     uniqueID: 2072640837
     locked: 0
+  - name: Board
+    uniqueID: 3579626171
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
   - name: UI
     uniqueID: 2449460325
+    locked: 0
+  - name: FadeScreen
+    uniqueID: 2219674859
     locked: 0
   m_RenderingLayers:
   - Default

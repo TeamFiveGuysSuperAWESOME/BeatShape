@@ -47,7 +47,7 @@ public class MenuBeat : MonoBehaviour
                 bb.transform.localScale *= 1.075f;
 
                 
-                em.NewSquare(new Vector2(0,-110), new Vector2(150,150), new Vector2(300,300), 1, manager.menuColor_dark);
+                em.NewSquare(new Vector2(0,-110), new Vector2(360,360), new Vector2(450,450), 1, manager.menuColor_dark);
 
                 Destroy(gameObject);
             }

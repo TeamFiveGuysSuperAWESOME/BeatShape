@@ -53,7 +53,7 @@ public class LevelSelectScene : MonoBehaviour
     {
         if(manager.menuState == "stageSelect" && manager.sceneState == 0) {
             stage_text_rt.localScale = new Vector3(1,1,1);
-            effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*10,menuScenes.liveLevelScale.y*10), new Vector2(150,150), 0.75f, manager.menuColor_dark);
+            effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*25,menuScenes.liveLevelScale.y*25), new Vector2(350,350), 0.75f, manager.menuColor_dark);
             manager.menuState = "stageEntry";
         }
     }
@@ -71,7 +71,7 @@ public class LevelSelectScene : MonoBehaviour
             if(Input.GetKeyUp(KeyCode.Space)) 
             {
                 stage_text_rt.localScale = new Vector3(1,1,1);
-                effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*10,menuScenes.liveLevelScale.y*10), new Vector2(150,150), 0.75f, manager.menuColor_dark);
+                effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*25,menuScenes.liveLevelScale.y*25), new Vector2(350,350), 0.75f, manager.menuColor_dark);
                 var tempLevel = Resources.Load<TextAsset>("Levels/" + MenuManager.levelNumber + "/level");
                 if (tempLevel != null) 
                 {
