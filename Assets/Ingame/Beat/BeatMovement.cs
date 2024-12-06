@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using Beatboard;
 using GameManager;
 using TMPro;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -29,6 +30,7 @@ namespace Beat
         private AudioSource audioSource;
         private bool _hasPlayedSound = false;
         private bool _missedLogged = false;
+        private bool _displayed = false;
         
         void Awake() 
         {
@@ -150,13 +152,13 @@ namespace Beat
             while (elapsedTime < animDuration)
             {
                 elapsedTime += Time.deltaTime;
-                float scale = 1 - Easing.Ease(elapsedTime / animDuration, "incubic");
+                float scale = Easing.Ease(1 - elapsedTime / animDuration, "incubic");
                 scoreText.transform.localScale = new Vector3(scale, scale, 1);
                 yield return null;
             }
 
             Destroy(scoreText);
-            if (text != "Too Early!" && text != "Too Late!") GetComponent<BeatData>().displayed = true;
+            if (text != "Too Early!" && text != "Too Late!") _displayed = true;
         }
 
         private IEnumerator ChangeColorRoutine(Color color) {
@@ -189,12 +191,12 @@ namespace Beat
                 yield return null;
             }
 
-            yield return new WaitUntil(() => GetComponent<BeatData>().displayed || GetComponent<BeatData>().missedLogged);
+            yield return new WaitUntil(() => _displayed || GetComponent<BeatData>().missedLogged);
             yield return new WaitForSeconds(0.5f);
             Destroy(gameObject);
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             if (MainGameManager.Paused) return;
             _elapsedTime += Time.deltaTime;
@@ -217,17 +219,20 @@ namespace Beat
                 transform.localScale = new Vector3(0,0,0);
                 if(_elapsedTime - (_secondsPerBeat*4) > 0.3f) 
                 {
-                    if (_missedLogged && !GetComponent<BeatData>().scored)
-                    {
-                        Debug.Log("Missed! / " + GetComponent<BeatData>().input_offset.ToString());
-                        _missedLogged = true;
-                    }
-                    if (!GetComponent<BeatData>().scored) { 
+                    if (!GetComponent<BeatData>().scored) {
+                        if (!_missedLogged)
+                        {
+                            MainGameManager.Judgement[7] += 1;
+                            _missedLogged = true;
+                        }
                         GetComponent<BeatData>().input_offset = -9999f; 
-                        GetComponent<BeatData>().displayed = true; StartCoroutine(RemoveBeatRoutine());
+                        _displayed = true;
+                        StartCoroutine(RemoveBeatRoutine());
+
+                        if (MainGameManager._debugTime > 0f) return;
                         MainGameManager.GameReallyEnded = true;
                         MainGameManager.IsGameOver = true; 
-                        MainGameManager.WhyGameOver = "Missed!";
+                        MainGameManager.WhyGameOver = "¡MISSED!";
                     }
                 }
             }

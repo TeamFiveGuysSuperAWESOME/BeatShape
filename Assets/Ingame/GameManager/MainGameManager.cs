@@ -19,6 +19,7 @@ using UnityEngine.Android;
 using UnityEngine.Networking;
 using UnityEngine.EventSystems;
 using UnityEditor;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace GameManager
 {
@@ -33,7 +34,7 @@ namespace GameManager
         public static float sfxvolume;
         public static AudioClip kickSound;
         private static string _levelName, _levelDescription, _levelAuthor;
-        private static float _bpm;
+        public static float _bpm;
         private static float _offset;
         private static List<JSONNode> Boards = new();
         private static JSONNode _boardsData;
@@ -56,7 +57,7 @@ namespace GameManager
         public static int Score = 0;
         //public static int Combo = 0;
         public static float Overload = 0f;
-        public static int[] Judgement = {0, 0, 0, 0, 0, 0, 0};
+        public static int[] Judgement = {0, 0, 0, 0, 0, 0, 0, 0};
         //public TextMeshProUGUI scoreText;
         private FadeInScreen screen;
         public TextAsset textFile;
@@ -68,7 +69,11 @@ namespace GameManager
         [SerializeField] private GameObject practiceIndicator;
         [SerializeField] private GameObject pausePanel;
         [SerializeField] private Slider ffSlider;
+        [SerializeField] private GameObject ffSliderObj;
+        [SerializeField] private TextMeshProUGUI ffSliderPercent;
+        [SerializeField] private TextMeshProUGUI ffSliderPercentFull;
         [SerializeField] private GameObject gameOverPanel;
+        [SerializeField] private GameObject judgementPanel;
         [SerializeField] private TextMeshPro finalScoreText;
         [SerializeField] private TextMeshPro perfectText;
         [SerializeField] private TextMeshPro earlyText;
@@ -77,6 +82,7 @@ namespace GameManager
         [SerializeField] private TextMeshPro lateBadText;
         [SerializeField] private TextMeshPro tooEarlyText;
         [SerializeField] private TextMeshPro tooLateText;
+        [SerializeField] private GameObject missedText;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
@@ -87,11 +93,12 @@ namespace GameManager
 
         void Awake()
         {
+            GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().active = false;
             LevelNumber = MenuManager.levelNumber;
             screen = GameObject.FindWithTag("screen").GetComponent<FadeInScreen>();
-            _beatboardManager = null;
-            _beatManager = null;
-            _cameraManager = null;
+            _beatboardManager = FindFirstObjectByType<BeatboardManager>();
+            _beatManager = FindFirstObjectByType<BeatManager>();
+            _cameraManager = FindFirstObjectByType<CameraManager>();
             _levelName = string.Empty;
             _levelDescription = string.Empty;
             _levelAuthor = string.Empty;
@@ -107,7 +114,7 @@ namespace GameManager
             GameStarted = false;
             Score = 0;
             //Combo = 0;
-            Judgement = new[] {0, 0, 0, 0, 0, 0, 0};
+            Judgement = new[] {0, 0, 0, 0, 0, 0, 0, 0};
             Paused = false;
             GameEnded = false;
             GameReallyEnded = false;
@@ -120,6 +127,7 @@ namespace GameManager
             kickSound = Resources.Load<AudioClip>("Sounds/kickdrum");
             gameOverPanel.SetActive(false);
             practiceIndicator.SetActive(!_debugTime.Equals(0f));
+            ffSliderObj.SetActive(!_debugTime.Equals(0f));
         }
 
         public static MainGameManager Instance { get; private set; }
@@ -212,10 +220,6 @@ namespace GameManager
         {
             if (GameStarted) return;
 
-            _beatboardManager = FindFirstObjectByType<BeatboardManager>();
-            _beatManager = FindFirstObjectByType<BeatManager>();
-            _cameraManager = FindFirstObjectByType<CameraManager>();
-
             textFile = Resources.Load<TextAsset>("Levels/" + LevelNumber + "/level");
             //textFile = 
             var levelString = textFile.text;
@@ -240,12 +244,13 @@ namespace GameManager
             _levelAuthor = levelDataJsonNode["LevelAuthor"];
             var levelAudio = levelDataJsonNode["AudioFile"];
             GetComponent<AudioSource>().clip = Resources.Load<AudioClip>("Levels/1/" + levelAudio);
-            _musicLength = GetComponent<AudioSource>().clip.length;
-            ffSlider.value = _debugTime / _musicLength;
             if (_levelAudioContent != null)
             {
                 GetComponent<AudioSource>().clip = _levelAudioContent;
             }
+            _musicLength = GetComponent<AudioSource>().clip.length;
+            ffSlider.value = _debugTime / _musicLength;
+            ffSliderPercentFull.text = (Mathf.Round(_musicLength)).ToString();
             _bpm = levelDataJsonNode["Bpm"];
             _offset = levelDataJsonNode["Offset"] / 1000f;
 
@@ -254,7 +259,7 @@ namespace GameManager
 
             _startTime = 30 / _bpm + _offset - _debugTime;
 #if UNITY_ANDROID && !UNITY_EDITOR
-            _startTime -= 0.11f;
+            _startTime -= 0.15f;
 #endif
 
             for (var i = 0; i < Boards.Count; i++)
@@ -314,9 +319,9 @@ namespace GameManager
             if (!GameStarted) {
                 GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
                 if (Paused) return;
-                if (_isJsonFileLoaded) GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f/_bpm, 0.6f+_offset, Boards[0]["points"]);
+                if (_isJsonFileLoaded) GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f / _bpm, 30 / _bpm + _offset, Boards[0]["points"]);
                 if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) {
-                    if (EventSystem.current.IsPointerOverGameObject() || (Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) || EventSystem.current.IsPointerOverGameObject(1)) return;
+                    if (EventSystem.current.currentSelectedGameObject) return;
                     _startTime += AudioSettings.dspTime;
                     _gameHandler = gameObject.AddComponent<GameHandler>();
                     _gameHandler.Initialize(
@@ -341,11 +346,11 @@ namespace GameManager
             }
 
             //scoreText.text = Overload.ToString();
-            if (Overload >= 3)
+            if (Overload >= 3 && _debugTime == 0f)
             {
                 GameReallyEnded = true;
                 IsGameOver = true;
-                WhyGameOver = "Overloaded!";
+                WhyGameOver = "¡OVERLOADED!";
             }
 
             if (GameReallyEnded)
@@ -365,7 +370,12 @@ namespace GameManager
                     SetTextRenderQueue(tooLateText, 3002);
                     
                     finalScoreText.text = _debugTime == 0 ? "Score: " + Score : "Practice Mode";
-                    if (IsGameOver) {finalScoreText.text = WhyGameOver; GetComponent<AudioSource>().Stop();}
+                    missedText.SetActive(_debugTime > 0);
+                    if (IsGameOver) 
+                    {
+                        finalScoreText.text = WhyGameOver;
+                        judgementPanel.SetActive(false);
+                    }
                     perfectText.text = Judgement[6].ToString();
                     earlyText.text = Judgement[2].ToString();
                     lateText.text = Judgement[3].ToString();
@@ -373,21 +383,39 @@ namespace GameManager
                     lateBadText.text = Judgement[5].ToString();
                     tooEarlyText.text = Judgement[0].ToString();
                     tooLateText.text = Judgement[1].ToString();
+                    missedText.GetComponent<TextMeshPro>().text = Judgement[7].ToString();
                     StartCoroutine(Wait(1.5f));
                     ResultShown = true;
                 }
 
                 if(_nowYouCanLeave && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))) {
-                    if (IsGameOver) {RestartAsPracMode(); return;}
+                    if (EventSystem.current.currentSelectedGameObject) return;
+                    if (IsGameOver) 
+                    {
+                        if (_debugTime == 0f) {Restart(); return;}
+                        if (_debugTime > 0f) {RestartAsPracMode(); return;}
+                    }
+                    if (_debugTime > 0f) {Restart(); return;}
                     LoadMainMenu();
                 }
             }
         }
         private IEnumerator GameEndFlash()
         {
-            _cameraManager.Cg(100, 0, 0, "incubic", 0.01f);
+            var pp = GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>();
+            pp.active = true;
+            float originalBrightness = pp.postExposure.value;
+            for (float i = 0; i < 0.01f; i += Time.deltaTime)
+            {
+                pp.postExposure.value = i * 5000 + originalBrightness;
+                yield return null;
+            }
             yield return new WaitForSeconds(0.01f);
-            _cameraManager.Cg(0, 0, 0, "outcubic", 0.5f);
+            for (float i = 0.5f; i > 0; i -= Time.deltaTime)
+            {
+                pp.postExposure.value = i * 50 + originalBrightness;
+                yield return null;
+            }
         }
 
         private IEnumerator Wait(float seconds)
@@ -448,6 +476,7 @@ namespace GameManager
         public void RestartAsPracMode()
         {
             if (_isLeaving || _isRestarting) return;
+            if (_debugTime == 0f) _debugTime = 0.01f;
             animtimer = 0f;
             _isRestarting = true;
             pausePanel.SetActive(false);
@@ -457,6 +486,7 @@ namespace GameManager
         public void OnSliderMove() 
         {
             _debugTime = _musicLength * ffSlider.value;
+            ffSliderPercent.text = "Start From " + Mathf.Round(_debugTime) + "s";
         }
     }
 }

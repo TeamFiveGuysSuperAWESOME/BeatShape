@@ -17,6 +17,7 @@ namespace GameManager
         private ChromaticAberration chromaticAberration;
         private Vignette vignette;
         private ColorGrading colorGrading;
+        [SerializeField] private PostProcessVolume _postProcessVolume;
         public void MoveCamera(float x, float y, string easing, float dur)
         {
             StartCoroutine(MoveCameraToPosition(new Vector3(x, y, -10), easing, dur));
@@ -305,7 +306,7 @@ namespace GameManager
 
         void Start()
         {
-            var volume = FindObjectsByType<PostProcessVolume>(FindObjectsSortMode.None)[0].GetComponent<PostProcessVolume>();
+            var volume = _postProcessVolume;
             volume.profile.TryGetSettings(out bloom);
             volume.profile.TryGetSettings(out depthOfField);
             volume.profile.TryGetSettings(out lensDistortion);

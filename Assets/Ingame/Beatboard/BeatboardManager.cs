@@ -302,7 +302,6 @@ namespace Beatboard
         {
             if (BeatboardColor != Beatboards[0].transform.Find("bbMeshIn").gameObject.GetComponent<MeshRenderer>().material.color)
             {
-                Debug.Log("Color changed" + BeatboardColor);
                 foreach (var beatboard in Beatboards)
                 {
                     beatboard.transform.Find("bbMeshOut").gameObject.GetComponent<MeshRenderer>().material.color = new Color(BeatboardColor.r, BeatboardColor.g, BeatboardColor.b, 0.35f);

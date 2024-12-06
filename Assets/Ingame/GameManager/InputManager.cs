@@ -41,13 +41,13 @@ namespace Ingame.GameManager
 
             if (Input.anyKeyDown && Input.touchCount == 0)
             {
-                if (EventSystem.current.IsPointerOverGameObject(0) || EventSystem.current.IsPointerOverGameObject(1)) return;
+                if (EventSystem.current.currentSelectedGameObject) return;
                 BeatMovement beatMovement = closestBeat.GetComponent<BeatMovement>();
                 beatMovement.TryRemoveBeatScored();
             }
             foreach (Touch touch in Input.touches)
             {
-                if (EventSystem.current.IsPointerOverGameObject(touch.fingerId)) return;
+                if (EventSystem.current.currentSelectedGameObject) return;
                 if (touch.phase == TouchPhase.Began)
                 {
                     BeatMovement beatMovement = closestBeat.GetComponent<BeatMovement>();
