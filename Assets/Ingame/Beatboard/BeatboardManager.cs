@@ -17,7 +17,7 @@ namespace Beatboard
         public static List<int> UpdateBbIndex = new();
         public static Color BeatboardColor = Color.white;
         public List<int> currentPoints;
-        public const float RotationSpeed = 25f;
+        public const float RotationSpeed = 10f;
         public static Quaternion Rotation;
         private static readonly int SrcBlend = Shader.PropertyToID("_SrcBlend");
         private static readonly int DstBlend = Shader.PropertyToID("_DstBlend");

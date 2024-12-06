@@ -156,7 +156,7 @@ namespace GameManager {
                 );
                 if (color == Color.black) color = Color.white;
                 float speed = currentBeat["Speed"] != null ? currentBeat["Speed"].AsFloat : 1;
-                string easing = currentBeat["Easing"] != null ? currentBeat["Easing"] : "outquint";
+                string easing = currentBeat["Easing"] != null ? currentBeat["Easing"] : "outcubic";
                 _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm*4, size, color, easing);
             }
             if (gameEnded == _boardsData.Count) MainGameManager.GameEnded = true;

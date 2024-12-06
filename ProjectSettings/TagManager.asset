@@ -71,11 +71,11 @@ TagManager:
   - name: LevelSelect
     uniqueID: 1745106327
     locked: 0
-  - name: Beat
-    uniqueID: 2072640837
-    locked: 0
   - name: Board
     uniqueID: 3579626171
+    locked: 0
+  - name: Beat
+    uniqueID: 2072640837
     locked: 0
   - name: Default
     uniqueID: 0

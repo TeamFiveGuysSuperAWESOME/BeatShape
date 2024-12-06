@@ -290,6 +290,7 @@ namespace GameManager
                     float scale = Mathf.Max(screenWidth / spriteSize.x, screenHeight / spriteSize.y);
                     backgroundObj.transform.localScale = new Vector3(scale, scale, 1);
                     backgroundObj.transform.position = new Vector3(0, 0, 200);
+                    spriteRenderer.sortingLayerName = "Background";
                     spriteRenderer.sortingOrder = -1;
                 }
             }
@@ -380,7 +381,7 @@ namespace GameManager
                         judgementPanel.SetActive(false);
                     }
                     else {resultAudio.Audio_Cymbal();}
-                    
+
                     perfectText.text = Judgement[6].ToString();
                     earlyText.text = Judgement[2].ToString();
                     lateText.text = Judgement[3].ToString();

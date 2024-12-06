@@ -20,7 +20,11 @@ public class Bar : MonoBehaviour
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
         lr = bar_front.GetComponent<LineRenderer>();
         text_tmp = text.GetComponent<TextMeshProUGUI>();
-        audioSource = GetComponent<AudioSource>();
+        if(type == "SoundEffect") {audioSource = GetComponent<AudioSource>();}
+    }
+    void Start()
+    {
+        lr.SetPosition(1, new Vector3(MenuSoundManager.musicVolume*10,0,0));
     }
 
     void OnMouseDown()
