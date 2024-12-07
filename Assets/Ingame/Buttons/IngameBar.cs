@@ -49,7 +49,6 @@ public class IngameBar : MonoBehaviour
             if (newPos.x < 0) { lr.SetPosition(1, new Vector3(0, 0, 0)); }
             else if (newPos.x > 1) { lr.SetPosition(1, new Vector3(10, 0, 0)); }
             else { lr.SetPosition(1, newPos * 10); }
-            Debug.Log(lr.GetPosition(1).x / 10);
             text_tmp.text = MainGameManager.OnSliderMove(lr.GetPosition(1).x / 10);
 
         }

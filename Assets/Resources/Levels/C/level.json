@@ -1,0 +1,111 @@
+{
+    "Data" : {
+        "LevelName" : "Test1",
+        "LevelDescription" : "Test Level",
+        "LevelAuthor" : "Test Author",
+        "AudioFile": "Calibration",
+        "Bpm" : 43,
+        "Offset" : 0,
+        "Boards" : {
+            "board1" : {"points" : 4, "position" : [0,0], "size" : 20}
+        },
+        "Background": {
+            "BBColor": [
+                1,
+                1,
+                1
+            ],
+            "BGColor": [
+                0,
+                0,
+                0
+            ],
+            "BGImage": ""
+        }
+    },
+    
+    "Boards" : {
+        "Board1" : {
+            "Cycle1" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            },
+            "Cycle2" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            },
+            "Cycle3" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            },
+            "Cycle4" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            },
+            "Cycle5" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            },
+            "Cycle6" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            },
+            "Cycle7" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            },
+            "Cycle8" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            },
+            "Cycle9" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            },
+            "Cycle10" : {
+                "Points" : 4,
+                "Size" : 20,
+                "3" : {
+                    "Beat" : true,
+                    "Color" : [1, 1, 1]
+                }
+            }
+        }
+    }
+}

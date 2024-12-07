@@ -54,6 +54,13 @@ namespace Beat
         public void TryRemoveBeatScored()
         {
             float inputOffset = _elapsedTime - _secondsPerBeat * 4;
+            if (MainGameManager.isCalibrating) {
+                if (inputOffset < -0.5f) return;
+                MainGameManager.CBeatTimes.Add(inputOffset);
+                _displayed = true;
+                StartCoroutine(RemoveBeatRoutine());
+                return;
+            }
             if (inputOffset < -0.3f) //offset = -400 ~ 400ms 이거 아닌듯.. 너무 어려워
             {
                 MainGameManager.Judgement[0] += 1;
@@ -185,20 +192,21 @@ namespace Beat
             Destroy(gameObject);
         }
 
-        private void Update()
+        void FixedUpdate()
         {
             if (MainGameManager.Paused) return;
             _elapsedTime += Time.deltaTime;
-            //_elapsedTime = _elapsedTime;
+            float standardSpb = _secondsPerBeat * 4;
+            float standardTime = _elapsedTime - standardSpb;
             BeatData beatData = GetComponent<BeatData>();
-            if (beatData.input_offset != -9999f) beatData.input_offset = _elapsedTime - (_secondsPerBeat*4);
+            if (beatData.input_offset != -9999f) beatData.input_offset = standardTime;
             
-            if(_elapsedTime - (_secondsPerBeat*4) < 0f) {
-                _sineValue = _elapsedTime/(_secondsPerBeat*4/2) < 1f ? Easing.Ease(_elapsedTime/(_secondsPerBeat*4/2), _easing) : Easing.Ease(2-(_elapsedTime/(_secondsPerBeat*4/2)), _easing);
+            if(standardTime < 0f) {
+                _sineValue = _elapsedTime/(standardSpb/2) < 1f ? Easing.Ease(_elapsedTime/(standardSpb/2), _easing) : Easing.Ease(2-(_elapsedTime/(standardSpb/2)), _easing);
                 transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), 100f);
                 
-                if (!_hasPlayedSound && Mathf.Abs(_elapsedTime - (_secondsPerBeat*4)) < 0.15f)
-                {
+                if (!_hasPlayedSound && Mathf.Abs(standardTime) < 0f)
+                { 
                     beatmanager.Audio_Kick();
                     _hasPlayedSound = true;
                 }
@@ -206,7 +214,7 @@ namespace Beat
             else 
             {
                 transform.localScale = new Vector3(0,0,0);
-                if(_elapsedTime - (_secondsPerBeat*4) > 0.3f) 
+                if(standardTime > 0.3f) 
                 {
                     if (!GetComponent<BeatData>().scored) {
                         if (!_missedLogged)

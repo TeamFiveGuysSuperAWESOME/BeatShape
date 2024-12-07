@@ -6,7 +6,8 @@ using Beatboard;
 using System;
 using UnityEngine.XR;
 
-namespace GameManager {
+namespace GameManager
+{
     public class GameHandler : MonoBehaviour
     {
         private BeatboardManager _beatboardManager;
@@ -97,7 +98,7 @@ namespace GameManager {
                 var currentSide = ((int)Math.Floor(beats % _currentBoardPoints[i]) + 1).ToString();
 
                 var currentPoint = currentCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
-                if (currentPoint == 0) {gameEnded++; continue;}
+                if (currentPoint == 0) { gameEnded++; continue; }
                 var currentSize = currentCycle["Size"]?.AsFloat ?? _currentBoardSizes[i];
                 if (currentSize == 0) currentSize = _currentBoardSizes[i];
                 var prevPoint = prevCycle["Points"]?.AsInt ?? _currentBoardPoints[i];
@@ -157,7 +158,7 @@ namespace GameManager {
                 if (color == Color.black) color = Color.white;
                 float speed = currentBeat["Speed"] != null ? currentBeat["Speed"].AsFloat : 1;
                 string easing = currentBeat["Easing"] != null ? currentBeat["Easing"] : "outcubic";
-                _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm*4, size, color, easing);
+                _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color, easing);
             }
             if (gameEnded == _boardsData.Count) MainGameManager.GameEnded = true;
         }
@@ -177,7 +178,7 @@ namespace GameManager {
                 var currentCycle = currentBoard
                     ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i])];
                 //Debug.Log("Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i]));
-                if (currentCycle == null) {gameEnded++; continue;}
+                if (currentCycle == null) { gameEnded++; continue; }
                 var prevCycle = currentBoard
                     ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + _nextPointCycles[i])];
                 var nextCycle = currentBoard
@@ -235,79 +236,79 @@ namespace GameManager {
             if (gameEnded == _boardsData.Count) MainGameManager.GameEnded = true;
         }
 
-        public void HandleCamera(JSONNode currentBeat, bool isFF = false) 
+        public void HandleCamera(JSONNode currentBeat, bool isFF = false)
         {
             // Camera Movement
-                if (currentBeat["Camera"] != null)
-                {
-                    JSONNode camera = currentBeat["Camera"];
-                    float duration = camera["Duration"] != null && !isFF ? camera["Duration"].AsFloat : 0f;
-                    string easing = camera["Easing"] != null ? camera["Easing"] : "linear";
-                    if (camera["BBColor"] != null) _cameraManager.ChangeBBColor(new Color(camera["BBColor"][0], camera["BBColor"][1], camera["BBColor"][2]), easing, duration);
-                    if (camera["BGColor"] != null) _cameraManager.ChangeBGColor(new Color(camera["BGColor"][0], camera["BGColor"][1], camera["BGColor"][2]), easing, duration);
-                    if (camera["BGImage"] != null) GameObject.FindGameObjectsWithTag("BackgroundImg")[0].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Levels/1/" + camera["BGImage"]);
-                    if (camera["Position"] != null) _cameraManager.MoveCamera(camera["Position"][0], camera["Position"][1], easing, duration);
-                    if (camera["Rotation"] != null) _cameraManager.RotateCamera(camera["Rotation"], easing, duration);
-                    if (camera["Zoom"] != null) _cameraManager.ZoomCamera(camera["Zoom"], easing, duration);
-                    if (camera["Shake"] != null && !isFF) _cameraManager.ShakeCamera(camera["Shake"]["Intensity"], camera["Shake"]["Duration"]);
-                }
+            if (currentBeat["Camera"] != null)
+            {
+                JSONNode camera = currentBeat["Camera"];
+                float duration = camera["Duration"] != null && !isFF ? camera["Duration"].AsFloat : 0f;
+                string easing = camera["Easing"] != null ? camera["Easing"] : "linear";
+                if (camera["BBColor"] != null) _cameraManager.ChangeBBColor(new Color(camera["BBColor"][0], camera["BBColor"][1], camera["BBColor"][2]), easing, duration);
+                if (camera["BGColor"] != null) _cameraManager.ChangeBGColor(new Color(camera["BGColor"][0], camera["BGColor"][1], camera["BGColor"][2]), easing, duration);
+                if (camera["BGImage"] != null) GameObject.FindGameObjectsWithTag("BackgroundImg")[0].GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Levels/1/" + camera["BGImage"]);
+                if (camera["Position"] != null) _cameraManager.MoveCamera(camera["Position"][0], camera["Position"][1], easing, duration);
+                if (camera["Rotation"] != null) _cameraManager.RotateCamera(camera["Rotation"], easing, duration);
+                if (camera["Zoom"] != null) _cameraManager.ZoomCamera(camera["Zoom"], easing, duration);
+                if (camera["Shake"] != null && !isFF) _cameraManager.ShakeCamera(camera["Shake"]["Intensity"], camera["Shake"]["Duration"]);
+            }
 
-                //Post Processing
-                if (currentBeat["PP"] != null)
+            //Post Processing
+            if (currentBeat["PP"] != null)
+            {
+                JSONNode pp = currentBeat["PP"];
+                float duration = pp["Duration"] != null && !isFF ? pp["Duration"].AsFloat : 0f;
+                string easing = pp["Easing"] != null ? pp["Easing"] : "linear";
+                if (pp["General"] != null)
                 {
-                    JSONNode pp = currentBeat["PP"];
-                    float duration = pp["Duration"] != null && !isFF ? pp["Duration"].AsFloat : 0f;
-                    string easing = pp["Easing"] != null ? pp["Easing"] : "linear";
-                    if (pp["General"] != null) 
-                    {
-                        float exposure = pp["General"]["Exposure"] != null ? pp["General"]["Exposure"].AsFloat : -1234f;
-                        float contrast = pp["General"]["Contrast"] != null ? pp["General"]["Contrast"].AsFloat : -1234f;
-                        float saturation = pp["General"]["Saturation"] != null ? pp["General"]["Saturation"].AsFloat : -1234f;
-                        _cameraManager.Cg(exposure, contrast, saturation, easing, duration);
-                    }
-                    if (pp["Bloom"] != null) 
-                    {
-                        float intensity = pp["Bloom"]["Intensity"] != null ? pp["Bloom"]["Intensity"].AsFloat : -1234f;
-                        float threshold = pp["Bloom"]["Threshold"] != null ? pp["Bloom"]["Threshold"].AsFloat : -1234f;
-                        Color _color = pp["Bloom"]["Color"] != null ? 
-                            new Color(
-                                pp["Bloom"]["Color"][0] != null ? pp["Bloom"]["Color"][0].AsFloat : -1234f,
-                                pp["Bloom"]["Color"][1] != null ? pp["Bloom"]["Color"][1].AsFloat : -1234f,
-                                pp["Bloom"]["Color"][2] != null ? pp["Bloom"]["Color"][2].AsFloat : -1234f
-                            ) : new Color(-1234f, -1234f, -1234f);
-                        _cameraManager.Bloom(intensity, threshold, _color, easing, duration);
-                    }
-                    if (pp["DoF"] != null)
-                    {
-                        float focusDistance = pp["DoF"]["FocusDistance"] != null ? pp["DoF"]["FocusDistance"].AsFloat : -1234f;
-                        float aperture = pp["DoF"]["Aperture"] != null ? pp["DoF"]["Aperture"].AsFloat : -1234f;
-                        float focalLength = pp["DoF"]["FocalLength"] != null ? pp["DoF"]["FocalLength"].AsFloat : -1234f;
-                        _cameraManager.Dof(focusDistance, aperture, focalLength, easing, duration);
-                    }
-                    if (pp["Lens Distortion"] != null)
-                    {
-                        float intensity = pp["Lens Distortion"]["Intensity"] != null ? pp["Lens Distortion"]["Intensity"].AsFloat : -1234f;
-                        _cameraManager.Ld(intensity, easing, duration);
-                    }
-                    if (pp["Chromatic Aberration"] != null)
-                    {
-                        float intensity = pp["Chromatic Aberration"]["Intensity"] != null ? pp["Chromatic Aberration"]["Intensity"].AsFloat : -1234f;
-                        _cameraManager.Ca(intensity, easing, duration);
-                    }
-                    if (pp["Vignette"] != null)
-                    {
-                        float intensity = pp["Vignette"]["Intensity"] != null ? pp["Vignette"]["Intensity"].AsFloat : -1234f;
-                        float smoothness = pp["Vignette"]["Smoothness"] != null ? pp["Vignette"]["Smoothness"].AsFloat : -1234f;
-                        float roundness = pp["Vignette"]["Roundness"] != null ? pp["Vignette"]["Roundness"].AsFloat : -1234f;
-                        Color _color = pp["Vignette"]["Color"] != null ? 
-                            new Color(
-                                pp["Vignette"]["Color"][0] != null ? pp["Vignette"]["Color"][0].AsFloat : -1234f,
-                                pp["Vignette"]["Color"][1] != null ? pp["Vignette"]["Color"][1].AsFloat : -1234f,
-                                pp["Vignette"]["Color"][2] != null ? pp["Vignette"]["Color"][2].AsFloat : -1234f
-                            ) : new Color(-1234f, -1234f, -1234f);
-                        _cameraManager.Vignette(intensity, smoothness, roundness, _color, easing, duration);
-                    }
+                    float exposure = pp["General"]["Exposure"] != null ? pp["General"]["Exposure"].AsFloat : -1234f;
+                    float contrast = pp["General"]["Contrast"] != null ? pp["General"]["Contrast"].AsFloat : -1234f;
+                    float saturation = pp["General"]["Saturation"] != null ? pp["General"]["Saturation"].AsFloat : -1234f;
+                    _cameraManager.Cg(exposure, contrast, saturation, easing, duration);
                 }
+                if (pp["Bloom"] != null)
+                {
+                    float intensity = pp["Bloom"]["Intensity"] != null ? pp["Bloom"]["Intensity"].AsFloat : -1234f;
+                    float threshold = pp["Bloom"]["Threshold"] != null ? pp["Bloom"]["Threshold"].AsFloat : -1234f;
+                    Color _color = pp["Bloom"]["Color"] != null ?
+                        new Color(
+                            pp["Bloom"]["Color"][0] != null ? pp["Bloom"]["Color"][0].AsFloat : -1234f,
+                            pp["Bloom"]["Color"][1] != null ? pp["Bloom"]["Color"][1].AsFloat : -1234f,
+                            pp["Bloom"]["Color"][2] != null ? pp["Bloom"]["Color"][2].AsFloat : -1234f
+                        ) : new Color(-1234f, -1234f, -1234f);
+                    _cameraManager.Bloom(intensity, threshold, _color, easing, duration);
+                }
+                if (pp["DoF"] != null)
+                {
+                    float focusDistance = pp["DoF"]["FocusDistance"] != null ? pp["DoF"]["FocusDistance"].AsFloat : -1234f;
+                    float aperture = pp["DoF"]["Aperture"] != null ? pp["DoF"]["Aperture"].AsFloat : -1234f;
+                    float focalLength = pp["DoF"]["FocalLength"] != null ? pp["DoF"]["FocalLength"].AsFloat : -1234f;
+                    _cameraManager.Dof(focusDistance, aperture, focalLength, easing, duration);
+                }
+                if (pp["Lens Distortion"] != null)
+                {
+                    float intensity = pp["Lens Distortion"]["Intensity"] != null ? pp["Lens Distortion"]["Intensity"].AsFloat : -1234f;
+                    _cameraManager.Ld(intensity, easing, duration);
+                }
+                if (pp["Chromatic Aberration"] != null)
+                {
+                    float intensity = pp["Chromatic Aberration"]["Intensity"] != null ? pp["Chromatic Aberration"]["Intensity"].AsFloat : -1234f;
+                    _cameraManager.Ca(intensity, easing, duration);
+                }
+                if (pp["Vignette"] != null)
+                {
+                    float intensity = pp["Vignette"]["Intensity"] != null ? pp["Vignette"]["Intensity"].AsFloat : -1234f;
+                    float smoothness = pp["Vignette"]["Smoothness"] != null ? pp["Vignette"]["Smoothness"].AsFloat : -1234f;
+                    float roundness = pp["Vignette"]["Roundness"] != null ? pp["Vignette"]["Roundness"].AsFloat : -1234f;
+                    Color _color = pp["Vignette"]["Color"] != null ?
+                        new Color(
+                            pp["Vignette"]["Color"][0] != null ? pp["Vignette"]["Color"][0].AsFloat : -1234f,
+                            pp["Vignette"]["Color"][1] != null ? pp["Vignette"]["Color"][1].AsFloat : -1234f,
+                            pp["Vignette"]["Color"][2] != null ? pp["Vignette"]["Color"][2].AsFloat : -1234f
+                        ) : new Color(-1234f, -1234f, -1234f);
+                    _cameraManager.Vignette(intensity, smoothness, roundness, _color, easing, duration);
+                }
+            }
         }
     }
 }

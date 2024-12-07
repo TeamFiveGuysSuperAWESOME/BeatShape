@@ -1,0 +1,46 @@
+{
+    "Data": {
+     "LevelName": "Test1",
+     "LevelDescription": "Test Level",
+     "LevelAuthor": "Test Author",
+     "AudioFile": "Riya - Polygons (remaster)",
+     "Bpm": 65,
+     "Offset": 760,
+     "Boards": {
+       "board1": {
+         "points": 6,
+         "position": [
+           0,
+           0
+         ],
+         "size": 20
+       }
+     },
+     "Background": {
+       "BBColor": [
+         0,
+         0,
+         0
+       ],
+       "BGColor": [
+         1,
+         1,
+         1
+       ],
+       "BGImage": "bg1"
+     }
+   },
+    
+    "Boards" : {
+        "Board1" : {
+            "Cycle1" : {
+                "Points" : 6,
+                "Size" : 20,
+                "1" : {
+                    "Beat" : true,
+                    "Color" : [1, 0, 0]
+                }
+            }
+        }
+    }
+}

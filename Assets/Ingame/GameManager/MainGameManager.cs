@@ -20,6 +20,7 @@ using UnityEngine.Networking;
 using UnityEngine.EventSystems;
 using UnityEditor;
 using UnityEngine.Rendering.PostProcessing;
+using System.Linq;
 
 namespace GameManager
 {
@@ -28,6 +29,8 @@ namespace GameManager
         private static BeatboardManager _beatboardManager;
         private static BeatManager _beatManager;
         private static CameraManager _cameraManager;
+        public static bool isCalibrating = false;
+        public static List<float> CBeatTimes = new();
         public static int LevelNumber;
         private AudioClip _levelAudioContent = null;
         private float volume;
@@ -36,6 +39,7 @@ namespace GameManager
         private static string _levelName, _levelDescription, _levelAuthor;
         public static float _bpm;
         private static float _offset;
+        private float _calibratedOffset = 0f;
         private static List<JSONNode> Boards = new();
         private static JSONNode _boardsData;
         private static List<int> _currentBoardPoints = new();
@@ -66,6 +70,8 @@ namespace GameManager
         private bool _isLeaving = false;
         private bool _isRestarting = false;
         private float animtimer = 0f;
+        [SerializeField] private TextMeshProUGUI startText;
+        [SerializeField] private GameObject pauseButton;
         [SerializeField] private GameObject practiceIndicator;
         [SerializeField] private GameObject pausePanel;
         [SerializeField] private GameObject ffSliderObj;
@@ -91,6 +97,9 @@ namespace GameManager
 
         void Awake()
         {
+            isCalibrating = PlayerPrefs.GetInt("isCalibrated") == 0;
+            _calibratedOffset = PlayerPrefs.GetFloat("calibratedOffset");
+            if (isCalibrating) _debugTime = 0.01f;
             GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().active = false;
             LevelNumber = MenuManager.levelNumber;
             screen = GameObject.FindWithTag("screen").GetComponent<FadeInScreen>();
@@ -125,7 +134,8 @@ namespace GameManager
             sfxvolume = MenuSoundManager.sfxVolume;
             kickSound = Resources.Load<AudioClip>("Sounds/kickdrum");
             gameOverPanel.SetActive(false);
-            practiceIndicator.SetActive(!_debugTime.Equals(0f));
+            pauseButton.SetActive(!isCalibrating);
+            practiceIndicator.SetActive(!_debugTime.Equals(0f) && !isCalibrating);
             ffSliderObj.SetActive(!_debugTime.Equals(0f));
         }
 
@@ -143,6 +153,9 @@ namespace GameManager
             } // android permission
 
             Debug.Log("Debug Mode: " + DebugMode);
+            Debug.Log("Calibration Mode: " + isCalibrating);
+            Debug.Log("Calibrated Offset: " + _calibratedOffset);
+            if (isCalibrating) {startText.text = "Space to Calibrate"; StartGame(); return;}
             if (DebugMode)
             {
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -219,16 +232,13 @@ namespace GameManager
         {
             if (GameStarted) return;
 
-            textFile = Resources.Load<TextAsset>("Levels/" + LevelNumber + "/level");
+            textFile = isCalibrating ? Resources.Load<TextAsset>("Levels/C/level") : Resources.Load<TextAsset>("Levels/" + LevelNumber + "/level");
             //textFile = 
             var levelString = textFile.text;
             if (DebugMode)
             {
 #if (UNITY_WEBGL||UNITY_ANDROID) && !UNITY_EDITOR
                 levelString = levelJsonData;
-#endif
-#if UNITY_EDITOR
-            levelString = textFile.text;
 #endif
             }
             else
@@ -242,7 +252,7 @@ namespace GameManager
             _levelDescription = levelDataJsonNode["LevelDescription"];
             _levelAuthor = levelDataJsonNode["LevelAuthor"];
             var levelAudio = levelDataJsonNode["AudioFile"];
-            GetComponent<AudioSource>().clip = Resources.Load<AudioClip>("Levels/1/" + levelAudio);
+            GetComponent<AudioSource>().clip = isCalibrating ? Resources.Load<AudioClip>("Levels/C/" + levelAudio) : Resources.Load<AudioClip>("Levels/" + LevelNumber + "/" + levelAudio);
             if (_levelAudioContent != null)
             {
                 GetComponent<AudioSource>().clip = _levelAudioContent;
@@ -256,6 +266,7 @@ namespace GameManager
             CreateBeatboardAtStart(Boards);
 
             _startTime = 30 / _bpm + _offset - _debugTime;
+            _startTime += isCalibrating ? 0f : _calibratedOffset;
 
             for (var i = 0; i < Boards.Count; i++)
             {
@@ -313,7 +324,7 @@ namespace GameManager
             }
 
             if (!GameStarted) {
-                GameObject.FindWithTag("countdown").GetComponent<TextMeshProUGUI>().text = "Space to Start";
+                startText.text = isCalibrating ? "Space to Calibrate" : "Space to Start";
                 if (Paused) return;
                 if (_isJsonFileLoaded) GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f / _bpm, 30 / _bpm + _offset, Boards[0]["points"]);
                 if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) {
@@ -353,17 +364,20 @@ namespace GameManager
             {
                 if (!ResultShown) {
                     StartCoroutine(GameEndFlash());
-                    Debug.Log("Game Ended");
                     gameOverPanel.SetActive(true);
 
-                    SetTextRenderQueue(finalScoreText, 3002);
-                    SetTextRenderQueue(perfectText, 3002);
-                    SetTextRenderQueue(earlyText, 3002);
-                    SetTextRenderQueue(lateText, 3002);
-                    SetTextRenderQueue(earlyBadText, 3002);
-                    SetTextRenderQueue(lateBadText, 3002);
-                    SetTextRenderQueue(tooEarlyText, 3002);
-                    SetTextRenderQueue(tooLateText, 3002);
+                    if (isCalibrating) 
+                    {
+                        GetComponent<AudioSource>().Stop();
+                        _calibratedOffset = CBeatTimes.Count == 0 ? 0f : CBeatTimes.Sum() / CBeatTimes.Count;
+                        finalScoreText.text = "Calibration Mode : " + Mathf.Round(_calibratedOffset * 1000) + "ms";
+                        PlayerPrefs.SetFloat("calibratedOffset", _calibratedOffset);
+                        PlayerPrefs.SetInt("isCalibrated", 1);
+                        judgementPanel.SetActive(false);
+                        StartCoroutine(Wait(1.5f));
+                        ResultShown = true;
+                        return;
+                    }
                     
                     finalScoreText.text = _debugTime == 0 ? "Score: " + Score : "Practice Mode";
                     missedText.SetActive(_debugTime > 0);
