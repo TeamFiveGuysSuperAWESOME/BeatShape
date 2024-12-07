@@ -1,11 +1,11 @@
 {
     "Data" : {
-        "LevelName" : "Test1",
-        "LevelDescription" : "Test Level",
-        "LevelAuthor" : "Test Author",
+        "LevelName" : "Calibration",
+        "LevelDescription" : "Calibration Level",
+        "LevelAuthor" : "Null",
         "AudioFile": "Calibration",
         "Bpm" : 43,
-        "Offset" : 0,
+        "Offset" : -900,
         "Boards" : {
             "board1" : {"points" : 4, "position" : [0,0], "size" : 20}
         },
@@ -29,7 +29,7 @@
             "Cycle1" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }
@@ -37,7 +37,7 @@
             "Cycle2" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }
@@ -45,7 +45,7 @@
             "Cycle3" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }
@@ -53,7 +53,7 @@
             "Cycle4" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }
@@ -61,7 +61,7 @@
             "Cycle5" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }
@@ -69,7 +69,7 @@
             "Cycle6" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }
@@ -77,7 +77,7 @@
             "Cycle7" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }
@@ -85,7 +85,7 @@
             "Cycle8" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }
@@ -93,7 +93,7 @@
             "Cycle9" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }
@@ -101,7 +101,7 @@
             "Cycle10" : {
                 "Points" : 4,
                 "Size" : 20,
-                "3" : {
+                "1" : {
                     "Beat" : true,
                     "Color" : [1, 1, 1]
                 }

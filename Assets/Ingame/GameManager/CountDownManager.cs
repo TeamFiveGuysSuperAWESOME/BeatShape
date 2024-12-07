@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,14 +9,16 @@ namespace GameManager
     {
         public float startTime = 3.0f;
         public float leftTime = 3.0f;
+        public float totalTime = 3.0f;
         public int count = 4;
         public TextMeshProUGUI startText;
 
         public void RefreshTimer(float onetick_time, float offset, int countnum)
         {
             startTime = onetick_time;
-            leftTime = onetick_time + offset + onetick_time/countnum;
-            count = countnum;
+            leftTime = onetick_time + offset + onetick_time;
+            totalTime = leftTime;
+            count = countnum + 1;
         }
 
         void Update()
@@ -23,7 +26,8 @@ namespace GameManager
             if (!MainGameManager.GameStarted || !startText) return;
 
             leftTime -= Time.deltaTime;
-            float currentTime = (leftTime/startTime)*count;
+            float currentTime = Mathf.Floor(count - (count - 1) / (totalTime - 1) * (totalTime - leftTime));
+            Debug.Log("currentTime: " + leftTime);
             if (leftTime < 1)
             {
                 startText.text = "";
@@ -32,7 +36,7 @@ namespace GameManager
             }
             
             if(currentTime > count) startText.text = "Ready";
-            else startText.text = Mathf.Floor(currentTime).ToString();
+            else startText.text = Mathf.Round(currentTime).ToString();
         }
     }
 }

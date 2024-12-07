@@ -55,7 +55,7 @@ namespace Beat
         {
             float inputOffset = _elapsedTime - _secondsPerBeat * 4;
             if (MainGameManager.isCalibrating) {
-                if (inputOffset < -0.5f) return;
+                if (inputOffset < -_secondsPerBeat) return;
                 MainGameManager.CBeatTimes.Add(inputOffset);
                 _displayed = true;
                 StartCoroutine(RemoveBeatRoutine());

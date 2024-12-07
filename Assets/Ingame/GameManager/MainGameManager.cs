@@ -265,7 +265,7 @@ namespace GameManager
             foreach (var board in levelDataJsonNode["Boards"]) Boards.Add(board);
             CreateBeatboardAtStart(Boards);
 
-            _startTime = 30 / _bpm + _offset - _debugTime;
+            _startTime = (30 / _bpm) + _offset - _debugTime;
             _startTime += isCalibrating ? 0f : _calibratedOffset;
 
             for (var i = 0; i < Boards.Count; i++)
@@ -326,9 +326,11 @@ namespace GameManager
             if (!GameStarted) {
                 startText.text = isCalibrating ? "Space to Calibrate" : "Space to Start";
                 if (Paused) return;
-                if (_isJsonFileLoaded) GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f / _bpm, 30 / _bpm + _offset, Boards[0]["points"]);
+                GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f / _bpm, _offset, Boards[0]["points"]);
                 if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) {
                     if (EventSystem.current.currentSelectedGameObject) return;
+                    GameStarted = true;
+                    
                     _startTime += AudioSettings.dspTime;
                     _gameHandler = gameObject.AddComponent<GameHandler>();
                     _gameHandler.Initialize(
@@ -347,7 +349,6 @@ namespace GameManager
                     GetComponent<AudioSource>().time = _debugTime;
                     GetComponent<AudioSource>().volume = volume;
                     GetComponent<AudioSource>().Play();
-                    GameStarted = true;
                 }
                 return;
             }
@@ -370,7 +371,7 @@ namespace GameManager
                     {
                         GetComponent<AudioSource>().Stop();
                         _calibratedOffset = CBeatTimes.Count == 0 ? 0f : CBeatTimes.Sum() / CBeatTimes.Count;
-                        finalScoreText.text = "Calibration Mode : " + Mathf.Round(_calibratedOffset * 1000) + "ms";
+                        finalScoreText.text = "Calibration Result : " + Mathf.Round(_calibratedOffset * 1000) + "ms";
                         PlayerPrefs.SetFloat("calibratedOffset", _calibratedOffset);
                         PlayerPrefs.SetInt("isCalibrated", 1);
                         judgementPanel.SetActive(false);
