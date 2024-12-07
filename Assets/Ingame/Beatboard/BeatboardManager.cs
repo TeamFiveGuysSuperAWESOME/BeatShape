@@ -112,7 +112,7 @@ namespace Beatboard
 
             meshObj2.layer = LayerMask.NameToLayer("Board");
 
-            Material secondMaterial = new Material(Shader.Find("Standard"))
+            Material secondMaterial = new Material(Shader.Find("Transparent/Diffuse"))
             {
                 color = new Color(BeatboardColor.r, BeatboardColor.g, BeatboardColor.b, 0.35f),
                 renderQueue = 2998

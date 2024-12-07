@@ -18,6 +18,8 @@ public class FadeInScreen : MonoBehaviour
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        var cameraScale = Mathf.Max(Camera.main.pixelWidth, Camera.main.pixelHeight);
+        transform.localScale = new Vector3(cameraScale, cameraScale, 1);
     }
 
     void FadeIn()

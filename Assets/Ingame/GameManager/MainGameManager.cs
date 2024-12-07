@@ -43,7 +43,7 @@ namespace GameManager
         private static List<float> _currentBoardSizes = new();
         private double _startTime;
         public static float _debugTime = 0f;
-        private float _musicLength;
+        public static float _musicLength;
         public static string JsonFilePath;
         private bool _isJsonFileLoaded = false;
         public static bool GameStarted = false;
@@ -68,9 +68,7 @@ namespace GameManager
         private float animtimer = 0f;
         [SerializeField] private GameObject practiceIndicator;
         [SerializeField] private GameObject pausePanel;
-        [SerializeField] private Slider ffSlider;
         [SerializeField] private GameObject ffSliderObj;
-        [SerializeField] private TextMeshProUGUI ffSliderPercent;
         [SerializeField] private TextMeshProUGUI ffSliderPercentFull;
         [SerializeField] private GameObject gameOverPanel;
         [SerializeField] private GameObject judgementPanel;
@@ -104,6 +102,7 @@ namespace GameManager
             _levelAuthor = string.Empty;
             _bpm = 0f;
             _offset = 0f;
+            _musicLength = -1f;
             Boards.Clear();
             _boardsData = null;
             _currentBoardPoints.Clear();
@@ -249,7 +248,6 @@ namespace GameManager
                 GetComponent<AudioSource>().clip = _levelAudioContent;
             }
             _musicLength = GetComponent<AudioSource>().clip.length;
-            ffSlider.value = _debugTime / _musicLength;
             ffSliderPercentFull.text = (Mathf.Round(_musicLength)).ToString();
             _bpm = levelDataJsonNode["Bpm"];
             _offset = levelDataJsonNode["Offset"] / 1000f;
@@ -258,9 +256,6 @@ namespace GameManager
             CreateBeatboardAtStart(Boards);
 
             _startTime = 30 / _bpm + _offset - _debugTime;
-#if UNITY_ANDROID && !UNITY_EDITOR
-            _startTime -= 0.15f;
-#endif
 
             for (var i = 0; i < Boards.Count; i++)
             {
@@ -489,10 +484,10 @@ namespace GameManager
             gameOverPanel.SetActive(false);
         }
 
-        public void OnSliderMove() 
+        public static string OnSliderMove(float value) 
         {
-            _debugTime = _musicLength * ffSlider.value;
-            ffSliderPercent.text = "Start From " + Mathf.Round(_debugTime) + "s";
+            _debugTime = _musicLength * value;
+            return "Start From " + Mathf.Round(_debugTime) + "s";
         }
     }
 }

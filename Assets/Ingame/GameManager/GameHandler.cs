@@ -89,7 +89,7 @@ namespace GameManager {
                 var beats = (timeSinceStart - _nextPointTimes[i]) / _beatIntervals[i] - 1;
                 var currentCycle = currentBoard
                     ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i])];
-                Debug.Log("Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i]));
+                //Debug.Log("Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + 1 + _nextPointCycles[i]));
                 var prevCycle = currentBoard
                     ["Cycle" + ((int)Math.Floor(beats / _currentBoardPoints[i]) + _nextPointCycles[i])];
                 var nextCycle = currentBoard
