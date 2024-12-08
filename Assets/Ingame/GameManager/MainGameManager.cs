@@ -49,7 +49,6 @@ namespace GameManager
         public static float _debugTime = 0f;
         public static float _musicLength;
         public static string JsonFilePath;
-        private bool _isJsonFileLoaded = false;
         public static bool GameStarted = false;
         public static bool Paused = false;
         public static bool GameEnded = false;
@@ -93,7 +92,7 @@ namespace GameManager
         private static extern void UploadFile();
 #endif
 
-        private string levelJsonData;
+        private static string levelJsonData = null;
 
         void Awake()
         {
@@ -153,10 +152,9 @@ namespace GameManager
             } // android permission
 
             Debug.Log("Debug Mode: " + DebugMode);
-            Debug.Log("Calibration Mode: " + isCalibrating);
             Debug.Log("Calibrated Offset: " + _calibratedOffset);
             if (isCalibrating) {startText.text = "Space to Calibrate"; StartGame(); return;}
-            if (DebugMode)
+            if (DebugMode && levelJsonData == null)
             {
 #if UNITY_WEBGL && !UNITY_EDITOR
                 UploadFile();
@@ -216,7 +214,6 @@ namespace GameManager
             Debug.Log("audio loaded");
             _levelAudioContent = DownloadHandlerAudioClip.GetContent(audioLoader);
             yield return new WaitUntil(() => _levelAudioContent != null);
-            Debug.Log($"file content: {levelFileContent}");
             OnFileUpload(levelFileContent);
             yield return null;
         }
@@ -225,7 +222,6 @@ namespace GameManager
         {
             levelJsonData = jsonData;
             StartGame();
-            _isJsonFileLoaded = true;
         }
 
         public void StartGame()
@@ -326,9 +322,9 @@ namespace GameManager
             if (!GameStarted) {
                 startText.text = isCalibrating ? "Space to Calibrate" : "Space to Start";
                 if (Paused) return;
-                GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f / _bpm, _offset, Boards[0]["points"]);
                 if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)) {
                     if (EventSystem.current.currentSelectedGameObject) return;
+                    GameObject.FindWithTag("countdown").GetComponent<CountDownManager>().RefreshTimer(60f / _bpm, _offset, Boards[0]["points"]);
                     GameStarted = true;
                     
                     _startTime += AudioSettings.dspTime;
@@ -438,6 +434,7 @@ namespace GameManager
         {
             yield return new WaitForSeconds(seconds);
             _nowYouCanLeave = true;
+            GetComponent<AudioSource>().Stop();
         }
 
         private void SetTextRenderQueue(TextMeshPro text, int queueValue)

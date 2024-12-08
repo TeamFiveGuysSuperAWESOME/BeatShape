@@ -300,7 +300,7 @@ namespace Beatboard
 
         void Update()
         {
-            if (BeatboardColor != Beatboards[0].transform.Find("bbMeshIn").gameObject.GetComponent<MeshRenderer>().material.color)
+            if (Beatboards.Count > 0 && BeatboardColor != Beatboards[0].transform.Find("bbMeshIn").gameObject.GetComponent<MeshRenderer>().material.color)
             {
                 foreach (var beatboard in Beatboards)
                 {

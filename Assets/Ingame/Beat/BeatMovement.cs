@@ -61,7 +61,8 @@ namespace Beat
                 StartCoroutine(RemoveBeatRoutine());
                 return;
             }
-            if (inputOffset < -0.3f) //offset = -400 ~ 400ms 이거 아닌듯.. 너무 어려워
+            if (GetComponent<BeatData>().scored) return;
+            if (inputOffset < -0.2f)
             {
                 MainGameManager.Judgement[0] += 1;
                 StartCoroutine(DisplayIndicator("Too EARLY", Color.red));
@@ -69,7 +70,7 @@ namespace Beat
                 MainGameManager.Overload += 1;
                 return;
             }
-            if (inputOffset > 0.3f)
+            if (inputOffset > 0.2f)
             {
                 MainGameManager.Judgement[1] += 1;
                 StartCoroutine(DisplayIndicator("Too LATE", Color.red));
@@ -77,17 +78,16 @@ namespace Beat
                 MainGameManager.Overload += 1;
                 return;
             }
-            if (GetComponent<BeatData>().scored) return;
             GetComponent<BeatData>().input_offset = -9999f;
             GetComponent<BeatData>().scored = true;
             switch (inputOffset) {
-                case float n when n < -0.15f:
+                case float n when n < -0.16f:
                     MainGameManager.Judgement[2] += 1;
                     StartCoroutine(DisplayIndicator("EARLY", Color.red));
                     //StartCoroutine(ChangeColorRoutine(Color.red));
                     MainGameManager.Score += 1;
                     break;
-                case float n when n > 0.15f:
+                case float n when n > 0.16f:
                     MainGameManager.Judgement[3] += 1;
                     StartCoroutine(DisplayIndicator("LATE", Color.red));
                     //StartCoroutine(ChangeColorRoutine(Color.red));
@@ -97,19 +97,19 @@ namespace Beat
                     MainGameManager.Judgement[4] += 1;
                     StartCoroutine(DisplayIndicator("Early", Color.yellow));
                     //StartCoroutine(ChangeColorRoutine(Color.yellow));
-                    MainGameManager.Score += 3;
+                    MainGameManager.Score += 2;
                     break;
                 case float n when n > 0.1f:
                     MainGameManager.Judgement[5] += 1;
                     StartCoroutine(DisplayIndicator("Late", Color.yellow));
                     //StartCoroutine(ChangeColorRoutine(Color.yellow));
-                    MainGameManager.Score += 3;
+                    MainGameManager.Score += 2;
                     break;
                 default:
                     MainGameManager.Judgement[6] += 1;
                     StartCoroutine(DisplayIndicator("PERFECT", Color.green));
                     //StartCoroutine(ChangeColorRoutine(Color.green));
-                    MainGameManager.Score += 5;
+                    MainGameManager.Score += 4;
                     break;
             }
             StartCoroutine(RemoveBeatRoutine());
@@ -214,7 +214,7 @@ namespace Beat
             else 
             {
                 transform.localScale = new Vector3(0,0,0);
-                if(standardTime > 0.3f) 
+                if(standardTime > 0.2f) 
                 {
                     if (!GetComponent<BeatData>().scored) {
                         if (!_missedLogged)

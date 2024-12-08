@@ -27,7 +27,6 @@ namespace GameManager
 
             leftTime -= Time.deltaTime;
             float currentTime = Mathf.Floor(count - (count - 1) / (totalTime - 1) * (totalTime - leftTime));
-            Debug.Log("currentTime: " + leftTime);
             if (leftTime < 1)
             {
                 startText.text = "";
