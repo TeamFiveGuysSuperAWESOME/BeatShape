@@ -31,6 +31,7 @@ namespace Beat
         private bool _hasPlayedSound = false;
         private bool _missedLogged = false;
         private bool _displayed = false;
+        private int _displaying = 0;
         
         void Awake() 
         {
@@ -117,6 +118,7 @@ namespace Beat
 
         private IEnumerator DisplayIndicator(string text, Color color = default)
         {
+            _displaying += 1;
             GameObject scoreText = new("Indicator");
             scoreText.transform.localScale = new Vector3(0f, 0f, 1f);
             scoreText.transform.SetParent(GameObject.FindWithTag("Canvas").transform);
@@ -154,7 +156,7 @@ namespace Beat
             }
 
             Destroy(scoreText);
-            if (text != "Too Early!" && text != "Too Late!") _displayed = true;
+            _displaying -= 1;
         }
 
         private IEnumerator ChangeColorRoutine(Color color) {
@@ -187,7 +189,7 @@ namespace Beat
                 yield return null;
             }
 
-            yield return new WaitUntil(() => _displayed || GetComponent<BeatData>().missedLogged);
+            yield return new WaitUntil(() => _displaying == 0);
             yield return new WaitForSeconds(0.5f);
             Destroy(gameObject);
         }
@@ -214,7 +216,7 @@ namespace Beat
             else 
             {
                 transform.localScale = new Vector3(0,0,0);
-                if(standardTime > 0.2f) 
+                if((!MainGameManager.isCalibrating && standardTime > 0.2f) || MainGameManager.isCalibrating && standardTime > 0.5f) 
                 {
                     if (!GetComponent<BeatData>().scored) {
                         if (!_missedLogged)
@@ -223,7 +225,6 @@ namespace Beat
                             _missedLogged = true;
                         }
                         GetComponent<BeatData>().input_offset = -9999f; 
-                        _displayed = true;
                         StartCoroutine(RemoveBeatRoutine());
 
                         if (MainGameManager._debugTime > 0f) return;

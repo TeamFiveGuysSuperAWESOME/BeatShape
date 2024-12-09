@@ -39,9 +39,15 @@ namespace Beat
             audioSource.Play();
         }
 
+        public static void ChangeSfxVolume()
+        {
+            GameObject.FindWithTag("beatmanager").GetComponent<AudioSource>().volume = MenuSoundManager.sfxVolume;
+        }
+
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
+            audioSource.volume = MenuSoundManager.sfxVolume;
         }
         private void Start()
         {

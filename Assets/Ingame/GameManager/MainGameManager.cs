@@ -92,7 +92,7 @@ namespace GameManager
         private static extern void UploadFile();
 #endif
 
-        private static string levelJsonData = null;
+        public static string levelJsonData = null;
 
         void Awake()
         {
@@ -231,7 +231,7 @@ namespace GameManager
             textFile = isCalibrating ? Resources.Load<TextAsset>("Levels/C/level") : Resources.Load<TextAsset>("Levels/" + LevelNumber + "/level");
             //textFile = 
             var levelString = textFile.text;
-            if (DebugMode)
+            if (DebugMode && !isCalibrating)
             {
 #if (UNITY_WEBGL||UNITY_ANDROID) && !UNITY_EDITOR
                 levelString = levelJsonData;
@@ -361,6 +361,7 @@ namespace GameManager
             {
                 if (!ResultShown) {
                     StartCoroutine(GameEndFlash());
+                    GetComponent<AudioSource>().Stop();
                     gameOverPanel.SetActive(true);
 
                     if (isCalibrating) 
@@ -434,7 +435,6 @@ namespace GameManager
         {
             yield return new WaitForSeconds(seconds);
             _nowYouCanLeave = true;
-            GetComponent<AudioSource>().Stop();
         }
 
         private void SetTextRenderQueue(TextMeshPro text, int queueValue)
@@ -465,6 +465,18 @@ namespace GameManager
                 }
                 yield return new WaitForSeconds(0.2f);
             }
+        }
+
+        public static void ChangeMusicVolume()
+        {
+            GameObject.FindWithTag("gamemanager").GetComponent<AudioSource>().volume = MenuSoundManager.musicVolume;
+        }
+
+        public void ResetOffset() 
+        {
+            PlayerPrefs.SetFloat("calibratedOffset", 0f);
+            PlayerPrefs.SetInt("isCalibrated", 0);
+            Restart();
         }
 
         public void LoadMainMenu()
