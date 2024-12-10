@@ -26,6 +26,7 @@ public class PauseManager : MonoBehaviour
         sceneIndex = 0;
         isPaused = false;
         pausePanel.SetActive(false);
+        settingsPanel.SetActive(false);
         offsetSettings.text = Mathf.Round(PlayerPrefs.GetFloat("calibratedOffset") * 1000).ToString();
     }
 
@@ -46,6 +47,7 @@ public class PauseManager : MonoBehaviour
 
     public void PauseGame()
     {
+        if (isPaused) return;
         MainGameManager.Paused = true;
         isPaused = true;
         Camera.main.GetComponent<PostProcessLayer>().enabled = false;
@@ -57,6 +59,7 @@ public class PauseManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        if (!isPaused) return;
         StartCoroutine(ResumeGameCoroutine());
     }
 
@@ -101,23 +104,24 @@ public class PauseManager : MonoBehaviour
         if (sceneIndex == 1) {
             float duration = 0.5f;
             float t = 0;
-            Vector3 startPos1 = resumeButton.transform.position;
-            Vector3 startPos2 = settingsButton.transform.position;
-            Vector3 startPos3 = quitButton.transform.position;
-            Vector3 startPos4 = settingsPanel.transform.position;
-            Vector3 endPos1 = new Vector3(-120, 60, resumeButton.transform.position.z);
-            Vector3 endPos2 = new Vector3(-120, 0, settingsButton.transform.position.z);
-            Vector3 endPos3 = new Vector3(-120, -60, quitButton.transform.position.z);
-            Vector3 endPos4 = new Vector3(50, 150, settingsPanel.transform.position.z);
+            Vector3 startPos1 = resumeButton.transform.localPosition;
+            Vector3 startPos2 = settingsButton.transform.localPosition;
+            Vector3 startPos3 = quitButton.transform.localPosition;
+            Vector3 startPos4 = settingsPanel.transform.localPosition;
+            Vector3 endPos1 = new Vector3(-120, 60, resumeButton.transform.localPosition.z);
+            Vector3 endPos2 = new Vector3(-120, 0, settingsButton.transform.localPosition.z);
+            Vector3 endPos3 = new Vector3(-120, -60, quitButton.transform.localPosition.z);
+            Vector3 endPos4 = new Vector3(settingsPanel.transform.localPosition.x, 0, settingsPanel.transform.localPosition.z);
             Vector3 startScale1 = restartButton.transform.localScale;
             Vector3 startScale2 = practiceRestartButton.transform.localScale;
             Vector3 startScale3 = practiceBar.transform.localScale;
+            settingsPanel.SetActive(true);
             while (t < duration) {
                 t += Time.deltaTime;
-                resumeButton.transform.position = Vector3.Lerp(startPos1, endPos1, Easing.Ease(t / duration, "outcubic"));
-                settingsButton.transform.position = Vector3.Lerp(startPos2, endPos2, Easing.Ease(t / duration, "outcubic"));
-                quitButton.transform.position = Vector3.Lerp(startPos3, endPos3, Easing.Ease(t / duration, "outcubic"));
-                settingsPanel.transform.position = Vector3.Lerp(startPos4, endPos4, Easing.Ease(t / duration, "outcubic"));
+                resumeButton.transform.localPosition = Vector3.Lerp(startPos1, endPos1, Easing.Ease(t / duration, "outcubic"));
+                settingsButton.transform.localPosition = Vector3.Lerp(startPos2, endPos2, Easing.Ease(t / duration, "outcubic"));
+                quitButton.transform.localPosition = Vector3.Lerp(startPos3, endPos3, Easing.Ease(t / duration, "outcubic"));
+                settingsPanel.transform.localPosition = Vector3.Lerp(startPos4, endPos4, Easing.Ease(t / duration, "outcubic"));
                 restartButton.transform.localScale = Vector3.Lerp(startScale1, Vector3.zero, Easing.Ease(t / duration, "outcubic"));
                 practiceRestartButton.transform.localScale = Vector3.Lerp(startScale2, Vector3.zero, Easing.Ease(t / duration, "outcubic"));
                 practiceBar.transform.localScale = Vector3.Lerp(startScale3, Vector3.zero, Easing.Ease(t / duration, "outcubic"));
@@ -128,23 +132,24 @@ public class PauseManager : MonoBehaviour
         {
             float duration = 0.5f;
             float t = 0;
-            Vector3 startPos1 = resumeButton.transform.position;
-            Vector3 startPos2 = settingsButton.transform.position;
-            Vector3 startPos3 = quitButton.transform.position;
-            Vector3 startPos4 = settingsPanel.transform.position;
-            Vector3 endPos1 = new Vector3(-120, 10, resumeButton.transform.position.z);
-            Vector3 endPos2 = new Vector3(60, 10, settingsButton.transform.position.z);
-            Vector3 endPos3 = new Vector3(120, 10, quitButton.transform.position.z);
-            Vector3 endPos4 = new Vector3(50, 0, settingsPanel.transform.position.z);
+            Vector3 startPos1 = resumeButton.transform.localPosition;
+            Vector3 startPos2 = settingsButton.transform.localPosition;
+            Vector3 startPos3 = quitButton.transform.localPosition;
+            Vector3 startPos4 = settingsPanel.transform.localPosition;
+            Vector3 endPos1 = new Vector3(-120, 10, resumeButton.transform.localPosition.z);
+            Vector3 endPos2 = new Vector3(60, 10, settingsButton.transform.localPosition.z);
+            Vector3 endPos3 = new Vector3(120, 10, quitButton.transform.localPosition.z);
+            Vector3 endPos4 = new Vector3(settingsPanel.transform.localPosition.x, -240, settingsPanel.transform.localPosition.z);
             Vector3 startScale1 = restartButton.transform.localScale;
             Vector3 startScale2 = practiceRestartButton.transform.localScale;
             Vector3 startScale3 = practiceBar.transform.localScale;
+            settingsPanel.SetActive(false);
             while (t < duration) {
                 t += Time.deltaTime;
-                resumeButton.transform.position = Vector3.Lerp(startPos1, endPos1, Easing.Ease(t / duration, "outcubic"));
-                settingsButton.transform.position = Vector3.Lerp(startPos2, endPos2, Easing.Ease(t / duration, "outcubic"));
-                quitButton.transform.position = Vector3.Lerp(startPos3, endPos3, Easing.Ease(t / duration, "outcubic"));
-                settingsPanel.transform.position = Vector3.Lerp(startPos4, endPos4, Easing.Ease(t / duration, "outcubic"));
+                resumeButton.transform.localPosition = Vector3.Lerp(startPos1, endPos1, Easing.Ease(t / duration, "outcubic"));
+                settingsButton.transform.localPosition = Vector3.Lerp(startPos2, endPos2, Easing.Ease(t / duration, "outcubic"));
+                quitButton.transform.localPosition = Vector3.Lerp(startPos3, endPos3, Easing.Ease(t / duration, "outcubic"));
+                settingsPanel.transform.localPosition = Vector3.Lerp(startPos4, endPos4, Easing.Ease(t / duration, "outcubic"));
                 restartButton.transform.localScale = Vector3.Lerp(startScale1, Vector3.one, Easing.Ease(t / duration, "outcubic"));
                 practiceRestartButton.transform.localScale = Vector3.Lerp(startScale2, Vector3.one, Easing.Ease(t / duration, "outcubic"));
                 practiceBar.transform.localScale = Vector3.Lerp(startScale3, new Vector3(20, 20, 1), Easing.Ease(t / duration, "outcubic"));

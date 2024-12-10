@@ -1,114 +1,3141 @@
 {
-   "Data": {
-     "LevelName": "Test1",
-     "LevelDescription": "Test Level",
-     "LevelAuthor": "Test Author",
-     "AudioFile": "Riya - Polygons (remaster)",
-     "Bpm": 65,
-     "Offset": 760,
-     "Boards": {
-       "board1": {
-         "points": 6,
-         "position": [
-           0,
-           0
-         ],
-         "size": 20
-       }
-     },
-     "Background": {
-       "BBColor": [
-         0,
-         0,
-         0
-       ],
-       "BGColor": [
-         1,
-         1,
-         1
-       ],
-       "BGImage": "bg1"
-     }
-   },
-   "Boards": {
-     "Board1": {
-       "Cycle1": {
-         "Points": 6,
-         "Size": 20,
-         "1": {
-           "Beats": {
-              "1": {
-                "Color": [
-                  1,
-                  0,
-                  0
-                ]
-              }
-           },
-           "Color": [
-             1,
-             0,
-             0
-           ],
-           "Camera": {
-             "BBColor": [
-               1,
-               1,
-               1
-             ],
-             "BGColor": [
-               0.1,
-               0.1,
-               0.1
-             ],
-             "BGImage": "",
-             "Zoom": 75,
-             "Duration": 0.5,
-             "Shake": {
-               "Intensity": 10,
-               "Duration": 0.5
-             },
-             "Flash": {
-               "Color": [
-                 1,
-                 1,
-                 1
-               ],
-               "Duration": 0.5
-             },
-             "Easing": "inoutsine"
-           },
-           "PP": {
-             "General": {
-               "Exposure": 0.5
-             },
-             "Bloom": {
-               "Intensity": 15,
-               "Threshold": 1,
-               "Color": [
-                 1,
-                 1,
-                 1
-               ]
-             },
-             "DoF": {
-               "FocusDistance": 10,
-               "Aperture": 5,
-               "FocalLength": 50
-             },
-             "Chromatic Aberration": {
-               "Intensity": 1
-             },
-             "Vignette": {
-               "Intensity": 0.4,
-               "Smoothness": 1
-             },
-             "Duration": 1.5,
-             "Easing": "outcubic"
-           }
-         }
-       }
-     }
-   }
- }
- 
+  "Data": {
+    "LevelName": "bloo cat bloo",
+    "LevelDescription": "swing included",
+    "LevelAuthor": "linear cat",
+    "AudioFile": "Riya - Polygons (remaster)",
+    "Bpm": 78,
+    "Offset": 0,
+    "Boards": {
+      "board1": {
+        "points": 6,
+        "position": [
+          0,
+          0
+        ],
+        "size": 20
+      }
+    },
+    "Background": {
+      "BBColor": [
+        0,
+        0,
+        0
+      ],
+      "BGColor": [
+        1,
+        1,
+        1
+      ],
+      "BGImage": "bg1"
+    }
+  },
+  "Boards": {
+    "Board1": {
+      "Cycle1": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "Camera": {
+            "BBColor": [
+              1,
+              1,
+              1
+            ],
+            "BGColor": [
+              0.1,
+              0.1,
+              0.1
+            ],
+            "BGImage": "",
+            "Zoom": 75,
+            "Duration": 0.5,
+            "Shake": {
+              "Intensity": 10
+            },
+            "Easing": "inoutsine"
+          },
+          "PP": {
+            "General": {
+              "Exposure": 0.5
+            },
+            "Bloom": {
+              "Intensity": 15,
+              "Threshold": 1,
+              "Color": [
+                1,
+                1,
+                1
+              ]
+            },
+            "DoF": {
+              "FocusDistance": 10,
+              "Aperture": 5,
+              "FocalLength": 50
+            },
+            "Chromatic Aberration": {
+              "Intensity": 1
+            },
+            "Vignette": {
+              "Intensity": 0.4,
+              "Smoothness": 1
+            },
+            "Duration": 1.5,
+            "Easing": "outcubic"
+          }
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle2": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle3": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle4": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0
+            }
+          }
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0.5
+            },
+            "Duration": 0.5,
+            "Easing": "outcubic"
+          }
+        }
+      },
+      "Cycle5": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle6": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle7": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle8": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0
+            }
+          }
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0.5
+            },
+            "Duration": 0.5,
+            "Easing": "outcubic"
+          }
+        }
+      },
+      "Cycle9": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle10": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle11": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle12": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0
+            }
+          }
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0.5
+            },
+            "Duration": 0.5,
+            "Easing": "outcubic"
+          }
+        }
+      },
+      "Cycle13": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle14": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle15": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0
+            }
+          }
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0.5
+            }
+          }
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0
+            }
+          }
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0.5
+            }
+          }
+        }
+      },
+      "Cycle16": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0
+            }
+          }
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "PP": {
+            "General": {
+              "Exposure": 0.5
+            }
+          }
+        }
+      },
+      "Cycle17": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ],
+          "Camera": {
+            "BGImage": "bg1",
+            "Zoom": 100,
+            "Duration": 0,
+            "Shake": {
+              "Intensity": 20,
+              "Duration": 0.25
+            }
+          },
+          "PP": {
+            "General": {
+              "Exposure": 0.7
+            },
+            "Bloom": {
+              "Intensity": 10
+            },
+            "DoF": {
+              "FocalLength": 1
+            },
+            "Chromatic Aberration": {
+              "Intensity": 0.2
+            },
+            "Vignette": {
+              "Intensity": 0
+            },
+            "Duration": 0
+          }
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle18": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle19": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle20": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle21": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle22": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle23": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle24": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle25": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle26": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle27": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle28": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle29": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle30": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle31": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle32": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle33": {
+        "Points": 6,
+        "Size": 20,
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle34": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle35": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle36": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle37": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle38": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle39": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle40": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle41": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle42": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle43": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle44": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle45": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle46": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle47": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle48": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle49": {
+        "Point": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle50": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle51": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle52": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle53": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle54": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle55": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle56": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle57": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle58": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle59": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle60": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle61": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle62": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle63": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle64": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle65": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle66": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle67": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle68": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle69": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle70": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle71": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle72": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle73": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle74": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle75": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle76": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle77": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle78": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle79": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle80": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle81": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle82": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle83": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle84": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle85": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle86": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle87": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle88": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle89": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle90": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle91": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle92": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle93": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle94": {
+        "Points": 6,
+        "Size": 20,
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle95": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle96": {
+        "Points": 6,
+        "Size": 20,
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle97": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle98": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle99": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle100": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle101": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle102": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle103": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle104": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle105": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle106": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle107": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle108": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle109": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle110": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "2": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "6": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle111": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle112": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "4": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle113": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle114": {
+        "Points": 6,
+        "Size": 20
+      },
+      "Cycle115": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle116": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle117": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle118": {
+        "Points": 6,
+        "Size": 20
+      },
+      "Cycle119": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle120": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle121": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle122": {
+        "Points": 6,
+        "Size": 20
+      },
+      "Cycle123": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle124": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle125": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle126": {
+        "Points": 6,
+        "Size": 20
+      },
+      "Cycle127": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle128": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "3": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        },
+        "5": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      },
+      "Cycle129": {
+        "Points": 6,
+        "Size": 20,
+        "1": {
+          "Beat": true,
+          "Color": [
+            1,
+            0,
+            0
+          ]
+        }
+      }
+    }
+  }
+}
