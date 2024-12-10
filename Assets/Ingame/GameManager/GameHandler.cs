@@ -146,19 +146,39 @@ namespace GameManager
                 //Camera Handling
                 HandleCamera(currentBeat);
 
-                if (!currentBeat["Beat"]) continue;
+                if (currentBeat["Beat"] != null && currentBeat["Beat"].AsBool) 
+                {
+                    // Beat Creation
+                    float size = currentBeat["Size"] != null ? currentBeat["Size"].AsFloat : 1;
+                    Color color = new(
+                        currentBeat["Color"]?[0]?.AsFloat ?? 1,
+                        currentBeat["Color"]?[1]?.AsFloat ?? 1,
+                        currentBeat["Color"]?[2]?.AsFloat ?? 1
+                    );
+                    if (color == Color.black) color = Color.white;
+                    string easing = currentBeat["Easing"] != null ? currentBeat["Easing"] : "outcubic";
+                    _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), 0, 0, 0, _bpm * 4, size, color, easing);
 
-                // Beat Creation
-                float size = currentBeat["Size"] != null ? currentBeat["Size"].AsFloat : 1;
-                Color color = new(
-                    currentBeat["Color"]?[0]?.AsFloat ?? 1,
-                    currentBeat["Color"]?[1]?.AsFloat ?? 1,
-                    currentBeat["Color"]?[2]?.AsFloat ?? 1
-                );
-                if (color == Color.black) color = Color.white;
-                float speed = currentBeat["Speed"] != null ? currentBeat["Speed"].AsFloat : 1;
-                string easing = currentBeat["Easing"] != null ? currentBeat["Easing"] : "outcubic";
-                _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), speed, _bpm * 4, size, color, easing);
+                }
+                else if (currentBeat["Beats"].Count >= 1) 
+                {
+                    foreach (JSONNode Beat in currentBeat["Beats"])
+                    {
+                        // Beat Creation
+                        float size = Beat["Size"] != null ? Beat["Size"].AsFloat : 1;
+                        Color color = new(
+                            Beat["Color"]?[0]?.AsFloat ?? 1,
+                            Beat["Color"]?[1]?.AsFloat ?? 1,
+                            Beat["Color"]?[2]?.AsFloat ?? 1
+                        );
+                        if (color == Color.black) color = Color.white;
+                        int cycleOffset = Beat["CycleOffset"] != null ? Beat["CycleOffset"].AsInt : 0;
+                        int sideTimeOffset = Beat["Side"] != null ? Beat["Side"].AsInt : int.Parse(currentSide);
+                        int customSide = Beat["CustomSide"] != null ? Beat["CustomSide"].AsInt : sideTimeOffset;
+                        string easing = Beat["Easing"] != null ? Beat["Easing"] : "outcubic";
+                        _beatManager.CreateBeat(i, 1, _currentBoardSizes[i], _currentBoardPoints[i], int.Parse(currentSide), cycleOffset, sideTimeOffset, customSide, _bpm * 4, size, color, easing);
+                    }
+                }
             }
             if (gameEnded == _boardsData.Count) MainGameManager.GameEnded = true;
         }

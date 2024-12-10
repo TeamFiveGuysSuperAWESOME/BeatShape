@@ -1,0 +1,114 @@
+{
+   "Data": {
+     "LevelName": "Test1",
+     "LevelDescription": "Test Level",
+     "LevelAuthor": "Test Author",
+     "AudioFile": "Riya - Polygons (remaster)",
+     "Bpm": 65,
+     "Offset": 760,
+     "Boards": {
+       "board1": {
+         "points": 6,
+         "position": [
+           0,
+           0
+         ],
+         "size": 20
+       }
+     },
+     "Background": {
+       "BBColor": [
+         0,
+         0,
+         0
+       ],
+       "BGColor": [
+         1,
+         1,
+         1
+       ],
+       "BGImage": "bg1"
+     }
+   },
+   "Boards": {
+     "Board1": {
+       "Cycle1": {
+         "Points": 6,
+         "Size": 20,
+         "1": {
+           "Beats": {
+              "1": {
+                "Color": [
+                  1,
+                  0,
+                  0
+                ]
+              }
+           },
+           "Color": [
+             1,
+             0,
+             0
+           ],
+           "Camera": {
+             "BBColor": [
+               1,
+               1,
+               1
+             ],
+             "BGColor": [
+               0.1,
+               0.1,
+               0.1
+             ],
+             "BGImage": "",
+             "Zoom": 75,
+             "Duration": 0.5,
+             "Shake": {
+               "Intensity": 10,
+               "Duration": 0.5
+             },
+             "Flash": {
+               "Color": [
+                 1,
+                 1,
+                 1
+               ],
+               "Duration": 0.5
+             },
+             "Easing": "inoutsine"
+           },
+           "PP": {
+             "General": {
+               "Exposure": 0.5
+             },
+             "Bloom": {
+               "Intensity": 15,
+               "Threshold": 1,
+               "Color": [
+                 1,
+                 1,
+                 1
+               ]
+             },
+             "DoF": {
+               "FocusDistance": 10,
+               "Aperture": 5,
+               "FocalLength": 50
+             },
+             "Chromatic Aberration": {
+               "Intensity": 1
+             },
+             "Vignette": {
+               "Intensity": 0.4,
+               "Smoothness": 1
+             },
+             "Duration": 1.5,
+             "Easing": "outcubic"
+           }
+         }
+       }
+     }
+   }
+ }
+ 

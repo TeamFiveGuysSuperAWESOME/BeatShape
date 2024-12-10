@@ -390,10 +390,10 @@ namespace GameManager
                     else {resultAudio.Audio_Cymbal();}
 
                     perfectText.text = Judgement[6].ToString();
-                    earlyText.text = Judgement[2].ToString();
-                    lateText.text = Judgement[3].ToString();
-                    earlyBadText.text = Judgement[4].ToString();
-                    lateBadText.text = Judgement[5].ToString();
+                    earlyText.text = Judgement[4].ToString();
+                    lateText.text = Judgement[5].ToString();
+                    earlyBadText.text = Judgement[2].ToString();
+                    lateBadText.text = Judgement[3].ToString();
                     tooEarlyText.text = Judgement[0].ToString();
                     tooLateText.text = Judgement[1].ToString();
                     missedText.GetComponent<TextMeshPro>().text = Judgement[7].ToString();

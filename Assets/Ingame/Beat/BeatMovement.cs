@@ -14,7 +14,8 @@ namespace Beat
     {
         private float _angle;
         private float _boardsize;
-        private float _spd;
+        private int _cycleOff;
+        private int _sideOff;
         private float _bpm;
         private float _size;
         private Vector2 _pos;
@@ -32,17 +33,19 @@ namespace Beat
         private bool _missedLogged = false;
         private bool _displayed = false;
         private int _displaying = 0;
+        private readonly object _scoreLock = new object();
         
         void Awake() 
         {
             beatmanager = GameObject.FindWithTag("beatmanager").GetComponent<BeatManager>();
         }
 
-        public void SetMovement(float angle, int sides, float boardsize, float spd, float bpm, Vector2 pos, string eas, float sze)
+        public void SetMovement(float angle, int sides, float boardsize, int cycleOffset, int sideOff, float bpm, Vector2 pos, string eas, float sze)
         {
             _angle = angle;
             _boardsize = boardsize;
-            _spd = spd;
+            _cycleOff = cycleOffset;
+            _sideOff = sideOff;
             _bpm = bpm;
             _size = sze;
             _pos = pos;
@@ -52,68 +55,78 @@ namespace Beat
             _secondsPerBeat = 60f / _bpm;
         }
         
-        public void TryRemoveBeatScored()
+        public void TryRemoveBeatScored(float inputOffset)
         {
-            float inputOffset = _elapsedTime - _secondsPerBeat * 4;
-            if (MainGameManager.isCalibrating) {
-                if (inputOffset < -_secondsPerBeat) return;
-                MainGameManager.CBeatTimes.Add(inputOffset);
-                _displayed = true;
+            BeatData beatData = GetComponent<BeatData>();
+            
+            lock(_scoreLock)
+            {
+                if (beatData.scored) return;
+                
+                if (MainGameManager.isCalibrating) {
+                    if (inputOffset < -_secondsPerBeat) return;
+                    MainGameManager.CBeatTimes.Add(inputOffset);
+                    beatData.scored = true;
+                    beatData.input_offset = -9999f;
+                    _displayed = true;
+                    StartCoroutine(RemoveBeatRoutine());
+                    return;
+                }
+
+                if (inputOffset < -0.2f)
+                {
+                    MainGameManager.Judgement[0] += 1;
+                    StartCoroutine(DisplayIndicator("Too EARLY", Color.red));
+                    StartCoroutine(ChangeColorRoutine(new Color(0.5f, 0f, 0f)));
+                    MainGameManager.Overload += 1;
+                    return;
+                }
+                if (inputOffset > 0.2f)
+                {
+                    MainGameManager.Judgement[1] += 1;
+                    StartCoroutine(DisplayIndicator("Too LATE", Color.red));
+                    StartCoroutine(ChangeColorRoutine(new Color(0.5f, 0f, 0f)));
+                    MainGameManager.Overload += 1;
+                    return;
+                }
+
+                beatData.scored = true;
+                beatData.input_offset = -9999f;
+
+                switch (inputOffset) {
+                    case float n when n < -0.16f:
+                        MainGameManager.Judgement[2] += 1;
+                        StartCoroutine(DisplayIndicator("EARLY", Color.red));
+                        //StartCoroutine(ChangeColorRoutine(Color.red));
+                        MainGameManager.Score += 1;
+                        break;
+                    case float n when n > 0.16f:
+                        MainGameManager.Judgement[3] += 1;
+                        StartCoroutine(DisplayIndicator("LATE", Color.red));
+                        //StartCoroutine(ChangeColorRoutine(Color.red));
+                        MainGameManager.Score += 1;
+                        break;
+                    case float n when n < -0.1f:
+                        MainGameManager.Judgement[4] += 1;
+                        StartCoroutine(DisplayIndicator("Early", Color.yellow));
+                        //StartCoroutine(ChangeColorRoutine(Color.yellow));
+                        MainGameManager.Score += 2;
+                        break;
+                    case float n when n > 0.1f:
+                        MainGameManager.Judgement[5] += 1;
+                        StartCoroutine(DisplayIndicator("Late", Color.yellow));
+                        //StartCoroutine(ChangeColorRoutine(Color.yellow));
+                        MainGameManager.Score += 2;
+                        break;
+                    default:
+                        MainGameManager.Judgement[6] += 1;
+                        StartCoroutine(DisplayIndicator("PERFECT", Color.green));
+                        //StartCoroutine(ChangeColorRoutine(Color.green));
+                        MainGameManager.Score += 4;
+                        break;
+                }
                 StartCoroutine(RemoveBeatRoutine());
-                return;
             }
-            if (GetComponent<BeatData>().scored) return;
-            if (inputOffset < -0.2f)
-            {
-                MainGameManager.Judgement[0] += 1;
-                StartCoroutine(DisplayIndicator("Too EARLY", Color.red));
-                StartCoroutine(ChangeColorRoutine(new Color(0.5f, 0f, 0f)));
-                MainGameManager.Overload += 1;
-                return;
-            }
-            if (inputOffset > 0.2f)
-            {
-                MainGameManager.Judgement[1] += 1;
-                StartCoroutine(DisplayIndicator("Too LATE", Color.red));
-                StartCoroutine(ChangeColorRoutine(new Color(0.5f, 0f, 0f)));
-                MainGameManager.Overload += 1;
-                return;
-            }
-            GetComponent<BeatData>().input_offset = -9999f;
-            GetComponent<BeatData>().scored = true;
-            switch (inputOffset) {
-                case float n when n < -0.16f:
-                    MainGameManager.Judgement[2] += 1;
-                    StartCoroutine(DisplayIndicator("EARLY", Color.red));
-                    //StartCoroutine(ChangeColorRoutine(Color.red));
-                    MainGameManager.Score += 1;
-                    break;
-                case float n when n > 0.16f:
-                    MainGameManager.Judgement[3] += 1;
-                    StartCoroutine(DisplayIndicator("LATE", Color.red));
-                    //StartCoroutine(ChangeColorRoutine(Color.red));
-                    MainGameManager.Score += 1;
-                    break;
-                case float n when n < -0.1f:
-                    MainGameManager.Judgement[4] += 1;
-                    StartCoroutine(DisplayIndicator("Early", Color.yellow));
-                    //StartCoroutine(ChangeColorRoutine(Color.yellow));
-                    MainGameManager.Score += 2;
-                    break;
-                case float n when n > 0.1f:
-                    MainGameManager.Judgement[5] += 1;
-                    StartCoroutine(DisplayIndicator("Late", Color.yellow));
-                    //StartCoroutine(ChangeColorRoutine(Color.yellow));
-                    MainGameManager.Score += 2;
-                    break;
-                default:
-                    MainGameManager.Judgement[6] += 1;
-                    StartCoroutine(DisplayIndicator("PERFECT", Color.green));
-                    //StartCoroutine(ChangeColorRoutine(Color.green));
-                    MainGameManager.Score += 4;
-                    break;
-            }
-            StartCoroutine(RemoveBeatRoutine());
         }
 
         private IEnumerator DisplayIndicator(string text, Color color = default)
@@ -194,18 +207,21 @@ namespace Beat
             Destroy(gameObject);
         }
 
-        void FixedUpdate()
+        void Update()
         {
             if (MainGameManager.Paused) return;
+
             _elapsedTime += Time.deltaTime;
-            float standardSpb = _secondsPerBeat * 4;
+            float sideOff = _sideOff == 0 ? 0 : (float)_sideOff / _sides;
+            float standardSpb = _secondsPerBeat * 4 * (_cycleOff + sideOff + 1);
             float standardTime = _elapsedTime - standardSpb;
             BeatData beatData = GetComponent<BeatData>();
             if (beatData.input_offset != -9999f) beatData.input_offset = standardTime;
             
-            if(standardTime < 0f) {
+            if (standardTime < 0f)
+            {
                 _sineValue = _elapsedTime/(standardSpb/2) < 1f ? Easing.Ease(_elapsedTime/(standardSpb/2), _easing) : Easing.Ease(2-(_elapsedTime/(standardSpb/2)), _easing);
-                transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size), 100f);
+                transform.localPosition = new Vector3(Mathf.Cos((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size*(_cycleOff + 1 + sideOff)), Mathf.Sin((Mathf.PI/180)*(_angle))*(_boardsize+_sineValue*_size*(_cycleOff + 1 + sideOff)), 100f);
                 
                 if (!_hasPlayedSound && Mathf.Abs(standardTime) < 0f)
                 { 
@@ -216,20 +232,26 @@ namespace Beat
             else 
             {
                 transform.localScale = new Vector3(0,0,0);
-                if((!MainGameManager.isCalibrating && standardTime > 0.2f) || MainGameManager.isCalibrating && standardTime > 0.5f) 
+                lock(_scoreLock)
                 {
-                    if (!GetComponent<BeatData>().scored) {
+                    bool isMissed = !beatData.scored && 
+                        ((!MainGameManager.isCalibrating && standardTime > 0.2f) ||
+                        (MainGameManager.isCalibrating && standardTime > 0.5f));
+                    
+                    if (isMissed && !beatData.scored)
+                    {
                         if (!_missedLogged)
                         {
                             MainGameManager.Judgement[7] += 1;
                             _missedLogged = true;
                         }
-                        GetComponent<BeatData>().input_offset = -9999f; 
+                        beatData.scored = true;
+                        beatData.input_offset = -9999f;
                         StartCoroutine(RemoveBeatRoutine());
 
                         if (MainGameManager._debugTime > 0f) return;
                         MainGameManager.GameReallyEnded = true;
-                        MainGameManager.IsGameOver = true; 
+                        MainGameManager.IsGameOver = true;
                         MainGameManager.WhyGameOver = "¡MISSED!";
                     }
                 }
