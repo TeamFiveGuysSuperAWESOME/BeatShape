@@ -129,6 +129,8 @@ namespace GameManager
             WhyGameOver = string.Empty;
             ResultShown = false;
             DebugMode = MenuManager.DebugMode;
+            MenuSoundManager.musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.2f);
+            MenuSoundManager.sfxVolume = PlayerPrefs.GetFloat("SfxVolume", 0.1f);
             volume = MenuSoundManager.musicVolume;
             sfxvolume = MenuSoundManager.sfxVolume;
             kickSound = Resources.Load<AudioClip>("Sounds/kickdrum");
@@ -361,7 +363,6 @@ namespace GameManager
             {
                 if (!ResultShown) {
                     StartCoroutine(GameEndFlash());
-                    GetComponent<AudioSource>().Stop();
                     gameOverPanel.SetActive(true);
 
                     if (isCalibrating) 
@@ -383,6 +384,7 @@ namespace GameManager
                     ResultAudio resultAudio = GameObject.FindWithTag("resultAudio").GetComponent<ResultAudio>();
                     if (IsGameOver) 
                     {
+                        GetComponent<AudioSource>().Stop();
                         resultAudio.Audio_Snare();
                         finalScoreText.text = WhyGameOver;
                         judgementPanel.SetActive(false);
@@ -481,6 +483,7 @@ namespace GameManager
 
         public void LoadMainMenu()
         {
+            MenuManager.levelNumber = 1;
             if (_isLeaving || _isRestarting) return;
             animtimer = 0f;
             _debugTime = 0f;

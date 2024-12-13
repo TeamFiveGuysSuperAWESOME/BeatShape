@@ -51,6 +51,7 @@ public class IngameSettingsBar : MonoBehaviour
                 {
                     MenuSoundManager.musicVolume = lr.GetPosition(1).x/10;
                     MainGameManager.ChangeMusicVolume();
+                    PlayerPrefs.SetFloat("MusicVolume", MenuSoundManager.musicVolume);
                 }
                 else if(type == "SoundEffect") {
                     timer = timer<0 ? timer+Time.deltaTime : 0;
@@ -61,6 +62,7 @@ public class IngameSettingsBar : MonoBehaviour
                     }
                     MenuSoundManager.sfxVolume = lr.GetPosition(1).x/10;
                     BeatManager.ChangeSfxVolume();
+                    PlayerPrefs.SetFloat("SfxVolume", MenuSoundManager.sfxVolume);
                 }
             }
         }

@@ -24,7 +24,8 @@ public class Bar : MonoBehaviour
     }
     void Start()
     {
-        lr.SetPosition(1, new Vector3(MenuSoundManager.musicVolume*10,0,0));
+        lr.SetPosition(1, new Vector3(type == "Music" ? MenuSoundManager.musicVolume*10 : MenuSoundManager.sfxVolume*10,0,0));
+        text_tmp.text = (lr.GetPosition(1).x*10).ToString("F0") + "%";
     }
 
     void OnMouseDown()
@@ -47,7 +48,11 @@ public class Bar : MonoBehaviour
                 else {lr.SetPosition(1, newPos*10);}
                 text_tmp.text = (lr.GetPosition(1).x*10).ToString("F0") + "%";
                 
-                if(type == "Music") {MenuSoundManager.musicVolume = lr.GetPosition(1).x/10;}
+                if(type == "Music")
+                {
+                    MenuSoundManager.musicVolume = lr.GetPosition(1).x/10;
+                    PlayerPrefs.SetFloat("MusicVolume", MenuSoundManager.musicVolume);
+                }
                 else if(type == "SoundEffect") {
                     timer = timer<0 ? timer+Time.deltaTime : 0;
                     if(MenuSoundManager.sfxVolume != lr.GetPosition(1).x/10 && timer == 0) {
@@ -56,6 +61,7 @@ public class Bar : MonoBehaviour
                         audioSource.Play();
                     }
                     MenuSoundManager.sfxVolume = lr.GetPosition(1).x/10;
+                    PlayerPrefs.SetFloat("SfxVolume", MenuSoundManager.sfxVolume);
                 }
             }
         }

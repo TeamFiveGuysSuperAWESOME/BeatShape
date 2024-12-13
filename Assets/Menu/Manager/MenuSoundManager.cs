@@ -15,6 +15,8 @@ public class MenuSoundManager : MonoBehaviour
     void Awake()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.2f);
+        sfxVolume = PlayerPrefs.GetFloat("SfxVolume", 0.1f);
     }
 
     void Start()

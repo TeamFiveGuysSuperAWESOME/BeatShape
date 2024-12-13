@@ -31,7 +31,6 @@ namespace Beat
         private BeatManager beatmanager;
         private bool _hasPlayedSound = false;
         private bool _missedLogged = false;
-        private bool _displayed = false;
         private int _displaying = 0;
         private readonly object _scoreLock = new object();
         
@@ -68,7 +67,6 @@ namespace Beat
                     MainGameManager.CBeatTimes.Add(inputOffset);
                     beatData.scored = true;
                     beatData.input_offset = -9999f;
-                    _displayed = true;
                     StartCoroutine(RemoveBeatRoutine());
                     return;
                 }
