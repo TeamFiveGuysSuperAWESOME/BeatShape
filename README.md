@@ -1,2 +1,2 @@
 # BeatShape
-A common unity web rhythm game
+A common unity web / android rhythm game
