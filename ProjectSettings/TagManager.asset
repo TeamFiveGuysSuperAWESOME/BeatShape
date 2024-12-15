@@ -28,6 +28,8 @@ TagManager:
   - beatmanager
   - resultAudio
   - debugLog
+  - credit_title
+  - credit_text
   layers:
   - Default
   - TransparentFX

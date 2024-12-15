@@ -6,11 +6,18 @@ Shader "Custom/Grayscale"
     }
     SubShader
     {
-        Tags { "RenderType"="Transparent" }
+        Tags { "RenderType"="Transparent" "Queue"="Overlay" }
         LOD 200
 
         Pass
         {
+            Stencil
+            {
+                Ref 1
+                Comp Equal
+                Pass Keep
+            }
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
@@ -42,8 +49,8 @@ Shader "Custom/Grayscale"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                float gray = dot(col.rgb, float3(0.3, 0.59, 0.11)); // 흑백 계산
-                return fixed4(gray, gray, gray, col.a); // 흑백 결과 반환
+                float gray = dot(col.rgb, float3(0.3, 0.59, 0.11));
+                return fixed4(gray, gray, gray, col.a);
             }
             ENDCG
         }

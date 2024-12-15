@@ -6,14 +6,6 @@ using GameManager;
 
 public class MenuManager : MonoBehaviour
 {
-    SpriteRenderer flat_sr;
-    SpriteRenderer bb_sr; //beatboard spriteRenderer
-    SpriteRenderer bbi_sr; //beatboard_inner spriteRenderer
-    SpriteRenderer b_sr; //beat spriteRenderer
-    SpriteRenderer bi_sr; //beat_inner spriteRenderer
-    SpriteRenderer debug_sr, debug_shadow_sr;
-    TextMeshProUGUI title_tmp, start_tmp, stage_tmp, debug_tmp;
-
     public Color menuColor;
     public Color menuColor_light;
     public Color menuColor_dark;
@@ -32,31 +24,35 @@ public class MenuManager : MonoBehaviour
 
     void Awake()
     {
-        flat_sr = GameObject.FindWithTag("flat").GetComponent<SpriteRenderer>();
-        bb_sr = GameObject.FindWithTag("beatboard").GetComponent<SpriteRenderer>();
-        bbi_sr = GameObject.FindWithTag("beatboard_inner").GetComponent<SpriteRenderer>();
-        debug_sr = GameObject.FindWithTag("debug_img").GetComponent<SpriteRenderer>();
-        debug_shadow_sr = GameObject.FindWithTag("debug_imgShadow").GetComponent<SpriteRenderer>();
-        title_tmp = GameObject.FindWithTag("title_text").GetComponent<TextMeshProUGUI>();
-        start_tmp = GameObject.FindWithTag("start_text").GetComponent<TextMeshProUGUI>();
-        stage_tmp = GameObject.FindWithTag("stage_text").GetComponent<TextMeshProUGUI>();
-        debug_tmp = GameObject.FindWithTag("debug_text").GetComponent<TextMeshProUGUI>();
-        
         menuColor = new Color(Random.Range(0.7f,1f), Random.Range(0.7f,1f), Random.Range(0.7f,1f), 1f);
         menuColor_light = new Color(0.5f+menuColor.r*0.5f, 0.5f+menuColor.g*0.5f, 0.5f+menuColor.b*0.5f, 1f);
         menuColor_dark = new Color(menuColor.r*0.3f, menuColor.g*0.3f, menuColor.b*0.3f, 1f);
 
-        flat_sr.color = menuColor;
-        bbi_sr.color = menuColor_light;
-        bb_sr.color = menuColor_dark;
-        debug_sr.color = menuColor_light;
-        debug_shadow_sr.color = menuColor_dark;
-        title_tmp.color = menuColor_light;
-        title_tmp.fontMaterial.SetColor("_UnderlayColor", menuColor_dark);
-        debug_tmp.color = menuColor_light;
-        debug_tmp.fontMaterial.SetColor("_UnderlayColor", menuColor_dark);
-        start_tmp.color = menuColor_dark;
-        stage_tmp.color = menuColor_dark;
+        GameObject[] credit_title = GameObject.FindGameObjectsWithTag("credit_title");
+        GameObject[] credit_text = GameObject.FindGameObjectsWithTag("credit_text");
+        foreach(GameObject obj in credit_title) {
+            obj.GetComponent<TextMeshProUGUI>().color = menuColor_light;
+            obj.GetComponent<TextMeshProUGUI>().fontMaterial.SetColor("_UnderlayColor", menuColor_dark);
+        }
+        foreach(GameObject obj in credit_text) {
+            obj.GetComponent<TextMeshProUGUI>().color = menuColor_light;
+            obj.GetComponent<TextMeshProUGUI>().fontMaterial.SetColor("_UnderlayColor", menuColor_dark);
+        }
+
+        GameObject.FindWithTag("flat").GetComponent<SpriteRenderer>().color = menuColor;
+        GameObject.FindWithTag("beatboard_inner").GetComponent<SpriteRenderer>().color = menuColor_light;
+        GameObject.FindWithTag("beatboard").GetComponent<SpriteRenderer>().color = menuColor_dark;
+        GameObject.FindWithTag("debug_img").GetComponent<SpriteRenderer>().color = menuColor_light;
+        GameObject.FindWithTag("debug_imgShadow").GetComponent<SpriteRenderer>().color = menuColor_dark;
+        GameObject.FindWithTag("title_text").GetComponent<TextMeshProUGUI>().color = menuColor_light;
+        GameObject.FindWithTag("title_text").GetComponent<TextMeshProUGUI>().fontMaterial.SetColor("_UnderlayColor", menuColor_dark);
+        GameObject.FindWithTag("debug_text").GetComponent<TextMeshProUGUI>().color = menuColor_light;
+        GameObject.FindWithTag("debug_text").GetComponent<TextMeshProUGUI>().fontMaterial.SetColor("_UnderlayColor", menuColor_dark);
+        GameObject.FindWithTag("start_text").GetComponent<TextMeshProUGUI>().color = menuColor_dark;
+        GameObject.FindWithTag("stage_text").GetComponent<TextMeshProUGUI>().color = menuColor_dark;
+
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 120;
     }
 
     void Update()

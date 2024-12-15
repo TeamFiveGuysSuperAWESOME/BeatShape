@@ -12,7 +12,9 @@ public class MenuLevel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     LevelSelectScene ls;
     RawImage rawImage;
 
-    public GameObject obj;
+    public GameObject thumb_obj;
+    public GameObject lock_obj;
+    public GameObject lockback_obj;
     public Material grayscale_mat;
     RawImage thumb_rawImage;
 
@@ -20,15 +22,24 @@ public class MenuLevel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         manager = GameObject.FindWithTag("manager").GetComponent<MenuManager>();
         ls = GameObject.FindWithTag("levelselect").GetComponent<LevelSelectScene>();
-        thumb_rawImage = obj.GetComponent<RawImage>();
+        thumb_rawImage = thumb_obj.GetComponent<RawImage>();
         rawImage = GetComponent<RawImage>();
     }
 
     void Start()
     {
         rawImage.color = manager.menuColor_dark;
+        //lock_obj.GetComponent<RawImage>().color = manager.menuColor_dark;
+        lockback_obj.GetComponent<RawImage>().color = manager.menuColor_dark;
         ChangeThumbnail();
-        if(stageNum != 0) {thumb_rawImage.material = grayscale_mat;}
+        if(stageNum != 0) {
+            thumb_rawImage.material = grayscale_mat;
+            lock_obj.SetActive(true);
+        }
+        else {
+            thumb_rawImage.material = null;
+            lock_obj.SetActive(false);
+        }
     }
 
     public void ChangeThumbnail()

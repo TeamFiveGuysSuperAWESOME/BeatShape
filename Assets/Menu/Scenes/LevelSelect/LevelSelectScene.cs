@@ -55,10 +55,18 @@ public class LevelSelectScene : MonoBehaviour
     {
         if(manager.menuState == "stageSelect" && manager.sceneState == 0) {
             stage_text_rt.localScale = new Vector3(1,1,1);
-            effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*25,menuScenes.liveLevelScale.y*25), new Vector2(350,350), 0.75f, manager.menuColor_dark);
-            manager.menuState = "stageEntry";
-            audioSource.volume = MenuSoundManager.sfxVolume;
-            audioSource.Play();
+            var tempLevel = Resources.Load<TextAsset>("Levels/" + MenuManager.levelNumber + "/level");
+            if (MenuManager.levelNumber == 1) {
+                if (tempLevel != null) 
+                {
+                    effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*25,menuScenes.liveLevelScale.y*25), new Vector2(350,350), 0.75f, manager.menuColor_dark);
+                    manager.menuState = "stageEntry";
+                    audioSource.volume = MenuSoundManager.sfxVolume;
+                    audioSource.Play();
+                }
+                else Debug.Log("Level not found");
+            }
+            else Debug.Log("Level not opened");
         }
     }
 
@@ -70,20 +78,11 @@ public class LevelSelectScene : MonoBehaviour
         if(manager.menuState == "stageSelect" && manager.sceneState == 0) {
             if(Input.GetKeyDown(KeyCode.Space)) 
             {
-                stage_text_rt.localScale = new Vector3(0.9f,0.9f,1);
+                Input_spaceDown();
             }
             if(Input.GetKeyUp(KeyCode.Space)) 
             {
-                stage_text_rt.localScale = new Vector3(1,1,1);
-                effects.NewSquare(new Vector2(0,0), new Vector2(menuScenes.liveLevelScale.x*25,menuScenes.liveLevelScale.y*25), new Vector2(350,350), 0.75f, manager.menuColor_dark);
-                var tempLevel = Resources.Load<TextAsset>("Levels/" + MenuManager.levelNumber + "/level");
-                if (tempLevel != null) 
-                {
-                    manager.menuState = "stageEntry";
-                    audioSource.volume = MenuSoundManager.sfxVolume;
-                    audioSource.Play();
-                }
-                else Debug.Log("Level not found");
+                Input_spaceUp();
             }
         }
         else {stage_text_rt.localScale = new Vector3(1,1,1);}
