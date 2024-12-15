@@ -1887,6 +1887,7 @@ MonoBehaviour:
   tooEarlyText: {fileID: 1299298561}
   tooLateText: {fileID: 928379984}
   missedText: {fileID: 1391080028}
+  debugLogText: {fileID: 604053963}
 --- !u!114 &356242956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3715,8 +3716,8 @@ GameObject:
   - component: {fileID: 604053965}
   - component: {fileID: 604053967}
   m_Layer: 5
-  m_Name: test
-  m_TagString: testtext
+  m_Name: debugLog
+  m_TagString: debugLog
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

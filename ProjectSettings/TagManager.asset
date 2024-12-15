@@ -9,6 +9,9 @@ TagManager:
   - beatboard_inner
   - title_text
   - start_text
+  - debug_text
+  - debug_img
+  - debug_imgShadow
   - manager
   - soundmanager
   - scene
@@ -22,9 +25,9 @@ TagManager:
   - Canvas
   - levelselect
   - gamemanager
-  - testtext
   - beatmanager
   - resultAudio
+  - debugLog
   layers:
   - Default
   - TransparentFX

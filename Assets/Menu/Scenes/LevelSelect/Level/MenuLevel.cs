@@ -13,6 +13,7 @@ public class MenuLevel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     RawImage rawImage;
 
     public GameObject obj;
+    public Material grayscale_mat;
     RawImage thumb_rawImage;
 
     void Awake()
@@ -27,6 +28,7 @@ public class MenuLevel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         rawImage.color = manager.menuColor_dark;
         ChangeThumbnail();
+        if(stageNum != 0) {thumb_rawImage.material = grayscale_mat;}
     }
 
     public void ChangeThumbnail()

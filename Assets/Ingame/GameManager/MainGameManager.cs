@@ -86,6 +86,7 @@ namespace GameManager
         [SerializeField] private TextMeshPro tooEarlyText;
         [SerializeField] private TextMeshPro tooLateText;
         [SerializeField] private GameObject missedText;
+        [SerializeField] private GameObject debugLogText;
 
 #if UNITY_WEBGL && !UNITY_EDITOR
         [DllImport("__Internal")]
@@ -138,6 +139,9 @@ namespace GameManager
             pauseButton.SetActive(!isCalibrating);
             practiceIndicator.SetActive(!_debugTime.Equals(0f) && !isCalibrating);
             ffSliderObj.SetActive(!_debugTime.Equals(0f));
+
+            if(MenuManager.DebugMode) {debugLogText.SetActive(true);}
+            else {debugLogText.SetActive(false);}
         }
 
         public static MainGameManager Instance { get; private set; }

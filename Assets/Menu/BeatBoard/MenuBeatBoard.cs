@@ -56,7 +56,7 @@ public class MenuBeatBoard : MonoBehaviour
     }
     public void Input_down()
     {
-        if(manager.sceneState < 1) {
+        if(manager.sceneState < 2) {
             rot_z += 90f;
             manager.sceneState += 1;
             menuScenes.targetPos.y += 200;
