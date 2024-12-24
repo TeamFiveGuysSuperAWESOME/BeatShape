@@ -310,6 +310,14 @@ namespace GameManager
             _gameHandler.HandleGame();
         }
 
+        bool IsAllPerfect()
+        {
+            for(int i=0; i<6; i++) {
+                if(Judgement[i] != 0) return false;
+            }
+            return true;
+        }
+
         void Update()
         {
             if (_isLeaving) 
@@ -382,7 +390,8 @@ namespace GameManager
                         return;
                     }
                     
-                    finalScoreText.text = _debugTime == 0 ? "Score: " + Score : "Practice Mode";
+                    if(_debugTime == 0) finalScoreText.text = IsAllPerfect() ? "All Perfect!\nScore: " + Score : "Score: " + Score;
+                    else finalScoreText.text = "Practice Mode";
                     missedText.SetActive(_debugTime > 0);
 
                     ResultAudio resultAudio = GameObject.FindWithTag("resultAudio").GetComponent<ResultAudio>();
